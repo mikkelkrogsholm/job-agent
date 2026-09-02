@@ -13,7 +13,7 @@ job-agent.dk {
 
 	header {
 		-Server
-		Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'; upgrade-insecure-requests"
+		Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; script-src 'self' https://umami.mikkelkrogsholm.dk; style-src 'self'; font-src 'self'; connect-src 'self' https://umami.mikkelkrogsholm.dk; base-uri 'none'; frame-ancestors 'none'; form-action 'none'; upgrade-insecure-requests"
 		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
 		Referrer-Policy "strict-origin-when-cross-origin"
 		Strict-Transport-Security "max-age=31536000; includeSubDomains"
