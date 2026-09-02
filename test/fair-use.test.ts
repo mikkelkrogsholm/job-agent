@@ -70,6 +70,19 @@ describe("public MCP fair use", () => {
     expect((await guard.permit(request, "192.0.2.1")).response?.status).toBe(413);
   });
 
+  test("rejects an oversized body without content-length after reserving concurrency", async () => {
+    const guard = new FairUseGuard({ ...defaults, maxRequestBytes: 256 });
+    const request = new Request("http://localhost/mcp", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ query: "x".repeat(1_000) }),
+    });
+    expect(request.headers.get("content-length")).toBeNull();
+    expect((await guard.permit(request, "192.0.2.1")).response?.status).toBe(413);
+    const valid = mcpRequest("get_danish_job_details", {}, "after-oversize");
+    expect((await guard.permit(valid, "192.0.2.1")).response).toBeUndefined();
+  });
+
   test("parses environment overrides without accepting invalid values", () => {
     const options = fairUseOptionsFromEnv({ MCP_FAIR_USE_ENABLED: "false", MCP_CLIENT_BURST_UNITS: "20", MCP_MAX_REQUEST_BYTES: "nope" });
     expect(options.enabled).toBe(false);

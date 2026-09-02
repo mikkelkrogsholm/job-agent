@@ -174,6 +174,14 @@ The tool descriptions and every input field contain agent-facing usage instructi
 | `MCP_GLOBAL_UNITS_PER_5_MIN` / `MCP_GLOBAL_BURST_UNITS` | `1500` / `300` |
 | `MCP_MAX_CONCURRENT_REQUESTS` | `8` |
 | `MCP_MAX_REQUEST_BYTES` | `131072` |
+| `WEBMCP_ENABLED` | `false` |
+
+The combined Danish HTTP server can progressively expose four same-origin,
+read-only WebMCP site tools when `WEBMCP_ENABLED=true`: capability discovery,
+guide lookup, bounded job search, and bounded job details. WebMCP is optional
+and experimental; ordinary HTML, Markdown, and `/mcp` continue to work when it
+is disabled or unsupported. Browser requests use the same fair-use guard, and
+job content remains explicitly marked as untrusted third-party content.
 
 ## Important limitations
 
@@ -188,7 +196,7 @@ See:
 - [docs/JOBSOEGERREJSEN.md](docs/JOBSOEGERREJSEN.md) — produktretningen fra jobprofil og søgning til en ansøgning, brugeren selv sender
 - [docs/JOBSOEGERREJSEN_RESEARCH.md](docs/JOBSOEGERREJSEN_RESEARCH.md) — danske kilder og redaktionelt faktagrundlag for jobsøgerrejsen
 - [docs/PLATFORM_GUIDE_RESEARCH.md](docs/PLATFORM_GUIDE_RESEARCH.md) — verificerede og uafklarede capabilities på ChatGPT-, Claude- og Codex-flader
-- [docs/GUIDED_PROMPTS.md](docs/GUIDED_PROMPTS.md) — fælles promptkontrakt og seksten guidede jobsøgningsforløb
+- [docs/GUIDED_PROMPTS.md](docs/GUIDED_PROMPTS.md) — fælles promptkontrakt og atten guidede jobsøgningsforløb
 - [docs/AGENT_READABLE_GUIDES.md](docs/AGENT_READABLE_GUIDES.md) — capability-check, Markdown/discovery-lag og maskinlæsbare acceptkriterier
 - [docs/PUBLIC_GUIDE_SITE_PLAN.md](docs/PUBLIC_GUIDE_SITE_PLAN.md) — implementerbar plan for alle forløbs-, platform-, prompt-, trygheds- og AI-sider
 

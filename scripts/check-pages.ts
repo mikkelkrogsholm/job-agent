@@ -1,7 +1,7 @@
 import { PUBLIC_PAGES, renderSitemap } from "../web/pages.ts";
 
 for (const page of PUBLIC_PAGES.filter((candidate) => candidate.markdownSource)) {
-  const source = `web/content/guides/${page.route.slice(1)}index.md`;
+  const source = page.authoredSource!;
   if (!(await Bun.file(source).exists())) throw new Error(`Manglende guidekilde: ${source}`);
   if ((await Bun.file(source).text()) !== (await Bun.file(page.markdownSource!).text())) throw new Error(`Genereret Markdown er ikke synkroniseret: ${page.markdownRoute}`);
 }

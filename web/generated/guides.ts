@@ -2,6 +2,235 @@
 import type { PublicPage } from "../pages.ts";
 export const GENERATED_GUIDES: readonly PublicPage[] = [
   {
+    "id": "ansoegning",
+    "title": "Skriv en ærlig ansøgning med AI · Jobagenten",
+    "description": "Lav et konkret ansøgningsudkast med din egen motivation og dokumenterede eksempler, mens manglende oplysninger bliver synlige pladsholdere.",
+    "summary": "Skriv et personligt første udkast, som du kan kontrollere og gøre til dit eget.",
+    "stage": "application",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://www.ug.dk/evejledning/10-gode-raad-til-din-ansoegning",
+      "https://www.ug.dk/evejledning/10-gode-raad-til-at-bruge-ai-i-din-jobsoegning"
+    ],
+    "optionalCapabilities": [
+      "local_files_read",
+      "web_read"
+    ],
+    "humanConfirmations": [
+      "approve_motivation",
+      "approve_examples",
+      "approve_application_draft"
+    ],
+    "related": [
+      "cv",
+      "kvalitetstjek-og-send",
+      "jobsamtale"
+    ],
+    "previous": "cv",
+    "next": "kvalitetstjek-og-send",
+    "route": "/forloeb/ansoegning/",
+    "markdownRoute": "/forloeb/ansoegning.md",
+    "source": "web/public/forloeb/ansoegning/index.html",
+    "authoredSource": "web/content/guides/forloeb/ansoegning/index.md",
+    "markdownSource": "web/public/forloeb/ansoegning.md",
+    "openGraphTitle": "Skriv en ærlig ansøgning med AI · Jobagenten",
+    "openGraphDescription": "Skriv et personligt første udkast, som du kan kontrollere og gøre til dit eget.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "cv",
+    "title": "Tilpas dit CV ærligt med AI · Jobagenten",
+    "description": "Sammenlign dit dokumenterede CV med et job, prioriter det relevante og lav ændringer, der er konkrete, sporbare og helt dine egne.",
+    "summary": "Lav en ærlig ændringsplan og et CV-udkast, du selv har godkendt.",
+    "stage": "application",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://www.ug.dk/evejledning/10-gode-raad-til-din-ansoegning",
+      "https://www.datatilsynet.dk/regler-og-vejledning/grundlaeggende-begreber/hvad-er-personoplysninger"
+    ],
+    "optionalCapabilities": [
+      "local_files_read"
+    ],
+    "humanConfirmations": [
+      "approve_cv_sources",
+      "approve_cv_claims",
+      "approve_cv_version"
+    ],
+    "related": [
+      "forloeb-vurder-job",
+      "ansoegning",
+      "kvalitetstjek-og-send"
+    ],
+    "previous": "uopfordret",
+    "next": "ansoegning",
+    "route": "/forloeb/cv/",
+    "markdownRoute": "/forloeb/cv.md",
+    "source": "web/public/forloeb/cv/index.html",
+    "authoredSource": "web/content/guides/forloeb/cv/index.md",
+    "markdownSource": "web/public/forloeb/cv.md",
+    "openGraphTitle": "Tilpas dit CV ærligt med AI · Jobagenten",
+    "openGraphDescription": "Lav en ærlig ændringsplan og et CV-udkast, du selv har godkendt.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "forloeb-find-job",
+    "title": "Find aktuelle job · Jobagenten",
+    "description": "Søg efter aktuelle job ud fra din godkendte profil, brug portalernes filtre og få et overskueligt resultatsæt med kilder og frister.",
+    "summary": "Søg bredt, kontroller kilden, og indsnævr derefter resultaterne.",
+    "stage": "discovery",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://jobnet.dk/hjaelp-og-support/hjaelp-og-support-til-jobnet"
+    ],
+    "optionalCapabilities": [
+      "mcp",
+      "web_read"
+    ],
+    "humanConfirmations": [
+      "approve_search_criteria",
+      "choose_jobs",
+      "verify_claims"
+    ],
+    "related": [
+      "forloeb-jobprofil",
+      "forloeb-hold-oeje",
+      "forloeb-vurder-job"
+    ],
+    "previous": "forloeb-jobprofil",
+    "next": "forloeb-vurder-job",
+    "route": "/forloeb/find-job/",
+    "markdownRoute": "/forloeb/find-job.md",
+    "source": "web/public/forloeb/find-job/index.html",
+    "authoredSource": "web/content/guides/forloeb/find-job/index.md",
+    "markdownSource": "web/public/forloeb/find-job.md",
+    "openGraphTitle": "Find aktuelle job · Jobagenten",
+    "openGraphDescription": "Søg bredt, kontroller kilden, og indsnævr derefter resultaterne.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "forloeb-find-retning",
+    "title": "Find min jobretning · Jobagenten",
+    "description": "Afklar dine styrker, ønsker og rammer trin for trin, og vælg to til fire realistiske jobretninger uden at gætte på din erfaring.",
+    "summary": "Et guidet interview, der munder ud i et retningsnotat, du selv godkender.",
+    "stage": "orientation",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://www.borger.dk/arbejde-dagpenge-ferie/guide--hvis-du-bliver-ledig",
+      "https://www.ug.dk/efteruddannelse/realkompetencer/brug-dine-kompetencer/om-realkompetencer"
+    ],
+    "optionalCapabilities": [
+      "local_files_read"
+    ],
+    "humanConfirmations": [
+      "choose_direction"
+    ],
+    "related": [
+      "forloeb",
+      "forloeb-jobprofil",
+      "forloeb-find-job"
+    ],
+    "previous": "forloeb",
+    "next": "forloeb-jobprofil",
+    "route": "/forloeb/find-retning/",
+    "markdownRoute": "/forloeb/find-retning.md",
+    "source": "web/public/forloeb/find-retning/index.html",
+    "authoredSource": "web/content/guides/forloeb/find-retning/index.md",
+    "markdownSource": "web/public/forloeb/find-retning.md",
+    "openGraphTitle": "Find min jobretning · Jobagenten",
+    "openGraphDescription": "Et guidet interview, der munder ud i et retningsnotat, du selv godkender.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "foelg-op",
+    "title": "Følg op på din ansøgning · Jobagenten",
+    "description": "Vælg en respektfuld opfølgning ud fra den konkrete proces, hold styr på din søgning og lad altid dig selv tage den eventuelle kontakt.",
+    "summary": "Lav et godkendt udkast, en næste dato og et ærligt overblik over din søgning.",
+    "stage": "follow-up",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://jobnet.dk/hjaelp-og-support/vejledninger-og-guides/joblog-registrer-din-jobsoegning",
+      "https://www.borger.dk/arbejde-dagpenge-ferie/guide--hvis-du-bliver-ledig"
+    ],
+    "optionalCapabilities": [
+      "scheduler"
+    ],
+    "humanConfirmations": [
+      "choose_follow_up_timing",
+      "approve_follow_up_message",
+      "make_contact",
+      "approve_reminder"
+    ],
+    "related": [
+      "kvalitetstjek-og-send",
+      "jobsamtale",
+      "forloeb-find-job"
+    ],
+    "previous": "kvalitetstjek-og-send",
+    "next": "jobsamtale",
+    "route": "/forloeb/foelg-op/",
+    "markdownRoute": "/forloeb/foelg-op.md",
+    "source": "web/public/forloeb/foelg-op/index.html",
+    "authoredSource": "web/content/guides/forloeb/foelg-op/index.md",
+    "markdownSource": "web/public/forloeb/foelg-op.md",
+    "openGraphTitle": "Følg op på din ansøgning · Jobagenten",
+    "openGraphDescription": "Lav et godkendt udkast, en næste dato og et ærligt overblik over din søgning.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "forloeb-hold-oeje",
+    "title": "Hold øje med nye job · Jobagenten",
+    "description": "Lav en rolig, præcis plan for gentagen jobsøgning med tydelige kriterier, dubletkontrol og besked kun ved relevante nye fund.",
+    "summary": "Vælg rytme og beskedregel, og opret aldrig en opgave uden godkendelse.",
+    "stage": "monitoring",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://jobnet.dk/hjaelp-og-support/hjaelp-og-support-til-jobnet"
+    ],
+    "optionalCapabilities": [
+      "mcp",
+      "scheduler",
+      "web_read"
+    ],
+    "humanConfirmations": [
+      "approve_search_criteria",
+      "approve_monitoring",
+      "choose_jobs"
+    ],
+    "related": [
+      "forloeb-jobprofil",
+      "forloeb-find-job",
+      "forloeb-vurder-job"
+    ],
+    "previous": "forloeb-find-job",
+    "next": "forloeb-vurder-job",
+    "route": "/forloeb/hold-oeje/",
+    "markdownRoute": "/forloeb/hold-oeje.md",
+    "source": "web/public/forloeb/hold-oeje/index.html",
+    "authoredSource": "web/content/guides/forloeb/hold-oeje/index.md",
+    "markdownSource": "web/public/forloeb/hold-oeje.md",
+    "openGraphTitle": "Hold øje med nye job · Jobagenten",
+    "openGraphDescription": "Vælg rytme og beskedregel, og opret aldrig en opgave uden godkendelse.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
     "id": "forloeb",
     "title": "Find og søg job med AI · Jobagenten",
     "description": "En enkel, ærlig guide til at finde retning, søge danske job, tilpasse dit materiale og selv sende en ansøgning med AI som støtte.",
@@ -26,15 +255,695 @@ export const GENERATED_GUIDES: readonly PublicPage[] = [
       "approve_materials",
       "submit_application"
     ],
-    "related": [],
+    "related": [
+      "forloeb-find-retning",
+      "forloeb-jobprofil",
+      "forloeb-find-job",
+      "forloeb-hold-oeje",
+      "forloeb-vurder-job",
+      "uopfordret",
+      "cv",
+      "ansoegning",
+      "kvalitetstjek-og-send",
+      "foelg-op",
+      "jobsamtale"
+    ],
     "route": "/forloeb/",
     "markdownRoute": "/forloeb.md",
     "source": "web/public/forloeb/index.html",
+    "authoredSource": "web/content/guides/forloeb/index.md",
     "markdownSource": "web/public/forloeb.md",
     "openGraphTitle": "Find og søg job med AI · Jobagenten",
     "openGraphDescription": "Vælg det trin i jobsøgningen, du har brug for lige nu.",
     "sitemap": true,
     "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "forloeb-jobprofil",
+    "title": "Lav min jobprofil · Jobagenten",
+    "description": "Saml dokumenteret erfaring, jobtitler, søgeord og rammer i en jobprofil, du kan godkende og bruge igen i din jobsøgning.",
+    "summary": "Gør dine ønsker og fravalg konkrete, før du starter en søgning.",
+    "stage": "profile",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://star.dk/da/digital-service/borger-it/cv",
+      "https://www.datatilsynet.dk/regler-og-vejledning/grundlaeggende-begreber/hvad-er-personoplysninger"
+    ],
+    "optionalCapabilities": [
+      "local_files_read"
+    ],
+    "humanConfirmations": [
+      "choose_direction",
+      "approve_search_criteria"
+    ],
+    "related": [
+      "forloeb-find-retning",
+      "forloeb-find-job",
+      "forloeb-hold-oeje"
+    ],
+    "previous": "forloeb-find-retning",
+    "next": "forloeb-find-job",
+    "route": "/forloeb/jobprofil/",
+    "markdownRoute": "/forloeb/jobprofil.md",
+    "source": "web/public/forloeb/jobprofil/index.html",
+    "authoredSource": "web/content/guides/forloeb/jobprofil/index.md",
+    "markdownSource": "web/public/forloeb/jobprofil.md",
+    "openGraphTitle": "Lav min jobprofil · Jobagenten",
+    "openGraphDescription": "Gør dine ønsker og fravalg konkrete, før du starter en søgning.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "jobsamtale",
+    "title": "Forbered jobsamtalen med AI · Jobagenten",
+    "description": "Øv ærlige, konkrete svar til første, anden eller digital samtale, og lav dine egne spørgsmål uden at lære et opdigtet manuskript udenad.",
+    "summary": "Lav et evidenskort, øv dig roligt og vælg spørgsmål, du selv vil stille.",
+    "stage": "interview",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://www.aka.dk/jobsoegning/jobsamtale/",
+      "https://www.aka.dk/jobsoegning/jobsamtale/spoergsmaal-til-jobsamtalen"
+    ],
+    "optionalCapabilities": [
+      "local_files_read",
+      "web_read"
+    ],
+    "humanConfirmations": [
+      "approve_interview_examples",
+      "approve_questions",
+      "choose_practice_format"
+    ],
+    "related": [
+      "ansoegning",
+      "foelg-op",
+      "forloeb-find-job"
+    ],
+    "previous": "foelg-op",
+    "next": "forloeb-find-job",
+    "route": "/forloeb/jobsamtale/",
+    "markdownRoute": "/forloeb/jobsamtale.md",
+    "source": "web/public/forloeb/jobsamtale/index.html",
+    "authoredSource": "web/content/guides/forloeb/jobsamtale/index.md",
+    "markdownSource": "web/public/forloeb/jobsamtale.md",
+    "openGraphTitle": "Forbered jobsamtalen med AI · Jobagenten",
+    "openGraphDescription": "Lav et evidenskort, øv dig roligt og vælg spørgsmål, du selv vil stille.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "kvalitetstjek-og-send",
+    "title": "Kvalitetstjek før du selv sender · Jobagenten",
+    "description": "Kontrollér sandhed, frist, modtager og bilag, så du selv kan sende en komplet ansøgning uden at forveksle Joblog med afsendelse.",
+    "summary": "Gennemgå en sidste tjekliste og overtag selv login, formular og afsendelse.",
+    "stage": "application",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://jobnet.dk/hjaelp-og-support/vejledninger-og-guides/joblog-registrer-din-jobsoegning",
+      "https://jobnet.dk/hjaelp-og-support/hjaelp-og-support-til-jobnet"
+    ],
+    "optionalCapabilities": [
+      "local_files_read",
+      "web_read"
+    ],
+    "humanConfirmations": [
+      "verify_claims",
+      "verify_deadline",
+      "verify_recipient",
+      "approve_materials",
+      "submit_application"
+    ],
+    "related": [
+      "cv",
+      "ansoegning",
+      "foelg-op"
+    ],
+    "previous": "ansoegning",
+    "next": "foelg-op",
+    "route": "/forloeb/kvalitetstjek-og-send/",
+    "markdownRoute": "/forloeb/kvalitetstjek-og-send.md",
+    "source": "web/public/forloeb/kvalitetstjek-og-send/index.html",
+    "authoredSource": "web/content/guides/forloeb/kvalitetstjek-og-send/index.md",
+    "markdownSource": "web/public/forloeb/kvalitetstjek-og-send.md",
+    "openGraphTitle": "Kvalitetstjek før du selv sender · Jobagenten",
+    "openGraphDescription": "Gennemgå en sidste tjekliste og overtag selv login, formular og afsendelse.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "uopfordret",
+    "title": "Uopfordret jobsøgning med AI · Jobagenten",
+    "description": "Find realistiske virksomheder og lav en ærlig, manuel kontaktplan uden at antage, at der er en ledig rolle eller kontakte nogen for dig.",
+    "summary": "Gør en løs idé til en prioriteret virksomhedsplan og et udkast, du selv vælger at bruge.",
+    "stage": "application",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://dm.dk/studerende/raad-og-svar/studiejob-og-praktik/jobsoegning/uopfordret-ansoegning/",
+      "https://www.datatilsynet.dk/regler-og-vejledning/grundlaeggende-begreber/hvad-er-personoplysninger"
+    ],
+    "optionalCapabilities": [
+      "web_read",
+      "local_files_read"
+    ],
+    "humanConfirmations": [
+      "approve_companies",
+      "verify_contact_route",
+      "approve_message",
+      "make_contact"
+    ],
+    "related": [
+      "forloeb-vurder-job",
+      "cv",
+      "ansoegning"
+    ],
+    "previous": "forloeb-vurder-job",
+    "next": "cv",
+    "route": "/forloeb/uopfordret/",
+    "markdownRoute": "/forloeb/uopfordret.md",
+    "source": "web/public/forloeb/uopfordret/index.html",
+    "authoredSource": "web/content/guides/forloeb/uopfordret/index.md",
+    "markdownSource": "web/public/forloeb/uopfordret.md",
+    "openGraphTitle": "Uopfordret jobsøgning med AI · Jobagenten",
+    "openGraphDescription": "Gør en løs idé til en prioriteret virksomhedsplan og et udkast, du selv vælger at bruge.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "forloeb-vurder-job",
+    "title": "Vurdér og sammenlign job · Jobagenten",
+    "description": "Prioritér interessante job med en ærlig kravmatrix, synlige huller og konkrete trade-offs, før du bruger tid på CV og ansøgning.",
+    "summary": "Brug annoncens fakta og din profil til at vælge de job, der er tiden værd.",
+    "stage": "evaluation",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://www.datatilsynet.dk/regler-og-vejledning/databeskyttelse-i-forbindelse-med-ansaettelsesforhold"
+    ],
+    "optionalCapabilities": [
+      "mcp",
+      "web_read",
+      "local_files_read"
+    ],
+    "humanConfirmations": [
+      "choose_jobs",
+      "verify_claims"
+    ],
+    "related": [
+      "forloeb-find-job",
+      "forloeb-hold-oeje",
+      "cv",
+      "uopfordret"
+    ],
+    "previous": "forloeb-find-job",
+    "next": "cv",
+    "route": "/forloeb/vurder-job/",
+    "markdownRoute": "/forloeb/vurder-job.md",
+    "source": "web/public/forloeb/vurder-job/index.html",
+    "authoredSource": "web/content/guides/forloeb/vurder-job/index.md",
+    "markdownSource": "web/public/forloeb/vurder-job.md",
+    "openGraphTitle": "Vurdér og sammenlign job · Jobagenten",
+    "openGraphDescription": "Brug annoncens fakta og din profil til at vælge de job, der er tiden værd.",
+    "sitemap": true,
+    "navigationGroup": "journey",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "ai-jobsoegning",
+    "title": "AI-guide til sikker jobsøgning",
+    "description": "En arbejdskontrakt for AI-assistenter: undersøg faktiske capabilities, vælg et sikkert workflow, brug Jobagenten read-only og stop altid før menneskets afsendelse.",
+    "summary": "Capability-check og sikre workflowgrene for AI-assistenter.",
+    "stage": "orientation",
+    "audience": "technical",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://job-agent.dk/mcp",
+      "https://modelcontextprotocol.io/",
+      "https://webmachinelearning.github.io/webmcp/"
+    ],
+    "optionalCapabilities": [
+      "web_read",
+      "mcp",
+      "local_files_read",
+      "local_files_write",
+      "scheduler",
+      "browser_automation",
+      "webmcp"
+    ],
+    "humanConfirmations": [
+      "choose_direction",
+      "approve_search_criteria",
+      "choose_jobs",
+      "approve_sensitive_data_use",
+      "verify_claims",
+      "approve_materials",
+      "approve_monitoring",
+      "submit_application"
+    ],
+    "related": [
+      "/forloeb/",
+      "/prompts/",
+      "/tryghed/"
+    ],
+    "next": "/forloeb/",
+    "route": "/ai/",
+    "markdownRoute": "/ai/jobsoegning.md",
+    "source": "web/public/ai/index.html",
+    "authoredSource": "web/content/guides/meta/ai/index.md",
+    "markdownSource": "web/public/ai/jobsoegning.md",
+    "openGraphTitle": "AI-guide til sikker jobsøgning",
+    "openGraphDescription": "Capability-check og sikre workflowgrene for AI-assistenter.",
+    "sitemap": true,
+    "navigationGroup": "support",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "prompts",
+    "title": "Prompts til jobsøgning · Jobagenten",
+    "description": "Vælg en sikker, kopierbar samtalestarter til hvert trin i jobsøgningen — fra retning og jobprofil til CV, ansøgning, kvalitetstjek, opfølgning og samtale.",
+    "summary": "18 selvbærende promptmoduler til en ærlig jobsøgning med AI.",
+    "stage": "orientation",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://www.jobnet.dk/",
+      "https://www.sikkerdigital.dk/borger",
+      "https://www.datatilsynet.dk/borger"
+    ],
+    "optionalCapabilities": [
+      "web_read",
+      "mcp",
+      "local_files_read",
+      "scheduler"
+    ],
+    "humanConfirmations": [
+      "choose_direction",
+      "approve_search_criteria",
+      "choose_jobs",
+      "verify_claims",
+      "approve_materials",
+      "approve_monitoring",
+      "submit_application"
+    ],
+    "related": [
+      "/forloeb/",
+      "/tryghed/",
+      "/ai/"
+    ],
+    "next": "/forloeb/",
+    "route": "/prompts/",
+    "markdownRoute": "/prompts.md",
+    "source": "web/public/prompts/index.html",
+    "authoredSource": "web/content/guides/meta/prompts/index.md",
+    "markdownSource": "web/public/prompts.md",
+    "openGraphTitle": "Prompts til jobsøgning · Jobagenten",
+    "openGraphDescription": "18 selvbærende promptmoduler til en ærlig jobsøgning med AI.",
+    "sitemap": true,
+    "navigationGroup": "support",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "tryghed",
+    "title": "Tryg AI-jobsøgning · Jobagenten",
+    "description": "Brug AI trygt i jobsøgningen: del færre persondata, hold CV og ansøgning sandfærdige, modstå falske instruktioner og kontrollér jobannoncer, før du selv sender.",
+    "summary": "En praktisk sikkerhedsramme for AI-støttet jobsøgning.",
+    "stage": "safety",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://www.datatilsynet.dk/borger",
+      "https://www.sikkerdigital.dk/borger",
+      "https://www.jobnet.dk/"
+    ],
+    "optionalCapabilities": [
+      "web_read",
+      "local_files_read"
+    ],
+    "humanConfirmations": [
+      "approve_sensitive_data_use",
+      "verify_claims",
+      "approve_materials",
+      "submit_application"
+    ],
+    "related": [
+      "/prompts/",
+      "/ai/",
+      "/privacy/",
+      "/forloeb/kvalitetstjek-og-send/"
+    ],
+    "next": "/forloeb/kvalitetstjek-og-send/",
+    "route": "/tryghed/",
+    "markdownRoute": "/tryghed.md",
+    "source": "web/public/tryghed/index.html",
+    "authoredSource": "web/content/guides/meta/tryghed/index.md",
+    "markdownSource": "web/public/tryghed.md",
+    "openGraphTitle": "Tryg AI-jobsøgning · Jobagenten",
+    "openGraphDescription": "En praktisk sikkerhedsramme for AI-støttet jobsøgning.",
+    "sitemap": true,
+    "navigationGroup": "support",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "chatgpt-desktop",
+    "title": "ChatGPT Desktop til jobsøgning",
+    "description": "Brug ChatGPT Desktop med en forsigtig capability-check af browser, site tools og filer. WebMCP og computer-use er betingede og erstatter aldrig din egen afsendelse.",
+    "summary": "Test den aktuelle konto, model og side før du forventer desktop-værktøjer.",
+    "stage": "platform-setup",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://help.openai.com/en/articles/20001423-using-site-tools-in-the-chatgpt-desktop-app",
+      "https://help.openai.com/en/articles/10291617-tasks-inchatgpt",
+      "https://help.openai.com/en/articles/11487775-connectors-in-chatgpt"
+    ],
+    "optionalCapabilities": [
+      "desktop_app",
+      "web_read",
+      "webmcp",
+      "browser_automation",
+      "file_upload",
+      "scheduler",
+      "mcp"
+    ],
+    "humanConfirmations": [
+      "share_files",
+      "connect_mcp",
+      "use_browser_tools",
+      "create_task",
+      "approve_search_criteria",
+      "submit_application"
+    ],
+    "related": [
+      "platforme",
+      "chatgpt-web",
+      "codex",
+      "forloeb"
+    ],
+    "previous": "chatgpt-web",
+    "next": "codex",
+    "route": "/platforme/chatgpt-desktop/",
+    "markdownRoute": "/platforme/chatgpt-desktop.md",
+    "source": "web/public/platforme/chatgpt-desktop/index.html",
+    "authoredSource": "web/content/guides/platforme/chatgpt-desktop/index.md",
+    "markdownSource": "web/public/platforme/chatgpt-desktop.md",
+    "openGraphTitle": "ChatGPT Desktop til jobsøgning",
+    "openGraphDescription": "Test den aktuelle konto, model og side før du forventer desktop-værktøjer.",
+    "sitemap": true,
+    "navigationGroup": "platform",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "chatgpt-web",
+    "title": "ChatGPT i browseren til jobsøgning",
+    "description": "Brug ChatGPT i browseren til jobprofil og research, og kontrollér om din plan kan bruge en custom Jobagenten-app, filer eller Tasks før du regner med det.",
+    "summary": "Kontrollér din konkrete ChatGPT-adgang, før du vælger MCP eller Tasks.",
+    "stage": "platform-setup",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://help.openai.com/en/articles/11487775-connectors-in-chatgpt",
+      "https://help.openai.com/en/articles/12584461",
+      "https://help.openai.com/en/articles/10291617-tasks-inchatgpt"
+    ],
+    "optionalCapabilities": [
+      "mcp",
+      "developer_mode",
+      "project_context",
+      "file_upload",
+      "scheduler",
+      "web_read"
+    ],
+    "humanConfirmations": [
+      "connect_mcp",
+      "share_files",
+      "create_task",
+      "approve_search_criteria",
+      "verify_sources",
+      "submit_application"
+    ],
+    "related": [
+      "platforme",
+      "chatgpt-desktop",
+      "forloeb"
+    ],
+    "previous": "claude-code",
+    "next": "chatgpt-desktop",
+    "route": "/platforme/chatgpt-web/",
+    "markdownRoute": "/platforme/chatgpt-web.md",
+    "source": "web/public/platforme/chatgpt-web/index.html",
+    "authoredSource": "web/content/guides/platforme/chatgpt-web/index.md",
+    "markdownSource": "web/public/platforme/chatgpt-web.md",
+    "openGraphTitle": "ChatGPT i browseren til jobsøgning",
+    "openGraphDescription": "Kontrollér din konkrete ChatGPT-adgang, før du vælger MCP eller Tasks.",
+    "sitemap": true,
+    "navigationGroup": "platform",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "claude-code",
+    "title": "Claude Code til organiseret jobsøgning",
+    "description": "Brug Claude Code til en lokal jobsøgningsmappe, read-only MCP-søgning og sikre udkast. Forstå forskellen på sessioner, Desktop tasks og cloud routines.",
+    "summary": "Et avanceret, lokalt spor med tydelige tilladelser og adskilte opgavetyper.",
+    "stage": "platform-setup",
+    "audience": "technical",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://code.claude.com/docs/en/scheduled-tasks",
+      "https://code.claude.com/docs/en/web-scheduled-tasks"
+    ],
+    "optionalCapabilities": [
+      "mcp",
+      "local_files_read",
+      "terminal",
+      "scheduler",
+      "cloud_tasks",
+      "desktop_tasks"
+    ],
+    "humanConfirmations": [
+      "share_folder",
+      "grant_permissions",
+      "connect_mcp",
+      "create_schedule",
+      "approve_changes",
+      "submit_application"
+    ],
+    "related": [
+      "platforme",
+      "claude-desktop",
+      "codex",
+      "forloeb"
+    ],
+    "previous": "claude-desktop",
+    "next": "chatgpt-web",
+    "route": "/platforme/claude-code/",
+    "markdownRoute": "/platforme/claude-code.md",
+    "source": "web/public/platforme/claude-code/index.html",
+    "authoredSource": "web/content/guides/platforme/claude-code/index.md",
+    "markdownSource": "web/public/platforme/claude-code.md",
+    "openGraphTitle": "Claude Code til organiseret jobsøgning",
+    "openGraphDescription": "Et avanceret, lokalt spor med tydelige tilladelser og adskilte opgavetyper.",
+    "sitemap": true,
+    "navigationGroup": "platform",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "claude-desktop",
+    "title": "Claude Desktop og Cowork til job",
+    "description": "Vælg sikkert mellem Claude Desktops lokale MCP og Coworks remote connector. Brug filer og planlagte opgaver uden at blande lokal og cloud-adgang sammen.",
+    "summary": "Vælg først lokal eller cloud, og test derefter præcis den adgang du vil bruge.",
+    "stage": "platform-setup",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://support.anthropic.com/en/articles/11725091-when-to-use-desktop-and-web-connectors",
+      "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork",
+      "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp"
+    ],
+    "optionalCapabilities": [
+      "mcp",
+      "remote_connector",
+      "local_mcp",
+      "local_files_read",
+      "scheduler",
+      "cloud_tasks"
+    ],
+    "humanConfirmations": [
+      "choose_execution_mode",
+      "connect_mcp",
+      "share_folder",
+      "create_schedule",
+      "approve_search_criteria",
+      "submit_application"
+    ],
+    "related": [
+      "platforme",
+      "claude-web",
+      "claude-code",
+      "forloeb"
+    ],
+    "previous": "claude-web",
+    "next": "claude-code",
+    "route": "/platforme/claude-desktop/",
+    "markdownRoute": "/platforme/claude-desktop.md",
+    "source": "web/public/platforme/claude-desktop/index.html",
+    "authoredSource": "web/content/guides/platforme/claude-desktop/index.md",
+    "markdownSource": "web/public/platforme/claude-desktop.md",
+    "openGraphTitle": "Claude Desktop og Cowork til job",
+    "openGraphDescription": "Vælg først lokal eller cloud, og test derefter præcis den adgang du vil bruge.",
+    "sitemap": true,
+    "navigationGroup": "platform",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "claude-web",
+    "title": "Claude i browseren til jobsøgning",
+    "description": "Brug Claude i browseren til jobprofil, CV og read-only jobsøgning. Lær at kontrollere remote connector, Projects, filer og den sikre manuelle fallback.",
+    "summary": "En enkel Claude-vej med synlig kontrol af connector og filadgang.",
+    "stage": "platform-setup",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp",
+      "https://support.anthropic.com/en/articles/9517075-what-are-projects",
+      "https://support.anthropic.com/en/articles/8241126-what-kinds-of-documents-can-i-upload-to-claude-ai"
+    ],
+    "optionalCapabilities": [
+      "remote_connector",
+      "mcp",
+      "file_upload",
+      "project_context",
+      "web_read"
+    ],
+    "humanConfirmations": [
+      "connect_mcp",
+      "share_files",
+      "approve_search_criteria",
+      "verify_sources",
+      "submit_application"
+    ],
+    "related": [
+      "platforme",
+      "claude-desktop",
+      "forloeb"
+    ],
+    "previous": "platforme",
+    "next": "claude-desktop",
+    "route": "/platforme/claude-web/",
+    "markdownRoute": "/platforme/claude-web.md",
+    "source": "web/public/platforme/claude-web/index.html",
+    "authoredSource": "web/content/guides/platforme/claude-web/index.md",
+    "markdownSource": "web/public/platforme/claude-web.md",
+    "openGraphTitle": "Claude i browseren til jobsøgning",
+    "openGraphDescription": "En enkel Claude-vej med synlig kontrol af connector og filadgang.",
+    "sitemap": true,
+    "navigationGroup": "platform",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "codex",
+    "title": "Codex til din organiserede jobsøgning",
+    "description": "Brug Codex til en privat jobsøgningsmappe, lokale udkast og read-only jobresearch. Kontrollér MCP, filer og gentagne opgaver i din aktuelle app før brug.",
+    "summary": "En organiseret lokal arbejdsgang med menneskelig kontrol over filer og afsendelse.",
+    "stage": "platform-setup",
+    "audience": "technical",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://developers.openai.com/codex/"
+    ],
+    "optionalCapabilities": [
+      "mcp",
+      "plugins",
+      "local_files_read",
+      "project_context",
+      "terminal",
+      "browser_automation",
+      "scheduler"
+    ],
+    "humanConfirmations": [
+      "create_project",
+      "share_files",
+      "connect_mcp",
+      "grant_permissions",
+      "create_schedule",
+      "approve_changes",
+      "submit_application"
+    ],
+    "related": [
+      "platforme",
+      "claude-code",
+      "chatgpt-desktop",
+      "forloeb"
+    ],
+    "previous": "chatgpt-desktop",
+    "route": "/platforme/codex/",
+    "markdownRoute": "/platforme/codex.md",
+    "source": "web/public/platforme/codex/index.html",
+    "authoredSource": "web/content/guides/platforme/codex/index.md",
+    "markdownSource": "web/public/platforme/codex.md",
+    "openGraphTitle": "Codex til din organiserede jobsøgning",
+    "openGraphDescription": "En organiseret lokal arbejdsgang med menneskelig kontrol over filer og afsendelse.",
+    "sitemap": true,
+    "navigationGroup": "platform",
+    "readOnlyBoundary": true
+  },
+  {
+    "id": "platforme",
+    "title": "Vælg AI til din jobsøgning",
+    "description": "Find den AI-arbejdsgang, der passer til din jobsøgning: enkel chat, filer, MCP, planlagte søgninger eller en lokal mappe – uden at love funktioner, du ikke har.",
+    "summary": "Vælg en konkret platformguide ud fra den adgang, du faktisk har.",
+    "stage": "platform-choice",
+    "audience": "jobseeker",
+    "lastVerified": "2026-09-02",
+    "sourceLinks": [
+      "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp",
+      "https://help.openai.com/en/articles/11487775-connectors-in-chatgpt",
+      "https://developers.openai.com/codex/"
+    ],
+    "optionalCapabilities": [
+      "mcp",
+      "remote_connector",
+      "file_upload",
+      "local_files_read",
+      "project_context",
+      "scheduler",
+      "web_read",
+      "browser_automation",
+      "webmcp"
+    ],
+    "humanConfirmations": [
+      "choose_platform",
+      "connect_mcp",
+      "share_files",
+      "create_schedule",
+      "approve_search_criteria",
+      "submit_application"
+    ],
+    "related": [
+      "forloeb",
+      "claude-web",
+      "claude-desktop",
+      "claude-code",
+      "chatgpt-web",
+      "chatgpt-desktop",
+      "codex"
+    ],
+    "next": "claude-web",
+    "route": "/platforme/",
+    "markdownRoute": "/platforme.md",
+    "source": "web/public/platforme/index.html",
+    "authoredSource": "web/content/guides/platforme/index.md",
+    "markdownSource": "web/public/platforme.md",
+    "openGraphTitle": "Vælg AI til din jobsøgning",
+    "openGraphDescription": "Vælg en konkret platformguide ud fra den adgang, du faktisk har.",
+    "sitemap": true,
+    "navigationGroup": "platform",
     "readOnlyBoundary": true
   }
 ] as const;

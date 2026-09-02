@@ -37,7 +37,7 @@ Hver guide skal undersøge følgende særskilt:
 | Claude Desktop/Cowork | Remote connectors; lokale MCP'er er en særskilt Desktop-mekanisme | Cowork kan bruge connectors, skills og valgte lokale mapper | Scheduled tasks er verificeret på betalte planer; cloud og local har forskellig adgang | Lokale handlinger kræver relevant lokal mode | God til tilbagevendende arbejde og mapper |
 | Claude Code | MCP og lokale filer er verificeret | Arbejder i projekt/repository og lokale filer | `/loop`, Desktop tasks og cloud routines har forskellige livscykler | Terminal- og værktøjsadgang efter permissions | Avanceret spor |
 | ChatGPT i browseren | Full MCP er verificeret for Business og Enterprise/Edu; Pro har en smallere read/fetch-vej i developer mode | Projects og uploads findes, men en Task i et Project kan ikke tilgå Project-filer | Tasks er verificeret; adgang til en custom Jobagenten-app i Tasks skal testes på den konkrete konto | Cloud browser/agent er plan- og handlingsafhængig | God almindelig AI-vej, men MCP-opsætning er betinget |
-| ChatGPT Desktop | Remote appmuligheder må verificeres mod den konkrete konto | Desktop kan have bredere arbejdsflader; lokal filparitet er ikke dokumenteret generelt | Tasks findes på understøttede klienter; Windows-status skal kontrolleres | Site tools/WebMCP findes kun, når konto, model og side understøtter det | Lov aldrig automatisk site-tool-opdagelse endnu |
+| ChatGPT Desktop | Remote appmuligheder må verificeres mod den konkrete konto | Desktop kan have bredere arbejdsflader; lokal filparitet er ikke dokumenteret generelt | Tasks findes på understøttede klienter; Windows-status skal kontrolleres | Jobagentens fire read-only site tools er feature-flagstyrede; konto, model, app og side skal stadig understøtte WebMCP | Lov aldrig automatisk site-tool-opdagelse |
 | Codex Desktop | Den aktuelle Codex-app kan arbejde med MCP/plugins i understøttede projekter | Stærk lokal fil- og projektarbejdsgang | Lokale recurring tasks/heartbeats findes i den aktuelle app, men offentlig guide skal følge officiel produktdokumentation | Kan arbejde med browser/terminal efter værktøjer og tilladelser | Organiseret/avanceret jobsøgningsmappe |
 
 ## Platformnoter
@@ -104,7 +104,8 @@ connector-/filadgang.
 Site tools i ChatGPT Desktops indbyggede browser anvender WebMCP-værktøjer,
 som den aktuelle side stiller til rådighed. De virker ikke i almindelig Chrome
 alene, følger ikke automatisk brugeren på tværs af websites og er afhængige af
-konto og model. Jobagenten tilbyder ikke WebMCP-site tools endnu.
+konto og model. Jobagentens side kan nu feature-flagstyret tilbyde fire
+read-only site tools til capability-check, guidevalg, jobsøgning og jobdetaljer.
 
 Browser- eller computer-use-funktioner er heller ikke tilladelse til at sende
 en ansøgning. Guiden skal stoppe ved en menneskelig afsendelsesport.
@@ -122,7 +123,7 @@ til et løfte om alle konti eller fremtidige versioner.
 - At en planlagt ChatGPT-opgave kan læse brugerens Project-filer.
 - At remote Claude-connectors kører direkte fra brugerens laptop.
 - At Claude Web, Cowork, Desktop og Claude Code har samme fil- og scheduleradgang.
-- At WebMCP er universelt understøttet eller allerede implementeret på siden.
+- At WebMCP er universelt understøttet eller automatisk aktiveret på siden.
 - At browserautomation betyder, at Jobagenten kan sende en ansøgning.
 - At en scheduler kan bruge Jobagenten, før det er verificeret på den konkrete
   platform og konto.

@@ -23,6 +23,7 @@ services:
       MCP_GLOBAL_BURST_UNITS: 300
       MCP_MAX_CONCURRENT_REQUESTS: 8
       MCP_MAX_REQUEST_BYTES: 131072
+      WEBMCP_ENABLED: "true"
     read_only: true
     tmpfs:
       - /tmp:size=16m,mode=1777

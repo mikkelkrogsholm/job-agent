@@ -34,6 +34,7 @@ export function serveHttp(
   service: string,
   defaultPort: number,
   landingPage?: Bun.HTMLBundle,
+  optionalHandler?: (request: Request) => Promise<Response | undefined>,
 ): void {
   const host = Bun.env.MCP_HOST ?? "127.0.0.1";
   const configured = Number.parseInt(Bun.env.MCP_PORT ?? "", 10);
@@ -67,10 +68,33 @@ export function serveHttp(
           permit.release();
         }
       }
+      if (optionalHandler && url.pathname.startsWith("/api/webmcp/v1/")) {
+        const remoteAddress = server.requestIP(request)?.address ?? null;
+        const permit = await fairUse.permit(request, remoteAddress);
+        if (permit.response) return webMcpFairUseResponse(permit.response);
+        try {
+          const response = await optionalHandler(request);
+          if (response) return response;
+        } finally {
+          permit.release();
+        }
+      }
       const publicFile = await servePublic(url.pathname, request.method);
       if (publicFile) return publicFile;
       return new Response("Not found", { status: 404 });
     },
   });
   console.error(`${service} listening on http://${server.hostname}:${server.port}/mcp`);
+}
+
+function webMcpFairUseResponse(response: Response): Response {
+  const code = response.status === 429 ? "rate_limited" : response.status === 413 ? "invalid_input" : "unavailable";
+  const message = response.status === 429
+    ? "Fair-use-grænsen er midlertidigt nået. Prøv igen om lidt."
+    : response.status === 413
+      ? "Requesten er for stor."
+      : "Serveren er optaget. Prøv igen om et øjeblik.";
+  const headers = new Headers(response.headers);
+  headers.set("content-type", "application/json; charset=utf-8");
+  return new Response(JSON.stringify({ error: { code, message } }), { status: response.status, headers });
 }

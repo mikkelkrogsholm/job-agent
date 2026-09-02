@@ -2,13 +2,16 @@ User-agent: *
 Allow: /
 Disallow: /mcp
 Disallow: /health
+Disallow: /api/webmcp/
 
 User-agent: GPTBot
 Allow: /
 Disallow: /mcp
+Disallow: /api/webmcp/
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /mcp
+Disallow: /api/webmcp/
 
 Sitemap: https://job-agent.dk/sitemap.xml

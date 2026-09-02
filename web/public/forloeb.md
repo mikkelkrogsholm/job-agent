@@ -9,7 +9,7 @@ lastVerified: 2026-09-02
 sourceLinks: []
 optionalCapabilities: [web_read, mcp, local_files_read, scheduler, browser_automation, webmcp]
 humanConfirmations: [choose_direction, approve_search_criteria, choose_jobs, verify_claims, approve_materials, submit_application]
-related: []
+related: [forloeb-find-retning, forloeb-jobprofil, forloeb-find-job, forloeb-hold-oeje, forloeb-vurder-job, uopfordret, cv, ansoegning, kvalitetstjek-og-send, foelg-op, jobsamtale]
 ---
 
 # Find og søg job med AI
@@ -18,12 +18,17 @@ Du behøver ikke være AI-ekspert for at bruge Jobagenten. Vælg det sted, hvor 
 
 ## Start der, hvor du er
 
-1. **Jeg ved ikke, hvad jeg skal søge.** Start med at finde retning: hvad kan du, hvad vil du gerne, og hvilke rammer skal passe til dit liv?
-2. **Jeg kender min retning.** Saml jobtitler, søgeord, geografi, ønsker og fravalg i en jobprofil, som du kan genbruge.
-3. **Jeg vil finde aktuelle stillinger.** Søg bredt først, og indsnævr derefter. Med Jobagenten kan en tilsluttet AI søge read-only på danske jobportaler.
-4. **Jeg har fundet et interessant job.** Sammenlign kravene med det, du kan dokumentere, og beslut om jobbet er tiden værd.
-5. **Jeg er klar til at skrive.** Tilpas CV og ansøgning med konkrete eksempler. Markér det, der stadig mangler, i stedet for at gætte.
-6. **Jeg er klar til at sende.** Tjek frist, modtager, bilag og alle påstande. Herefter tager du selv over i ansøgningssystemet.
+1. **Jeg ved ikke, hvad jeg skal søge.** [Find din jobretning](/forloeb/find-retning/) ud fra erfaring, ønsker og rammer.
+2. **Jeg kender min retning.** [Lav en genanvendelig jobprofil](/forloeb/jobprofil/) med titler, søgeord, krav og fravalg.
+3. **Jeg vil finde aktuelle stillinger.** [Søg aktuelle job](/forloeb/find-job/) med kilder og frister.
+4. **Jeg vil have besked om nye job.** [Lav en sikker overvågning](/forloeb/hold-oeje/) eller en manuel rutine.
+5. **Jeg har fundet interessante job.** [Vurdér og sammenlign dem](/forloeb/vurder-job/) mod det, du kan dokumentere.
+6. **Jeg vil søge uden et opslag.** [Lav en uopfordret plan](/forloeb/uopfordret/) med verificerbare hypoteser.
+7. **Mit CV skal målrettes.** [Tilpas dit CV](/forloeb/cv/) uden at overdrive.
+8. **Jeg skal skrive ansøgningen.** [Lav et konkret udkast](/forloeb/ansoegning/) i din egen stemme.
+9. **Jeg er klar til at sende.** [Kør kvalitetstjekket](/forloeb/kvalitetstjek-og-send/), og tag derefter selv over.
+10. **Jeg har sendt.** [Planlæg en respektfuld opfølgning](/forloeb/foelg-op/).
+11. **Jeg er inviteret til samtale.** [Forbered jobsamtalen](/forloeb/jobsamtale/) med ærlige eksempler.
 
 ## Sådan samarbejder du med en AI
 
@@ -41,7 +46,7 @@ AI kan foreslå retninger, finde søgeord, læse annoncer kritisk, sammenligne m
 
 ## Brug for et fast forløb?
 
-Det komplette forløb består af: retning, jobprofil, jobfund, vurdering, CV, ansøgning, kvalitetstjek, manuel afsendelse og opfølgning. Du behøver ikke tage dem i rækkefølge. Næste guide kan starte ved præcis det trin, du står i.
+Det komplette forløb består af retning, jobprofil, jobfund, overvågning, vurdering, uopfordrede muligheder, CV, ansøgning, kvalitetstjek, manuel afsendelse, opfølgning og jobsamtale. Du behøver ikke tage dem i rækkefølge. Vælg præcis det trin, du står i.
 
 ## Tryg brug af Jobagenten
 

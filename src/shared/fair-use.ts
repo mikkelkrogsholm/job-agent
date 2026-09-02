@@ -54,7 +54,17 @@ export class FairUseGuard {
       return denied(503, 1, "Serveren er optaget. Prøv igen om et øjeblik.", "concurrency");
     }
 
-    const cost = await requestWorkUnits(request);
+    this.activeRequests++;
+    let cost: number;
+    try {
+      cost = await requestWorkUnits(request, this.options.maxRequestBytes);
+    } catch (error) {
+      this.activeRequests--;
+      if (error instanceof RequestTooLargeError) {
+        return denied(413, 0, "Requesten er for stor.", "request-size");
+      }
+      throw error;
+    }
     const now = this.now();
     const ipKey = clientAddress(request, remoteAddress);
     const sessionId = normalizedHeader(request.headers.get("mcp-session-id"));
@@ -67,6 +77,7 @@ export class FairUseGuard {
     ];
     const rejection = decisions.find(([, decision]) => !decision.allowed);
     if (rejection) {
+      this.activeRequests--;
       return denied(
         429,
         rejection[1].retryAfterSeconds,
@@ -75,7 +86,6 @@ export class FairUseGuard {
       );
     }
 
-    this.activeRequests++;
     let released = false;
     return {
       release: () => {
@@ -113,14 +123,48 @@ export function fairUseOptionsFromEnv(env: Record<string, string | undefined> = 
   };
 }
 
-export async function requestWorkUnits(request: Request): Promise<number> {
+export async function requestWorkUnits(request: Request, maxBytes = Number.POSITIVE_INFINITY): Promise<number> {
   try {
-    const body: unknown = await request.clone().json();
+    const body: unknown = await boundedJson(request, maxBytes);
+    const pathname = new URL(request.url).pathname;
+    if (pathname === "/api/webmcp/v1/jobs/search" && isRecord(body)) {
+      const providers = Array.isArray(body.providers) ? body.providers.length : 4;
+      return Math.max(1, Math.min(4, providers));
+    }
+    if (pathname === "/api/webmcp/v1/jobs/details") return 1;
     const messages = Array.isArray(body) ? body : [body];
     return Math.max(0.25, messages.reduce((sum, message) => sum + messageWorkUnits(message), 0));
-  } catch {
+  } catch (error) {
+    if (error instanceof RequestTooLargeError) throw error;
     return 0.25;
   }
+}
+
+class RequestTooLargeError extends Error {}
+
+async function boundedJson(request: Request, maxBytes: number): Promise<unknown> {
+  const reader = request.clone().body?.getReader();
+  if (!reader) return undefined;
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    if (!value) continue;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel();
+      throw new RequestTooLargeError();
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return JSON.parse(new TextDecoder().decode(bytes));
 }
 
 class TokenBucketLimiter {

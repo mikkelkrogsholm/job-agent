@@ -1,7 +1,18 @@
 # Byggeplan for Jobagentens offentlige guideunivers
 
-Status: Implementerbar side- og indholdsplan  
+Status: Implementeret guideunivers; verificering registreres i Git-historikken
 Senest opdateret: 2. september 2026
+
+## Implementeringsstatus
+
+Alle 22 planlagte guides bygges nu fra kanoniske Markdown-kilder med valideret
+frontmatter og genereres til både HTML og Markdown. Det offentlige register
+indeholder 26 HTML-sider i alt. Sitemap, `llms.txt`, Markdown-links, brødkrummer,
+forrige/næste trin og relaterede guides genereres sammen med siderne.
+
+Promptkopiering samler en fælles sikkerhedskerne med det valgte promptmodul.
+WebMCP er implementeret som en valgfri, feature-flagstyret forbedring med fire
+read-only tools; HTML, Markdown og MCP fungerer uafhængigt af browserstøtten.
 
 ## Formål
 
@@ -511,4 +522,3 @@ integration.
 - Login til Jobnet, a-kasse eller arbejdsgiverportaler.
 - Juridisk rådgivning om ydelser og rådighed.
 - Write-capabilities i MCP eller WebMCP.
-

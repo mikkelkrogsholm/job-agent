@@ -76,6 +76,9 @@ try {
       if (url.pathname === "/") {
         return responseFor(Bun.file(join(outputDirectory, "index.html")), "text/html; charset=utf-8");
       }
+      if (url.pathname === "/api/webmcp/v1/capabilities") {
+        return Response.json({ enabled: true, readOnly: true });
+      }
 
       const machineResource = MACHINE_RESOURCES.find((resource) => resource.route === url.pathname);
       if (machineResource) return responseFor(Bun.file(join(projectRoot, machineResource.source)));
@@ -126,6 +129,32 @@ try {
     if (!(await page.locator("#chatgpt-guide").isVisible())) {
       throw new Error(`ChatGPT-guiden er ikke synlig ved ${viewport.name}`);
     }
+    await page.goto(`${origin}/prompts/`, { waitUntil: "networkidle" });
+    if (await page.locator("article blockquote").count() !== 18) {
+      throw new Error(`Promptbiblioteket har ikke 18 moduler ved ${viewport.name}`);
+    }
+    if (await page.locator(".prompt-copy").count() !== 18) {
+      throw new Error(`Promptbiblioteket har ikke 18 kopiknapper ved ${viewport.name}`);
+    }
+    if (viewport.name === "mobile") {
+      const firstBlock = (await page.locator("article blockquote").first().textContent())?.trim() ?? "";
+      const assembled = await page.locator(".prompt-copy-source").first().inputValue();
+      if (!assembled.includes("Jeg kan altid svare") || !assembled.endsWith(firstBlock)) {
+        throw new Error("Den samlede kopiprompt mangler sikkerhedskerne eller modultekst");
+      }
+      await page.evaluate(() => Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: { writeText: async () => { throw new Error("test-fallback"); } },
+      }));
+      await page.locator(".prompt-copy").first().click();
+      const fallback = await page.locator(".prompt-copy-source").first().evaluate((element) => {
+        const source = element as HTMLTextAreaElement;
+        return { active: document.activeElement === source, start: source.selectionStart, end: source.selectionEnd, length: source.value.length };
+      });
+      if (!fallback.active || fallback.start !== 0 || fallback.end !== fallback.length) {
+        throw new Error("Clipboard-fallbacken markerer ikke hele den samlede prompt");
+      }
+    }
     await context.close();
   }
 
@@ -140,6 +169,55 @@ try {
   );
   if (!reducedMotionWorks) throw new Error("Reduced-motion-kontrakten blev ikke aktiveret");
   await reducedMotionContext.close();
+
+  const webMcpContext = await browser.newContext({ viewport: RESPONSIVE_VIEWPORTS[0] });
+  await webMcpContext.addInitScript(() => {
+    const browserGlobal = globalThis as typeof globalThis & { __jobagentenTools?: string[]; __jobagentenSignals?: AbortSignal[] };
+    browserGlobal.__jobagentenTools = [];
+    browserGlobal.__jobagentenSignals = [];
+    Object.defineProperty(Document.prototype, "modelContext", {
+      configurable: true,
+      get: () => ({ registerTool: async (tool: { name: string }, options?: { signal?: AbortSignal }) => {
+        browserGlobal.__jobagentenTools?.push(tool.name);
+        if (options?.signal) browserGlobal.__jobagentenSignals?.push(options.signal);
+      } }),
+    });
+  });
+  const webMcpPage = await webMcpContext.newPage();
+  await webMcpPage.goto(`${origin}/forloeb/`, { waitUntil: "networkidle" });
+  await webMcpPage.waitForFunction(() => (globalThis as typeof globalThis & { __jobagentenTools?: string[] }).__jobagentenTools?.length === 4);
+  const registeredTools = await webMcpPage.evaluate(() => (globalThis as typeof globalThis & { __jobagentenTools?: string[] }).__jobagentenTools);
+  if (JSON.stringify(registeredTools?.sort()) !== JSON.stringify(["get_danish_job_details", "get_jobagenten_capabilities", "get_jobseeker_guide", "search_danish_jobs"])) {
+    throw new Error(`WebMCP registrerede uventede tools: ${JSON.stringify(registeredTools)}`);
+  }
+  const persistedKeepsTools = await webMcpPage.evaluate(() => {
+    const browserGlobal = globalThis as typeof globalThis & { __jobagentenSignals?: AbortSignal[] };
+    dispatchEvent(new PageTransitionEvent("pagehide", { persisted: true }));
+    return browserGlobal.__jobagentenSignals?.every((signal) => !signal.aborted);
+  });
+  if (!persistedKeepsTools) throw new Error("WebMCP-tools blev afbrudt ved BFCache-entry");
+  const navigationAbortsTools = await webMcpPage.evaluate(() => {
+    const browserGlobal = globalThis as typeof globalThis & { __jobagentenSignals?: AbortSignal[] };
+    dispatchEvent(new PageTransitionEvent("pagehide", { persisted: false }));
+    return browserGlobal.__jobagentenSignals?.every((signal) => signal.aborted);
+  });
+  if (!navigationAbortsTools) throw new Error("WebMCP-tools blev ikke afbrudt ved rigtig navigation");
+  await webMcpContext.close();
+
+  const rejectedRegistrationContext = await browser.newContext({ viewport: RESPONSIVE_VIEWPORTS[0] });
+  await rejectedRegistrationContext.addInitScript(() => {
+    Object.defineProperty(Document.prototype, "modelContext", {
+      configurable: true,
+      get: () => ({ registerTool: async () => { throw new Error("test-registration-rejection"); } }),
+    });
+  });
+  const rejectedRegistrationPage = await rejectedRegistrationContext.newPage();
+  const registrationErrors: Error[] = [];
+  rejectedRegistrationPage.on("pageerror", (error) => registrationErrors.push(error));
+  await rejectedRegistrationPage.goto(`${origin}/forloeb/`, { waitUntil: "networkidle" });
+  await rejectedRegistrationPage.waitForTimeout(50);
+  if (registrationErrors.length) throw new Error(`Afvist WebMCP-registrering gav uhåndteret fejl: ${registrationErrors[0]?.message}`);
+  await rejectedRegistrationContext.close();
 
   console.log(
     `Responsiv sidekontrakt bestået: ${PUBLIC_PAGES.length} sider × ${RESPONSIVE_VIEWPORTS.length} viewports`,

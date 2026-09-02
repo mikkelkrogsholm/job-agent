@@ -33,6 +33,15 @@ job-agent.dk {
 		}
 	}
 
+	@webmcp path /api/webmcp/v1/*
+	handle @webmcp {
+		request_body {
+			max_size 128KB
+		}
+		header Cache-Control "no-store"
+		reverse_proxy mcp:3004
+	}
+
 	handle /health {
 		reverse_proxy mcp:3004
 	}
@@ -41,7 +50,7 @@ job-agent.dk {
 	header @fingerprints Cache-Control "public, max-age=31536000, immutable"
 	@assets path /assets/*
 	header @assets Cache-Control "public, max-age=86400"
-	@pages path / /about/* /privacy/* /kontakt/* /forloeb/*
+	@pages path / /about/* /privacy/* /kontakt/* /forloeb/* /platforme/* /prompts/* /tryghed/* /ai/*
 	header @pages Cache-Control "public, max-age=300"
 
 	@apiCatalog path /.well-known/api-catalog

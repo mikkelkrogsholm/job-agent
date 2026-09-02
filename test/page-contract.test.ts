@@ -171,7 +171,7 @@ describe("machine-readable contract", () => {
 
   test("keeps generated guide Markdown and HTML in sync with their authored sources", async () => {
     for (const page of PUBLIC_PAGES.filter((candidate) => candidate.markdownSource)) {
-      const authored = Bun.file(`web/content/guides/${page.route.slice(1)}index.md`);
+      const authored = Bun.file(page.authoredSource!);
       expect(await authored.exists()).toBe(true);
       expect(await Bun.file(page.markdownSource!).text()).toBe(await authored.text());
       const source = await authored.text();
@@ -181,6 +181,7 @@ describe("machine-readable contract", () => {
       expect(html).toContain(`rel="alternate" type="text/markdown" href="${page.markdownRoute}"`);
       expect(html).toContain('rel="describedby" type="text/markdown" href="/ai/jobsoegning.md"');
       expect(html).toContain("Jobagenten er read-only");
+      expect(html).toContain('<script type="module" src="/webmcp.js"></script>');
     }
   });
 
@@ -188,6 +189,7 @@ describe("machine-readable contract", () => {
     const robots = await Bun.file("web/public/robots.txt").text();
     expect(robots).toContain("Disallow: /mcp");
     expect(robots).toContain("Disallow: /health");
+    expect(robots).toContain("Disallow: /api/webmcp/");
     expect(robots).toContain(`Sitemap: ${canonicalUrl("/sitemap.xml")}`);
   });
 
