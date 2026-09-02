@@ -212,6 +212,13 @@ describe("public page contract", () => {
 });
 
 describe("machine-readable contract", () => {
+  test("packages every page-registry dependency in the MCP image", async () => {
+    const dockerfile = await Bun.file("Dockerfile.mcp").text();
+    expect(dockerfile).toContain("COPY web/pages.ts ./web/pages.ts");
+    expect(dockerfile).toContain("COPY web/content/editorial-pages.ts ./web/content/editorial-pages.ts");
+    expect(dockerfile).toContain("COPY web/generated/guides.ts ./web/generated/guides.ts");
+  });
+
   test("keeps shared shell motion finite and reduced-motion safe", async () => {
     const css = await Bun.file("web/public/site-shell.css").text();
     const script = await Bun.file("web/public/site-shell.js").text();
