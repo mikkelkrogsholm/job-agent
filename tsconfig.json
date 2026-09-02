@@ -16,5 +16,11 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "web/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "web/**/*.ts",
+    "scripts/check-responsive.ts",
+    "scripts/sync-pages.ts"
+  ]
 }
