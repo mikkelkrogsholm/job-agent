@@ -2,66 +2,150 @@
 name: Jobagenten
 description: "Warm editorial clarity with restrained kinetic utility for Danish job-search guidance."
 colors:
-  paper: "#f3efe5"
-  paper-deep: "#e9e2d5"
-  ink: "#17211c"
-  muted: "#69716b"
+  primary: "#17211c"
+  secondary: "#69716b"
+  accent: "#2855e8"
+  accent-deep: "#173cb5"
+  accent-pale: "#dbe4ff"
+  neutral: "#f3efe5"
+  neutral-deep: "#e9e2d5"
+  white: "#fffefb"
+  agent-surface: "#f0ede5"
   line: "rgba(27, 38, 31, 0.16)"
-  blue: "#2855e8"
-  blue-deep: "#173cb5"
-  blue-pale: "#dbe4ff"
   coral: "#ed795e"
   yellow: "#edc74f"
   green: "#4e9e72"
-  white: "#fffefb"
-  surface-agent: "#f0ede5"
-  dark-surface: "#17211c"
 typography:
-  display: '"Newsreader Variable", Georgia, serif'
-  sans: '"Manrope Variable", system-ui, sans-serif'
-  body-size: "0.95rem"
-  body-line-height: 1.65
-  eyebrow-size: "0.72rem"
-  eyebrow-weight: 800
-  eyebrow-tracking: "0.16em"
-  h1: "clamp(4.9rem, 6.45vw, 7rem) / 0.87 / 430 / -0.064em"
-  section-heading: "clamp(3.3rem, 5.5vw, 5.9rem) / 0.93 / 430 / -0.055em"
-  guide-heading: "clamp(2.1rem, 4vw, 3.6rem) / normal / 480 / -0.045em"
+  hero:
+    fontFamily: "Newsreader Variable, Georgia, serif"
+    fontSize: "7rem"
+    fontWeight: 430
+    lineHeight: 0.87
+    letterSpacing: "-0.064em"
+  section-heading:
+    fontFamily: "Newsreader Variable, Georgia, serif"
+    fontSize: "5.9rem"
+    fontWeight: 430
+    lineHeight: 0.93
+    letterSpacing: "-0.055em"
+  guide-heading:
+    fontFamily: "Newsreader Variable, Georgia, serif"
+    fontSize: "3.6rem"
+    fontWeight: 430
+    lineHeight: 0.98
+    letterSpacing: "-0.055em"
+  body-md:
+    fontFamily: "Manrope Variable, system-ui, sans-serif"
+    fontSize: "0.95rem"
+    fontWeight: 400
+    lineHeight: 1.65
+  lede:
+    fontFamily: "Newsreader Variable, Georgia, serif"
+    fontSize: "1.2rem"
+    fontWeight: 400
+    lineHeight: 1.55
+    letterSpacing: "-0.015em"
+  label-caps:
+    fontFamily: "Manrope Variable, system-ui, sans-serif"
+    fontSize: "0.72rem"
+    fontWeight: 800
+    lineHeight: 1.2
+    letterSpacing: "0.16em"
+  button:
+    fontFamily: "Manrope Variable, system-ui, sans-serif"
+    fontSize: "0.78rem"
+    fontWeight: 750
+    lineHeight: 1.2
+  metadata:
+    fontFamily: "Manrope Variable, system-ui, sans-serif"
+    fontSize: "0.72rem"
+    fontWeight: 750
+    lineHeight: 1.5
 spacing:
-  page-inline: "clamp(34px, 6vw, 92px)"
+  xs: "8px"
+  sm: "12px"
+  md: "16px"
+  lg: "24px"
+  xl: "32px"
+  page-inline: "92px"
   page-inline-mobile: "20px"
   content-max: "1360px"
   hero-max: "1480px"
-  section-y: "125px-135px"
-  section-y-mobile: "80px-90px"
-  grid-gap: "18px-28px"
-  copy-measure: "530px-650px"
-  reading-measure: "65ch / max-width: 750px"
-radii:
-  pill: "999px"
+  reading-max: "750px"
+rounded:
   small: "12px"
-  medium: "17px-18px"
-  card: "21px-28px"
+  medium: "18px"
+  card: "24px"
   portrait: "30px"
+  pill: "999px"
 components:
-  header: "min-height: 72px; border-radius: 999px; background: rgba(255, 254, 250, 0.73)"
-  primary-button: "min-height: 61px; padding: 6px 7px 6px 25px; border-radius: 999px; background: #2855e8"
-  card: "border: 1px solid rgba(255, 255, 255, 0.88); background: rgba(255, 254, 251, 0.93); border-radius: 17px-28px"
-  endpoint-card: "padding: 22px 22px 22px 27px; border-radius: 21px; background: #17211c"
-  guide-tab: "min-height: 54px; border-radius: 18px; selected background: #2855e8"
-elevation:
-  card: "0 28px 80px rgba(51, 43, 31, 0.14), 0 5px 16px rgba(51, 43, 31, 0.07)"
-  header: "0 12px 40px rgba(44, 37, 27, 0.08)"
-  primary-button: "0 12px 30px rgba(40, 85, 232, 0.2)"
-motion:
-  fast: "180ms ease"
-  link: "250ms ease"
-  card: "220ms ease"
-  reveal: "700ms cubic-bezier(.2,.75,.25,1)"
-  entrance: "650ms-900ms power3.out"
-focus:
-  outline: "3px solid #2855e8"
-  outline-offset: "4px"
+  page:
+    backgroundColor: "{colors.neutral}"
+    textColor: "{colors.primary}"
+    typography: "{typography.body-md}"
+  header:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.primary}"
+    rounded: "{rounded.pill}"
+    height: "72px"
+    padding: "10px 24px"
+  primary-button:
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.white}"
+    typography: "{typography.button}"
+    rounded: "{rounded.pill}"
+    height: "61px"
+    padding: "6px 7px 6px 25px"
+  primary-button-hover:
+    backgroundColor: "{colors.accent-deep}"
+    textColor: "{colors.white}"
+    typography: "{typography.button}"
+    rounded: "{rounded.pill}"
+  card:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.primary}"
+    rounded: "{rounded.card}"
+    padding: "24px"
+  guide-intro:
+    textColor: "{colors.secondary}"
+    typography: "{typography.lede}"
+  safety-card:
+    backgroundColor: "{colors.accent-pale}"
+    textColor: "{colors.primary}"
+    rounded: "{rounded.medium}"
+    padding: "20px"
+  endpoint-card:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.white}"
+    rounded: "{rounded.card}"
+    padding: "22px 22px 22px 27px"
+  agent-message:
+    backgroundColor: "{colors.agent-surface}"
+    textColor: "{colors.primary}"
+    rounded: "{rounded.medium}"
+    padding: "16px"
+  eyebrow:
+    textColor: "{colors.accent}"
+    typography: "{typography.label-caps}"
+  metadata:
+    textColor: "{colors.secondary}"
+    typography: "{typography.metadata}"
+  divider:
+    backgroundColor: "{colors.line}"
+    height: "1px"
+  table-header:
+    backgroundColor: "{colors.neutral-deep}"
+    textColor: "{colors.primary}"
+    typography: "{typography.body-md}"
+  example-coral:
+    backgroundColor: "{colors.coral}"
+    rounded: "{rounded.small}"
+  example-yellow:
+    backgroundColor: "{colors.yellow}"
+    rounded: "{rounded.small}"
+  status-success:
+    backgroundColor: "{colors.green}"
+    rounded: "{rounded.pill}"
 ---
 
 # Jobagenten design contract

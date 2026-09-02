@@ -1,6 +1,6 @@
-@font-face { font-family: "Newsreader Variable"; src: url("/guide.css%2F..%2Fassets%2Ffonts%2Fnewsreader-latin-opsz-normal.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 200 800; }
-@font-face { font-family: "Newsreader Variable"; src: url("/guide.css%2F..%2Fassets%2Ffonts%2Fnewsreader-latin-opsz-italic.woff2") format("woff2"); font-display: swap; font-style: italic; font-weight: 200 800; }
-@font-face { font-family: "Manrope Variable"; src: url("/guide.css%2F..%2Fassets%2Ffonts%2Fmanrope-latin-wght-normal.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 200 800; }
+@font-face { font-family: "Newsreader Variable"; src: url("/assets/fonts/newsreader-latin-opsz-normal.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 200 800; }
+@font-face { font-family: "Newsreader Variable"; src: url("/assets/fonts/newsreader-latin-opsz-italic.woff2") format("woff2"); font-display: swap; font-style: italic; font-weight: 200 800; }
+@font-face { font-family: "Manrope Variable"; src: url("/assets/fonts/manrope-latin-wght-normal.woff2") format("woff2"); font-display: swap; font-style: normal; font-weight: 200 800; }
 
 :root { color-scheme: light; --paper: #f3efe5; --paper-deep: #e9e2d5; --ink: #17211c; --muted: #69716b; --line: rgba(27, 38, 31, .16); --blue: #2855e8; --blue-deep: #173cb5; --blue-pale: #dbe4ff; --coral: #ed795e; --yellow: #edc74f; --green: #4e9e72; --white: #fffefb; --surface-agent: #f0ede5; --shadow: 0 28px 80px rgba(51, 43, 31, .14), 0 5px 16px rgba(51, 43, 31, .07); --font-display: "Newsreader Variable", Georgia, serif; --font-sans: "Manrope Variable", system-ui, sans-serif; }
 * { box-sizing: border-box; }
@@ -13,8 +13,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .guide-header { position: relative; z-index: 10; display: grid; grid-template-columns: 1fr auto; align-items: center; width: min(calc(100% - clamp(40px, 12vw, 184px)), 1360px); min-height: 72px; margin: 22px auto 0; padding: 10px 24px; border: 1px solid rgba(255, 255, 255, .78); border-radius: 999px; background: rgba(255, 254, 250, .73); box-shadow: 0 12px 40px rgba(44, 37, 27, .08), inset 0 0 0 1px rgba(29, 40, 34, .08); backdrop-filter: blur(18px); }
 .wordmark { display: flex; align-items: center; gap: 10px; width: max-content; color: var(--ink); font-weight: 750; letter-spacing: -.035em; text-decoration: none; }
 .wordmark-mark { position: relative; display: inline-grid; place-items: center; overflow: hidden; width: 34px; height: 34px; border-radius: 50%; background: var(--blue); }
-.wordmark-mark span { position: absolute; width: 4px; border-radius: 4px; background: var(--white); transform: rotate(38deg); }
-.wordmark-mark span:nth-child(1) { height: 15px; translate: -6px 3px; }.wordmark-mark span:nth-child(2) { height: 21px; }.wordmark-mark span:nth-child(3) { height: 11px; translate: 6px -4px; }
+.wordmark-mark span { position: absolute; width: 5px; height: 21px; border-radius: 10px; background: var(--white); transform-origin: center; }
+.wordmark-mark span:nth-child(1) { transform: rotate(0deg); }.wordmark-mark span:nth-child(2) { transform: rotate(60deg); }.wordmark-mark span:nth-child(3) { transform: rotate(120deg); }
 .guide-header nav, footer nav { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .35rem 1.15rem; }
 .guide-header nav a { position: relative; color: var(--muted); font-size: .78rem; font-weight: 750; text-decoration: none; }
 .guide-header nav a::after, .related a::after { position: absolute; right: 0; bottom: -.25rem; left: 0; height: 1px; background: currentColor; content: ""; transform: scaleX(0); transform-origin: right; transition: transform 250ms ease; }

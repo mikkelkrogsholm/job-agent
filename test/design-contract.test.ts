@@ -26,8 +26,9 @@ describe("guide design contract", () => {
     expect(css).toContain("background-image: url(");
     expect(css).toContain(":focus-visible");
     expect(css).toContain("prefers-reduced-motion: reduce");
-    expect(await Bun.file(`${publicRoot}/assets/fonts/manrope-latin-wght-normal.woff2`).exists()).toBe(true);
-    expect(await Bun.file(`${publicRoot}/assets/fonts/newsreader-latin-opsz-normal.woff2`).exists()).toBe(true);
+    expect(await Bun.file("web/assets/fonts/manrope-latin-wght-normal.woff2").exists()).toBe(true);
+    expect(await Bun.file("web/assets/fonts/newsreader-latin-opsz-normal.woff2").exists()).toBe(true);
+    expect(css).toContain('url("/assets/fonts/manrope-latin-wght-normal.woff2")');
   });
 
   test("keeps every generated guide inside the shared accessible system", async () => {

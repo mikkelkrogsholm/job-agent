@@ -43,6 +43,9 @@ export function renderGuideHtml(
 ): string {
   const canonical = `https://job-agent.dk${context.route}`;
   const markdown = Bun.markdown.html(body);
+  const headingMatch = markdown.match(/^<h1>[\s\S]*?<\/h1>\n?/);
+  const guideHeading = headingMatch?.[0] ?? `<h1>${escapeHtml(frontmatter.title.replace(/ · Jobagenten$/, ""))}</h1>`;
+  const guideContent = headingMatch ? markdown.slice(headingMatch[0].length) : markdown;
   const group = context.group === "journey"
     ? { href: "/forloeb/", label: "Find og søg job" }
     : context.group === "platform"
@@ -62,7 +65,7 @@ export function renderGuideHtml(
 <meta property="og:title" content="${escapeHtml(frontmatter.title)}"><meta property="og:description" content="${escapeHtml(frontmatter.summary)}"><meta property="og:image" content="https://job-agent.dk/assets/jobagenten-social-preview.png"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/guide.css"></head>
 <body class="guide-page guide-page--${context.group}"><a class="skip-link" href="#indhold">Gå til indhold</a><header class="guide-header" data-guide-reveal="header">${renderWordmark()}<nav aria-label="Hovednavigation">${renderNavigation(context.route)}</nav></header>
 <main id="indhold"><nav class="breadcrumbs" aria-label="Brødkrummer"><a href="/">Forside</a><span aria-hidden="true">/</span>${context.route === group.href ? `<span>${group.label}</span>` : `<a href="${group.href}">${group.label}</a><span aria-hidden="true">/</span><span>${escapeHtml(frontmatter.title.replace(/ · Jobagenten$/, ""))}</span>`}</nav>
-<div class="guide-layout"><article class="guide-article"><div class="guide-intro" data-guide-reveal="intro"><p class="eyebrow">${group.label}</p><p class="guide-summary">${escapeHtml(frontmatter.summary)}</p></div><div class="guide-content">${markdown}</div>${sources}${renderJourneyNavigation(context)}</article>
+<div class="guide-layout"><article class="guide-article"><div class="guide-intro" data-guide-reveal="intro"><p class="eyebrow">${group.label}</p>${guideHeading}<p class="guide-summary">${escapeHtml(frontmatter.summary)}</p></div><div class="guide-content">${guideContent}</div>${sources}${renderJourneyNavigation(context)}</article>
 <div class="guide-asides"><aside class="safety" aria-label="Vigtige grænser"><h2>Du har kontrollen</h2><ul>${GUIDE_SAFETY.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ul></aside>${related}</div></div></main>
 <footer><nav aria-label="Footer"><a href="/privacy/">Privatliv</a><a href="/kontakt/">Kontakt</a><a href="/ai/">Til AI-assistenter</a><a href="${context.markdownRoute}">Læs som Markdown</a></nav></footer><script src="/guide.js"></script><script type="module" src="/webmcp.js"></script></body></html>\n`;
 }

@@ -177,7 +177,14 @@ describe("machine-readable contract", () => {
       const source = await authored.text();
       const body = source.replace(/^---\n[\s\S]*?\n---\n/, "");
       const html = await Bun.file(page.source).text();
-      expect(html).toContain(Bun.markdown.html(body));
+      const renderedBody = Bun.markdown.html(body);
+      const heading = renderedBody.match(/^<h1>[\s\S]*?<\/h1>\n?/);
+      if (heading) {
+        expect(html).toContain(heading[0]);
+        expect(html).toContain(renderedBody.slice(heading[0].length));
+      } else {
+        expect(html).toContain(renderedBody);
+      }
       expect(html).toContain(`rel="alternate" type="text/markdown" href="${page.markdownRoute}"`);
       expect(html).toContain('rel="describedby" type="text/markdown" href="/ai/jobsoegning.md"');
       expect(html).toContain("Jobagenten er read-only");
