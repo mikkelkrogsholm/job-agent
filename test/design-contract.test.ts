@@ -84,4 +84,15 @@ describe("guide design contract", () => {
     expect(script).toContain('copyFeedback.setAttribute("aria-live", "polite")');
     expect(script).toContain("IntersectionObserver");
   });
+
+  test("keeps internal research language out of human-facing guides", async () => {
+    const pages = await guidePages(join(publicRoot, "forloeb"));
+    pages.push(...await guidePages(join(publicRoot, "platforme")));
+    for (const route of ["prompts/index.html", "tryghed/index.html", "ai/index.html"]) pages.push(join(publicRoot, route));
+    const internalLanguage = /Hvad der er kendt|Capability-check|Til AI-assistenten|ikke verificeret|\bfallback\b|\bscope\b|\bcadence\b|\bscheduler\b|\btrade-offs\b|\bevidenskort\b/i;
+    for (const page of pages) {
+      const html = await Bun.file(page).text();
+      expect(html).not.toMatch(internalLanguage);
+    }
+  });
 });

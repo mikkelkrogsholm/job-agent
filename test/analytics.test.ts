@@ -21,8 +21,8 @@ describe("privacy-friendly usage analytics", () => {
 
   test("documents analytics without claiming that job-search content is collected", async () => {
     const privacy = await Bun.file("web/public/privacy/index.html").text();
-    expect(privacy).toContain("selvhostet Umami-installation");
-    expect(privacy).toContain("Umami sætter ikke cookies");
-    expect(privacy).toContain("CV, søgetekster, promptindhold og formularindhold sendes ikke til Umami");
+    expect(privacy).toContain("vores egen Umami-løsning");
+    expect(privacy).toContain("Den sætter ikke cookies");
+    expect(privacy).toContain("CV, søgetekster og indholdet af beskeder sendes ikke til Umami");
   });
 });

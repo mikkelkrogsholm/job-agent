@@ -25,14 +25,14 @@ Saml jobtitel, virksomhed, original URL, datoen du selv sendte, frist, kendt pro
 ## Vælg din næste handling
 
 1. Se efter en oplyst tidslinje eller besked i den originale annonce. Hvis virksomheden har bedt om ingen henvendelser, respekter det.
-2. Skeln mellem fakta og antagelser: `ansøgning sendt [dato]` er et faktum, mens `de har nok travlt` er en hypotese.
+2. Skeln mellem det, du ved, og det du gætter: `ansøgning sendt [dato]` ved du, mens `de har nok travlt` er et gæt.
 3. Vælg selv én handling: afvent, send en kort opfølgning, forbered samtale eller fortsæt jobsøgningen. Skriv en dato, du kan forklare ud fra den konkrete proces.
 4. Brug et kort udkast med jobtitel, din henvendelsesgrund og en venlig afslutning. Undgå krav om svar eller påstande om, at du er den perfekte kandidat.
 5. Hold et enkelt overblik med job, kilde, dato, status, frist og næste handling. Jobnet Joblog kan have statusser som `Ikke søgt`, `Søgt` og `Samtale`, men Joblog-registrering er ikke i sig selv en ansøgning til arbejdsgiveren.
 
-## Prompt du kan kopiere
+## Kopiér denne besked
 
-> Hjælp mig med at vælge en respektfuld opfølgning på en konkret ansøgning. Start med de oplysninger, jeg har delt, og stil ét beslutningsspørgsmål ad gangen. Vis Fakta, Min præference, Din hypotese og Mangler svar hver for sig. Der findes ingen universel ventetid: brug kun den konkrete proces, annonce og beskeder, eller sig at timingen er ukendt. Foreslå et kort udkast og en trackinglinje med job, kilde, dato, status, frist og næste handling. Hvis du har scheduler, beskriv en påmindelse og bed om min udtrykkelige bekræftelse; hvis ikke, giv mig en manuel kalendertekst. Joblog-registrering eller upload er ikke ansøgningsafsendelse. Kontakt ingen, log ikke ind, ændr ikke en Joblog og send intet. Vent på min godkendelse af både timing og ordlyd.
+> Hjælp mig med at vurdere, om det er passende at følge op på denne ansøgning. Brug den dato og proces, jeg deler, og gæt ikke på virksomhedens situation. Foreslå et kort og høfligt udkast samt en dato. Kontakt ingen og opret ingen påmindelse, før jeg har godkendt det.
 
 ## Dit færdige resultat
 
@@ -40,12 +40,8 @@ Du er færdig, når du har valgt timing, et kort udkast du selv har godkendt, og
 
 ## Tjek selv før du går videre
 
-Er der en besked fra virksomheden, som ændrer timingen? Er kontaktkanalen verificeret? Lyder udkastet høfligt og præcist? Har du selv besluttet, om kontakten overhovedet skal ske?
+Er der en besked fra virksomheden, som ændrer timingen? Har du kontrolleret kontaktkanalen? Lyder udkastet høfligt og præcist? Har du selv besluttet, om kontakten overhovedet skal ske?
 
 ## Næste skridt
 
 Hvis du bliver inviteret, forbered jobsamtalen med faktiske eksempler. Hvis ikke, fortsæt med aktuelle job eller din virksomhedsplan i stedet for at vente passivt.
-
-## Til AI-assistenten
-
-Antag aldrig, at en ansøgning er sendt; brug kun brugerens eksplicitte oplysning. En scheduler er valgfri og kræver bekræftelse. Stop før kontakt, login, Joblog-ændring eller enhver ekstern handling.

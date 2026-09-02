@@ -139,10 +139,10 @@ try {
       throw new Error(`ChatGPT-guiden er ikke synlig ved ${viewport.name}`);
     }
     await page.goto(`${origin}/prompts/`, { waitUntil: "networkidle" });
-    if (await page.locator("article blockquote").count() !== 18) {
-      throw new Error(`Promptbiblioteket har ikke 18 moduler ved ${viewport.name}`);
+    if (await page.locator("article blockquote").count() !== 10) {
+      throw new Error(`Promptbiblioteket har ikke 10 enkle beskeder ved ${viewport.name}`);
     }
-    if (await page.locator(".prompt-copy").count() !== 18) {
+    if (await page.locator(".prompt-copy").count() !== 10) {
       throw new Error(`Promptbiblioteket har ikke 18 kopiknapper ved ${viewport.name}`);
     }
     if (viewport.name === "mobile") {

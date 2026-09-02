@@ -13,23 +13,23 @@ Læs den relevante guide, oplys kun observerede capabilities, stil ét beslutnin
 - [Find aktuelle job · Jobagenten](https://job-agent.dk/forloeb/find-job.md) — Søg bredt, kontroller kilden, og indsnævr derefter resultaterne.
 - [Find min jobretning · Jobagenten](https://job-agent.dk/forloeb/find-retning.md) — Et guidet interview, der munder ud i et retningsnotat, du selv godkender.
 - [Følg op på din ansøgning · Jobagenten](https://job-agent.dk/forloeb/foelg-op.md) — Lav et godkendt udkast, en næste dato og et ærligt overblik over din søgning.
-- [Hold øje med nye job · Jobagenten](https://job-agent.dk/forloeb/hold-oeje.md) — Vælg rytme og beskedregel, og opret aldrig en opgave uden godkendelse.
+- [Hold øje med nye job · Jobagenten](https://job-agent.dk/forloeb/hold-oeje.md) — Vælg hvor ofte der skal søges, og få kun besked om relevante nye job.
 - [Find og søg job med AI · Jobagenten](https://job-agent.dk/forloeb.md) — Vælg det trin i jobsøgningen, du har brug for lige nu.
 - [Lav min jobprofil · Jobagenten](https://job-agent.dk/forloeb/jobprofil.md) — Gør dine ønsker og fravalg konkrete, før du starter en søgning.
-- [Forbered jobsamtalen med AI · Jobagenten](https://job-agent.dk/forloeb/jobsamtale.md) — Lav et evidenskort, øv dig roligt og vælg spørgsmål, du selv vil stille.
+- [Forbered jobsamtalen med AI · Jobagenten](https://job-agent.dk/forloeb/jobsamtale.md) — Saml dine bedste eksempler, øv dig roligt og vælg spørgsmål, du selv vil stille.
 - [Kvalitetstjek før du selv sender · Jobagenten](https://job-agent.dk/forloeb/kvalitetstjek-og-send.md) — Gennemgå en sidste tjekliste og overtag selv login, formular og afsendelse.
 - [Uopfordret jobsøgning med AI · Jobagenten](https://job-agent.dk/forloeb/uopfordret.md) — Gør en løs idé til en prioriteret virksomhedsplan og et udkast, du selv vælger at bruge.
 - [Vurdér og sammenlign job · Jobagenten](https://job-agent.dk/forloeb/vurder-job.md) — Brug annoncens fakta og din profil til at vælge de job, der er tiden værd.
-- [AI-guide til sikker jobsøgning](https://job-agent.dk/ai/jobsoegning.md) — Capability-check og sikre workflowgrene for AI-assistenter.
-- [Prompts til jobsøgning · Jobagenten](https://job-agent.dk/prompts.md) — 18 selvbærende promptmoduler til en ærlig jobsøgning med AI.
-- [Tryg AI-jobsøgning · Jobagenten](https://job-agent.dk/tryghed.md) — En praktisk sikkerhedsramme for AI-støttet jobsøgning.
-- [ChatGPT Desktop til jobsøgning](https://job-agent.dk/platforme/chatgpt-desktop.md) — Test den aktuelle konto, model og side før du forventer desktop-værktøjer.
-- [ChatGPT i browseren til jobsøgning](https://job-agent.dk/platforme/chatgpt-web.md) — Kontrollér din konkrete ChatGPT-adgang, før du vælger MCP eller Tasks.
-- [Claude Code til organiseret jobsøgning](https://job-agent.dk/platforme/claude-code.md) — Et avanceret, lokalt spor med tydelige tilladelser og adskilte opgavetyper.
-- [Claude Desktop og Cowork til job](https://job-agent.dk/platforme/claude-desktop.md) — Vælg først lokal eller cloud, og test derefter præcis den adgang du vil bruge.
-- [Claude i browseren til jobsøgning](https://job-agent.dk/platforme/claude-web.md) — En enkel Claude-vej med synlig kontrol af connector og filadgang.
-- [Codex til din organiserede jobsøgning](https://job-agent.dk/platforme/codex.md) — En organiseret lokal arbejdsgang med menneskelig kontrol over filer og afsendelse.
-- [Vælg AI til din jobsøgning](https://job-agent.dk/platforme.md) — Vælg en konkret platformguide ud fra den adgang, du faktisk har.
+- [Sådan hjælper din AI med jobsøgningen](https://job-agent.dk/ai/jobsoegning.md) — Peg din AI på denne side, så den kan vælge en enkel og sikker måde at hjælpe dig på.
+- [Beskeder til din AI · Jobagenten](https://job-agent.dk/prompts.md) — Vælg dit næste skridt, kopiér beskeden, og tilpas den med dine egne oplysninger.
+- [Brug AI trygt i din jobsøgning · Jobagenten](https://job-agent.dk/tryghed.md) — Del kun det nødvendige, kontrollér vigtige oplysninger, og send altid selv.
+- [Brug ChatGPT Desktop til jobsøgning](https://job-agent.dk/platforme/chatgpt-desktop.md) — En enkel desktop-arbejdsgang, hvor du selv vælger filer og kontrollerer alle handlinger.
+- [Brug ChatGPT i browseren til jobsøgning](https://job-agent.dk/platforme/chatgpt-web.md) — Start i en almindelig ChatGPT-samtale, og tilføj kun Jobagenten hvis funktionen er tilgængelig.
+- [Brug Claude Code til jobsøgning](https://job-agent.dk/platforme/claude-code.md) — Et mere avanceret valg til dig, der allerede er tryg ved mapper og terminalen.
+- [Brug Claude Desktop til jobsøgning](https://job-agent.dk/platforme/claude-desktop.md) — Saml jobsøgningen på din computer, og vælg selv hvilke filer Claude må bruge.
+- [Brug Claude i browseren til jobsøgning](https://job-agent.dk/platforme/claude-web.md) — Den enkle vej til at bruge Jobagenten direkte i en Claude-samtale.
+- [Brug Codex til en organiseret jobsøgning](https://job-agent.dk/platforme/codex.md) — Til dig, der vil holde hele jobsøgningen samlet i et lokalt projekt.
+- [Vælg AI til din jobsøgning](https://job-agent.dk/platforme.md) — Du behøver ikke den mest avancerede løsning. Start med den AI, du allerede kender.
 
 ## Service
 

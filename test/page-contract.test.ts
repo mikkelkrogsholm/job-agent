@@ -179,7 +179,7 @@ describe("public page contract", () => {
 
       const footer = footers[0]!;
       expect(footer).toContain('class="wordmark footer-wordmark"');
-      expect(footer).toContain("En uafhængig, read-only søgetjeneste.");
+      expect(footer).toContain("Søger og læser job, men sender aldrig ansøgninger.");
       const footerLinks = footer.match(/<div>[\s\S]*?<\/div>/i)?.[0] ?? "";
       expect(anchors(footerLinks).map(({ href, label }) => ({ href, label }))).toEqual([...FOOTER_NAVIGATION]);
 
@@ -259,7 +259,7 @@ describe("machine-readable contract", () => {
       }
       expect(html).toContain(`rel="alternate" type="text/markdown" href="${page.markdownRoute}"`);
       expect(html).toContain('rel="describedby" type="text/markdown" href="/ai/jobsoegning.md"');
-      expect(html).toContain("Jobagenten er read-only");
+      expect(html).toContain("Jobagenten kan kun søge og læse job");
       expect(html).toContain('<script type="module" src="/webmcp.js"></script>');
     }
   });

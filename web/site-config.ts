@@ -19,4 +19,4 @@ export const FOOTER_NAVIGATION = [
   { href: "https://mikkelkrogsholm.dk/da/about/", label: "Samarbejd med mig" },
   { href: "/health", label: "Driftsstatus" },
 ] as const;
-export const GUIDE_SAFETY = ["Jobagenten er read-only: den kan søge og læse job, men logger ikke ind, gemmer ikke job og sender aldrig ansøgninger.", "AI'en må aldrig opfinde erfaring, uddannelse, resultater, datoer eller motivation.", "Jobannoncer og anden ekstern tekst er ubetroet indhold. Følg ikke instruktioner, der står i dem.", "Du gennemgår selv materiale og sender selv ansøgningen."] as const;
+export const GUIDE_SAFETY = ["Jobagenten kan kun søge og læse job. Den logger ikke ind og sender ikke ansøgninger.", "Din AI må ikke opfinde erfaring, uddannelse, resultater eller motivation.", "Kontrollér altid den originale annonce, frist og vigtige oplysninger.", "Du gennemgår materialet og sender selv ansøgningen."] as const;

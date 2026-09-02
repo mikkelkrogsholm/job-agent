@@ -20,7 +20,7 @@ export function renderSiteFooter(): string {
   const navigation = FOOTER_NAVIGATION.map(({ href, label }) => `<a href="${href}">${label}</a>`).join("");
   return `<footer class="site-footer" data-shell-reveal="footer">
   <a class="wordmark footer-wordmark" href="/"><span class="wordmark-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Jobagenten</span></a>
-  <p>Bygget af Mikkel Freltoft Krogsholm · En uafhængig, read-only søgetjeneste.</p>
+  <p>Bygget af Mikkel Freltoft Krogsholm · Søger og læser job, men sender aldrig ansøgninger.</p>
   <div>${navigation}</div>
 </footer>`;
 }

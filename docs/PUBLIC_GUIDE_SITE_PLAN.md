@@ -331,7 +331,7 @@ adskilles alene af hensyn til SEO.
 - **Route:** `/prompts/`
 - **Markdown:** `/prompts.md`
 - **Brugerspørgsmål:** Hvilken samtalestarter skal jeg bruge lige nu?
-- **Kerneindhold:** De 18 moduler fra [GUIDED_PROMPTS.md](GUIDED_PROMPTS.md),
+- **Kerneindhold:** Et kurateret bibliotek med 10 korte beskeder til de vigtigste trin, baseret på [GUIDED_PROMPTS.md](GUIDED_PROMPTS.md),
   grupperet efter forløbstrin og capability.
 - **Primær handling:** `Kopiér og start samtalen`.
 - **Vigtig adfærd:** Kopiknappen samler fælles sikker kerne, capability-fallback
