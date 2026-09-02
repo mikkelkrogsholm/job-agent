@@ -9,8 +9,7 @@ if (!reduceMotion.matches) {
   const entrance = gsap.timeline({ defaults: { ease: "power3.out" } });
 
   entrance
-    .from("[data-reveal='nav']", { y: -24, opacity: 0, duration: 0.65 })
-    .from("[data-reveal='copy']", { y: 22, opacity: 0, duration: 0.7, stagger: 0.08 }, "-=0.28")
+    .from("[data-reveal='copy']", { y: 22, opacity: 0, duration: 0.7, stagger: 0.08 })
     .from("[data-reveal='line']", { yPercent: 110, opacity: 0, duration: 0.9, stagger: 0.11 }, "-=0.72")
     .from("[data-float-card]", { x: 46, y: 24, opacity: 0, scale: 0.94, duration: 0.75, stagger: 0.09 }, "-=0.62")
     .from("[data-conversation-card]", { y: 45, opacity: 0, scale: 0.96, duration: 0.88 }, "-=0.62");

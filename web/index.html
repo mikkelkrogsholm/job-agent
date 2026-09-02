@@ -23,30 +23,20 @@
     <meta name="twitter:description" content="Et gratis AI-værktøj bygget af Mikkel Freltoft Krogsholm til danske jobsøgende." />
     <meta name="twitter:image" content="https://job-agent.dk/assets/jobagenten-social-preview.png" />
     <title>Jobagenten — find dit næste job i en samtale</title>
+    <link rel="stylesheet" href="./public/site-shell.css" />
     <script type="module" src="./main.ts"></script>
     <script type="module" src="./public/webmcp.js"></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Gå til indhold</a>
 
-    <header class="site-header" data-reveal="nav">
-      <a class="wordmark" href="#top" aria-label="Jobagenten, gå til toppen">
-        <span class="wordmark-mark" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </span>
-        <span>Jobagenten</span>
-      </a>
-
-      <nav class="primary-nav" aria-label="Primær navigation">
-        <a href="/forloeb/">Find og søg job</a>
-        <a href="/platforme/">Vælg din AI</a>
-        <a href="/prompts/">Prompts</a>
-        <a href="/tryghed/">Tryghed</a>
-        <a href="/about/">Om</a>
-      </nav>
-
+    <!-- site-header:start -->
+    <header class="site-header" data-shell-reveal="header">
+      <a class="wordmark" href="/" aria-label="Jobagenten, gå til forsiden"><span class="wordmark-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Jobagenten</span></a>
+      <nav class="primary-nav" aria-label="Primær navigation"><a href="/forloeb/">Find og søg job</a><a href="/platforme/">Vælg din AI</a><a href="/prompts/">Prompts</a><a href="/tryghed/">Tryghed</a><a href="/about/">Om</a></nav>
       <a class="header-cta" href="/forloeb/">Start dit forløb</a>
     </header>
+    <!-- site-header:end -->
 
     <main id="main">
       <section class="hero" id="top" aria-labelledby="hero-title">
@@ -399,10 +389,13 @@
       </section>
     </main>
 
-    <footer class="site-footer">
-      <a class="wordmark footer-wordmark" href="#top"><span class="wordmark-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Jobagenten</span></a>
+    <!-- site-footer:start -->
+    <footer class="site-footer" data-shell-reveal="footer">
+      <a class="wordmark footer-wordmark" href="/"><span class="wordmark-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Jobagenten</span></a>
       <p>Bygget af Mikkel Freltoft Krogsholm · En uafhængig, read-only søgetjeneste.</p>
       <div><a href="/forloeb/">Find og søg job</a><a href="/platforme/">Vælg din AI</a><a href="/prompts/">Prompts</a><a href="/tryghed/">Tryghed</a><a href="/ai/">Til AI-assistenter</a><a href="/about/">Om Mikkel</a><a href="/privacy/">Privatlivspolitik</a><a href="/kontakt/">Kontakt</a><a href="https://mikkelkrogsholm.dk/da/about/">Samarbejd med mig</a><a href="/health">Driftsstatus</a></div>
     </footer>
+    <!-- site-footer:end -->
+    <script src="./public/site-shell.js"></script>
   </body>
 </html>

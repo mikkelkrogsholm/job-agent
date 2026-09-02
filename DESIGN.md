@@ -89,6 +89,10 @@ components:
     rounded: "{rounded.pill}"
     height: "72px"
     padding: "10px 24px"
+  footer:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.white}"
+    padding: "42px 92px"
   primary-button:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.white}"
@@ -201,6 +205,40 @@ Pills identify actions, navigation, badges, compact founder attribution, and sma
 The visual language permits a few controlled rotations in the homepage job constellation and founder portrait. Do not rotate guide content, legal information, forms, commands, tables, or any text users need to scan. Dashed blue lines are for the one explanatory MCP callout, not a general-purpose decorative border.
 
 ## Components
+
+### Production model
+
+Components are build-time HTML renderers with shared CSS and progressively enhanced JavaScript. They do not require hydration or a client-side framework. `web/render/site-shell.ts` owns the global shell; page-family renderers compose it rather than copying its markup. `web/public/site-shell.css` owns shell layout and shell states, while `web/public/site-shell.js` owns optional one-shot reveals. Navigation labels and destinations have one source of truth in `web/site-config.ts`.
+
+Every public page must compose exactly one `SiteHeader`, one `main`, and one `SiteFooter`, include the skip link, and load the shared shell CSS and JavaScript. A new page family should add a renderer or reuse an existing one; it must not paste a private variation of the header or footer. The page contract verifies this structure, exact link order, active navigation, responsive visibility, and reduced-motion behavior.
+
+### Canonical component inventory
+
+| Component | Responsibility and anatomy | Variants and states | Kinetic behavior | Implementation |
+| --- | --- | --- | --- | --- |
+| `SiteHeader` | Global landmark containing `Wordmark`, `PrimaryNavigation`, and the single “Start dit forløb” CTA. | Current section uses `aria-current="page"`; center navigation hides below 960px while wordmark and CTA remain. | One entrance from `-14px`; wordmark rotates 10° on hover/focus; CTA lifts 1px and compresses on press. | `web/render/site-shell.ts`, `web/public/site-shell.css` |
+| `SiteFooter` | Global landmark with wordmark, independence/read-only statement, and the canonical support links in fixed order. | Two columns below 960px and one column below 700px. No page-specific footer links. | One entrance from `18px`; links use a still underline/color state. | `web/render/site-shell.ts`, `web/public/site-shell.css` |
+| `Wordmark` | Blue circular mark plus “Jobagenten”; always links home and has a descriptive label in the header. | Light-header and reversed dark-footer color treatments. | Finite rotation/scale on hover or keyboard focus, then returns to rest. | `web/render/site-shell.ts`, `web/public/site-shell.css` |
+| `PageIntro` | Eyebrow, one `h1`, and optional summary/metadata at the start of a guide or editorial page. | Guide intro, journey intro, platform intro, and quiet editorial intro share typography but may differ in measure. | Optional one-shot entrance; never loops and never delays reading under reduced motion. | `web/render/guide.ts`, `web/render/editorial.ts` |
+| `Breadcrumbs` | Shows the user’s location and links to the parent collection. | Current page is text, ancestors are links; omitted on the homepage. | No component motion. | `web/render/guide.ts` |
+| `GuideLayout` | Reading column plus supporting asides; contains intro, authored content, sources, machine-readable link, and journey navigation. | Collapses to one column at 960px. Asides become part of the reading flow. | Section reveals may run once as content enters; content remains present without JavaScript. | `web/render/guide.ts`, `web/public/guide.css`, `web/public/guide.js` |
+| `SafetyPanel` | Persistent “Du har kontrollen” boundary: read-only service, no invented user facts, untrusted advertisements, and human send confirmation. | Same four rules across every guide; may be supplemented but not weakened. | No hover animation; any entrance is one-shot. | `web/site-config.ts`, `web/render/guide.ts` |
+| `RelatedLinks` | Small list of registered, contextually adjacent guides. | Hidden when no related pages exist; never filled with dead or unregistered links. | Link underline only. | `web/render/guide.ts` |
+| `StepNavigation` | Previous/next journey actions that keep a sequential job-search flow legible. | Previous, next, or both according to the page registry. Labels communicate direction in text, not arrow alone. | Optional 1px hover lift only; still on touch and reduced motion. | `web/render/guide.ts` |
+| `PromptCard` | Copy-ready prompt text, assembled safety context, explicit copy button, and live feedback. | Default, copied, and clipboard-fallback states. Feedback uses `aria-live`; fallback selects the full prompt. | Button response only; prompt text itself never moves. | `web/public/guide.js`, prompt guide content |
+| `SourceMeta` | Verification date and links to official sources, followed by the page’s Markdown representation. | Source list or verification date only. External links use `noopener noreferrer`. | No motion. | `web/render/guide.ts` |
+| `EditorialPage` | Quiet long-form template for about, privacy, and contact: `PageIntro`, reading column, and global shell. | Content and metadata come from the central editorial registry. | Intro and footer may reveal once; legal/privacy body text remains still. | `web/content/editorial-pages.ts`, `web/render/editorial.ts`, `web/public/legal.css` |
+| `Reveal` | Progressive enhancement primitive selected with `data-shell-reveal` or `data-component-reveal`. It cannot contain meaning available only after animation. | Header enters upward; ordinary components enter downward. Without JavaScript, content is visible. | `opacity` and `transform` only, 600ms, observed once and immediately unobserved. Reduced motion reveals immediately. | `web/public/site-shell.js`, `web/public/site-shell.css` |
+
+Homepage-only compositions—`JobCardConstellation`, `ConversationDemo`, `PlatformCard`, `SetupTabs`, `TrustList`, and the founder panel—may retain their bespoke storytelling behavior. Promote one into the canonical inventory only when a second page needs the same semantics and states; visual resemblance alone is not enough.
+
+### Composition rules
+
+- Guides compose `SiteHeader → Breadcrumbs → GuideLayout(PageIntro + authored content + SourceMeta + StepNavigation, SafetyPanel + RelatedLinks) → SiteFooter`.
+- Editorial pages compose `SiteHeader → EditorialPage(PageIntro + authored content) → SiteFooter`.
+- The homepage composes its bespoke sections inside the same `SiteHeader` and `SiteFooter` contract.
+- Component motion is optional enhancement, never state, navigation, validation, or meaning. Use a single finite response to entrance, hover, focus, press, or disclosure; do not add autonomous loops.
+- Extend an existing component when semantics and interaction are the same. Create a new component when responsibility or accessibility behavior changes. Do not add variants merely to accommodate one page’s spacing.
 
 **Header and navigation.** Use the translucent white pill header, wordmark mark, text links, and dark header CTA. Link underlines animate from the right and expose on hover and keyboard focus. Preserve the skip link; it begins offscreen and becomes visible on focus.
 

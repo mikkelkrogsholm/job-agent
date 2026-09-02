@@ -39,6 +39,10 @@ async function checkPage(page: Page, url: string, label: string): Promise<void> 
       h1Count: document.querySelectorAll("h1").length,
       h1Visible: isVisible(document.querySelector("h1")),
       mainVisible: isVisible(document.querySelector("main")),
+      headerCount: document.querySelectorAll(".site-header").length,
+      headerVisible: isVisible(document.querySelector(".site-header")),
+      footerCount: document.querySelectorAll(".site-footer").length,
+      footerVisible: isVisible(document.querySelector(".site-footer")),
     };
   });
 
@@ -46,6 +50,10 @@ async function checkPage(page: Page, url: string, label: string): Promise<void> 
   if (layout.h1Count !== 1) failures.push(`${layout.h1Count} h1-elementer`);
   if (!layout.h1Visible) failures.push("h1 er ikke synlig");
   if (!layout.mainVisible) failures.push("main er ikke synlig");
+  if (layout.headerCount !== 1) failures.push(`${layout.headerCount} site-header-elementer`);
+  if (!layout.headerVisible) failures.push("site-header er ikke synlig");
+  if (layout.footerCount !== 1) failures.push(`${layout.footerCount} site-footer-elementer`);
+  if (!layout.footerVisible) failures.push("site-footer er ikke synlig");
 
   page.off("console", onConsole);
   page.off("pageerror", onPageError);
@@ -82,8 +90,9 @@ try {
 
       const machineResource = MACHINE_RESOURCES.find((resource) => resource.route === url.pathname);
       if (machineResource) return responseFor(Bun.file(join(projectRoot, machineResource.source)));
-      if (url.pathname === "/legal.css") {
-        return responseFor(Bun.file(join(projectRoot, "web/public/legal.css")), "text/css");
+      if (["/legal.css", "/site-shell.css", "/site-shell.js"].includes(url.pathname)) {
+        const contentType = url.pathname.endsWith(".css") ? "text/css" : "text/javascript";
+        return responseFor(Bun.file(join(projectRoot, "web/public", url.pathname)), contentType);
       }
       if (url.pathname.startsWith("/guide.") || url.pathname.endsWith(".md")) {
         const publicPath = normalize(join(projectRoot, "web/public", decodeURIComponent(url.pathname)));

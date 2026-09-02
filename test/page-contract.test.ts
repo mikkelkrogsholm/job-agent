@@ -7,6 +7,8 @@ import {
   canonicalUrl,
   renderSitemap,
 } from "../web/pages.ts";
+import { FOOTER_NAVIGATION, PRIMARY_NAVIGATION } from "../web/site-config.ts";
+import { renderSiteFooter, renderSiteHeader } from "../web/render/site-shell.ts";
 
 type ParsedHtml = {
   title: string;
@@ -74,6 +76,24 @@ function parseHtml(html: string): ParsedHtml {
   };
 }
 
+function elementsWithClass(html: string, tagName: string, className: string): string[] {
+  const tags = html.match(new RegExp(`<${tagName}\\b[\\s\\S]*?</${tagName}>`, "gi")) ?? [];
+  return tags.filter((tag) => attribute(tag.match(new RegExp(`^<${tagName}\\b[^>]*>`, "i"))?.[0] ?? "", "class")
+    .split(/\s+/)
+    .includes(className));
+}
+
+function anchors(html: string): Array<{ href: string; label: string; current: string }> {
+  return (html.match(/<a\b[^>]*>[\s\S]*?<\/a>/gi) ?? []).map((anchor) => {
+    const opening = anchor.match(/^<a\b[^>]*>/i)?.[0] ?? "";
+    return {
+      href: attribute(opening, "href"),
+      current: attribute(opening, "aria-current"),
+      label: anchor.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
+    };
+  });
+}
+
 async function findPublicHtmlEntrypoints(): Promise<string[]> {
   const entries = ["web/index.html"];
   const publicRoot = join(process.cwd(), "web/public");
@@ -93,6 +113,13 @@ async function findPublicHtmlEntrypoints(): Promise<string[]> {
 }
 
 describe("public page registry", () => {
+  test("keeps the homepage shell generated from the shared components", async () => {
+    const home = await Bun.file("web/index.html").text();
+    const normalizeWhitespace = (value: string) => value.replace(/\s+/g, " ").trim();
+    expect(normalizeWhitespace(home)).toContain(normalizeWhitespace(renderSiteHeader("/")));
+    expect(normalizeWhitespace(home)).toContain(normalizeWhitespace(renderSiteFooter()));
+  });
+
   test("registers every public HTML entrypoint exactly once", async () => {
     const registered: string[] = PUBLIC_PAGES.map((page) => page.source).sort();
     expect(registered).toEqual(await findPublicHtmlEntrypoints());
@@ -112,7 +139,8 @@ describe("public page contract", () => {
     test(`${page.route} has required structure, metadata, navigation, and valid links`, async () => {
       const source = Bun.file(join(process.cwd(), page.source));
       expect(await source.exists()).toBe(true);
-      const parsed = parseHtml(await source.text());
+      const html = await source.text();
+      const parsed = parseHtml(html);
 
       expect(parsed.language).toBe("da");
       expect(parsed.viewport).toContain("width=device-width");
@@ -129,6 +157,31 @@ describe("public page contract", () => {
       expect(parsed.twitterCard).toBe("summary_large_image");
       expect(parsed.h1Count).toBe(1);
       expect(parsed.mainCount).toBe(1);
+
+      const headers = elementsWithClass(html, "header", "site-header");
+      const footers = elementsWithClass(html, "footer", "site-footer");
+      expect(headers).toHaveLength(1);
+      expect(footers).toHaveLength(1);
+      expect(html).toContain('class="skip-link"');
+      expect(html).toMatch(/href="(?:\/site-shell\.css|\.\/public\/site-shell\.css)"/);
+      expect(html).toMatch(/src="(?:\/site-shell\.js|\.\/public\/site-shell\.js)"/);
+
+      const header = headers[0]!;
+      expect(header).toContain('class="wordmark"');
+      expect(header).toContain('class="wordmark-mark"');
+      expect(header).toContain('class="primary-nav"');
+      expect(header).toContain('class="header-cta" href="/forloeb/"');
+      const primaryNav = elementsWithClass(header, "nav", "primary-nav")[0]!;
+      expect(anchors(primaryNav).map(({ href, label }) => ({ href, label }))).toEqual([...PRIMARY_NAVIGATION]);
+      const activeNavigation = anchors(primaryNav).filter(({ current }) => current === "page");
+      const expectedActive = PRIMARY_NAVIGATION.find(({ href }) => page.route === href || page.route.startsWith(href));
+      expect(activeNavigation.map(({ href }) => href)).toEqual(expectedActive ? [expectedActive.href] : []);
+
+      const footer = footers[0]!;
+      expect(footer).toContain('class="wordmark footer-wordmark"');
+      expect(footer).toContain("En uafhængig, read-only søgetjeneste.");
+      const footerLinks = footer.match(/<div>[\s\S]*?<\/div>/i)?.[0] ?? "";
+      expect(anchors(footerLinks).map(({ href, label }) => ({ href, label }))).toEqual([...FOOTER_NAVIGATION]);
 
       const internalRoutes = new Set(
         parsed.links
@@ -159,6 +212,18 @@ describe("public page contract", () => {
 });
 
 describe("machine-readable contract", () => {
+  test("keeps shared shell motion finite and reduced-motion safe", async () => {
+    const css = await Bun.file("web/public/site-shell.css").text();
+    const script = await Bun.file("web/public/site-shell.js").text();
+    expect(css).toContain("[data-shell-reveal]");
+    expect(css).toContain("[data-component-reveal]");
+    expect(css).toContain("prefers-reduced-motion: reduce");
+    expect(css).not.toContain("infinite");
+    expect(script).toContain("IntersectionObserver");
+    expect(script).toContain("observer.unobserve(entry.target)");
+    expect(script).toContain("prefers-reduced-motion: reduce");
+  });
+
   test("keeps every machine resource present", async () => {
     for (const resource of MACHINE_RESOURCES) {
       expect(await Bun.file(join(process.cwd(), resource.source)).exists()).toBe(true);

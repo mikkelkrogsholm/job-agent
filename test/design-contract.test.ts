@@ -15,6 +15,28 @@ async function guidePages(directory: string): Promise<string[]> {
 }
 
 describe("guide design contract", () => {
+  test("defines the canonical reusable component inventory", async () => {
+    const design = await Bun.file("DESIGN.md").text();
+    for (const component of [
+      "`SiteHeader`",
+      "`SiteFooter`",
+      "`Wordmark`",
+      "`PageIntro`",
+      "`Breadcrumbs`",
+      "`GuideLayout`",
+      "`SafetyPanel`",
+      "`RelatedLinks`",
+      "`StepNavigation`",
+      "`PromptCard`",
+      "`SourceMeta`",
+      "`EditorialPage`",
+      "`Reveal`",
+    ]) expect(design).toContain(component);
+    expect(design).toContain("web/render/site-shell.ts");
+    expect(design).toContain("web/public/site-shell.js");
+    expect(design).toContain("finite response");
+  });
+
   test("uses the documented warm editorial foundations", async () => {
     const design = await Bun.file("DESIGN.md").text();
     const css = await Bun.file("web/public/guide.css").text();
@@ -43,10 +65,12 @@ describe("guide design contract", () => {
       expect(html).toContain('class="guide-page guide-page--');
       expect(html).toContain('class="wordmark"');
       expect(html).toContain('class="wordmark-mark"');
-      expect(html).toContain('data-guide-reveal="header"');
+      expect(html).toContain('data-shell-reveal="header"');
+      expect(html).toContain('data-shell-reveal="footer"');
       expect(html).toContain('class="guide-intro" data-guide-reveal="intro"');
       expect(html).toContain('class="safety"');
       expect(html).toContain('class="related"');
+      expect(html).toContain('<script src="/site-shell.js"></script>');
       expect(html).toContain('<script src="/guide.js"></script>');
       expect(html).toContain('<script type="module" src="/webmcp.js"></script>');
     }

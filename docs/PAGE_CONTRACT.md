@@ -9,22 +9,28 @@ Alle offentlige HTML-sider skal være registreret i `web/pages.ts`. Registret er
 - dansk sprog, viewport-meta, favicon og præcis én synlig `h1` samt ét synligt `main`
 - unik titel og metabeskrivelse med aftalte længder
 - canonical URL, Open Graph-data og Twitter-kort
-- fungerende primær navigation samt grupperede relaterede og forrige/næste-links på guides
+- præcis én fælles `SiteHeader` og `SiteFooter`, skip-link, shell-CSS og shell-JavaScript
+- nøjagtig samme primære navigation, CTA, footerlinks og linkrækkefølge som forsiden
+- korrekt `aria-current="page"` i primær navigation samt grupperede relaterede og forrige/næste-links på guides
 - gyldige interne links og eksisterende mål for hash-links
 - `noopener` på links, der åbner en ny fane
 - ingen vandret overflow eller browserfejl ved 390, 768, 1024 og 1440 px
-- fungerende platform-faner og understøttelse af reduceret bevægelse på forsiden
+- synlig header og footer i Chromium ved alle fire skærmstørrelser
+- fungerende platform-faner og understøttelse af reduceret bevægelse på alle sidefamilier
 - sitemap genereret og valideret fra sideregistret
 - øvrige maskinlæsbare discovery-filer til stede og JSON-filer syntaktisk
   gyldige; semantisk sync er endnu ikke håndhævet
 
 ## Sådan tilføjes en almindelig side
 
-1. Opret sidens `index.html` under `web/public/<sti>/`.
-2. Tilføj siden til `PUBLIC_PAGES` i `web/pages.ts`.
-3. Tilføj navigation mellem den nye side og alle eksisterende sider.
-4. Kør `bun run pages:sync` for at regenerere `sitemap.xml`.
-5. Kør `bun run check` og ret alle kontraktbrud.
+1. Tilføj indhold og metadata til en eksisterende sidefamilies centrale register. Redaktionelle sider ligger i `web/content/editorial-pages.ts`; guides ligger under `web/content/guides/`.
+2. Genbrug sidefamiliens renderer. Nye sidefamilier skal komponere `renderSiteHeader()` og `renderSiteFooter()` fra `web/render/site-shell.ts`; kopier aldrig deres HTML ind i en side.
+3. Registrér siden i `PUBLIC_PAGES` via familiens register eller generator.
+4. Tilføj kun global navigation i `web/site-config.ts`, når destinationen findes og skal være tilgængelig på alle sider.
+5. Kør `bun run pages:sync` for at generere HTML og regenerere `sitemap.xml`.
+6. Kør `bun run check` og ret alle kontraktbrud.
+
+Komponenternes ansvar, anatomi, varianter, tilstande og kinetiske regler er kanonisk defineret i [DESIGN.md](../DESIGN.md). Delte shell-styles ligger i `web/public/site-shell.css`; den progressive, finite reveal-adfærd ligger i `web/public/site-shell.js` og skal altid have en umiddelbar reduced-motion-fallback.
 
 Chromium til browserkontrollen installeres én gang med:
 
