@@ -7,8 +7,10 @@ Internet -> Caddy/web (80/443) -> Bun MCP (private port 3004)
 ```
 
 The web image builds the landing page with Bun 1.4 and serves only static files.
-The MCP image contains no website files and has no published host port. Caddy
-terminates TLS and forwards only `/mcp` and `/health` to the MCP service.
+The MCP image contains only server code plus the generated guide metadata it
+needs for WebMCP guide lookup; it has no published host port. Caddy terminates
+TLS and forwards `/mcp`, `/health`, and the bounded `/api/webmcp/v1/*` routes
+to the MCP service.
 
 ## Deploy
 
