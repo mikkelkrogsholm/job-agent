@@ -1,0 +1,11 @@
+.git
+.gitignore
+.env
+.DS_Store
+AGENTS.md
+README.md
+node_modules
+outputs
+scripts
+test
+*.log

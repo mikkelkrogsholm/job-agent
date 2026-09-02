@@ -1,0 +1,69 @@
+x-mcp-defaults: &mcp-defaults
+  build:
+    context: .
+    dockerfile: Dockerfile
+  image: danish-job-mcp:local
+  init: true
+  restart: unless-stopped
+  read_only: true
+  tmpfs:
+    - /tmp:size=16m,mode=1777
+  security_opt:
+    - no-new-privileges:true
+
+services:
+  jobnet-mcp:
+    <<: *mcp-defaults
+    command: ["bun", "run", "src/providers/jobnet/http.ts"]
+    environment:
+      JOBNET_BASE_URL: ${JOBNET_BASE_URL:-https://jobnet.dk/bff}
+      JOBNET_TIMEOUT_MS: ${JOBNET_TIMEOUT_MS:-15000}
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: 3000
+    ports: ["127.0.0.1:${JOBNET_PORT:-3000}:3000"]
+
+  jobbank-mcp:
+    <<: *mcp-defaults
+    command: ["bun", "run", "src/providers/jobbank/http.ts"]
+    environment:
+      JOBBANK_BASE_URL: ${JOBBANK_BASE_URL:-https://jobbank.dk}
+      JOBBANK_TIMEOUT_MS: ${JOBBANK_TIMEOUT_MS:-15000}
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: 3001
+    ports: ["127.0.0.1:${JOBBANK_PORT:-3001}:3001"]
+
+  jobindex-mcp:
+    <<: *mcp-defaults
+    command: ["bun", "run", "src/providers/jobindex/http.ts"]
+    environment:
+      JOBINDEX_BASE_URL: ${JOBINDEX_BASE_URL:-https://www.jobindex.dk}
+      JOBINDEX_TIMEOUT_MS: ${JOBINDEX_TIMEOUT_MS:-15000}
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: 3002
+    ports: ["127.0.0.1:${JOBINDEX_PORT:-3002}:3002"]
+
+  jobdanmark-mcp:
+    <<: *mcp-defaults
+    command: ["bun", "run", "src/providers/jobdanmark/http.ts"]
+    environment:
+      JOBDANMARK_BASE_URL: ${JOBDANMARK_BASE_URL:-https://jobdanmark.dk}
+      JOBDANMARK_TIMEOUT_MS: ${JOBDANMARK_TIMEOUT_MS:-15000}
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: 3003
+    ports: ["127.0.0.1:${JOBDANMARK_PORT:-3003}:3003"]
+
+  danish-jobs-mcp:
+    <<: *mcp-defaults
+    command: ["bun", "run", "src/providers/danish/http.ts"]
+    environment:
+      JOBNET_BASE_URL: ${JOBNET_BASE_URL:-https://jobnet.dk/bff}
+      JOBBANK_BASE_URL: ${JOBBANK_BASE_URL:-https://jobbank.dk}
+      JOBINDEX_BASE_URL: ${JOBINDEX_BASE_URL:-https://www.jobindex.dk}
+      JOBDANMARK_BASE_URL: ${JOBDANMARK_BASE_URL:-https://jobdanmark.dk}
+      JOBNET_TIMEOUT_MS: ${JOBNET_TIMEOUT_MS:-15000}
+      JOBBANK_TIMEOUT_MS: ${JOBBANK_TIMEOUT_MS:-15000}
+      JOBINDEX_TIMEOUT_MS: ${JOBINDEX_TIMEOUT_MS:-15000}
+      JOBDANMARK_TIMEOUT_MS: ${JOBDANMARK_TIMEOUT_MS:-15000}
+      MCP_HOST: 0.0.0.0
+      MCP_PORT: 3004
+    ports: ["127.0.0.1:${DANISH_JOBS_PORT:-3004}:3004"]

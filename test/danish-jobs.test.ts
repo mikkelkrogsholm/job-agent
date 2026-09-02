@@ -1,0 +1,116 @@
+import { afterEach, describe, expect, test } from "bun:test";
+import { Client } from "@modelcontextprotocol/client";
+import { InMemoryTransport, type McpServer } from "@modelcontextprotocol/server";
+import type { JobnetClient } from "../src/jobnet-client.ts";
+import type { JobbankClient } from "../src/providers/jobbank/client.ts";
+import type { JobindexClient } from "../src/providers/jobindex/client.ts";
+import type { JobdanmarkClient } from "../src/providers/jobdanmark/client.ts";
+import { DanishJobsClient, deduplicateJobs, type DanishJobsDependencies } from "../src/providers/danish/client.ts";
+import { createDanishJobsServer } from "../src/providers/danish/server.ts";
+
+const open: Array<{ client: Client; server: McpServer }> = [];
+afterEach(async () => Promise.all(open.splice(0).map(({ client, server }) => Promise.all([client.close(), server.close()]))));
+
+describe("DanishJobsClient", () => {
+  test("searches selected providers concurrently and normalizes results", async () => {
+    let active = 0;
+    let maximumActive = 0;
+    const pause = async () => { active++; maximumActive = Math.max(maximumActive, active); await Bun.sleep(5); active--; };
+    const client = new DanishJobsClient(fakeDependencies({ pause }));
+    const result = await client.search({ query: "data", providers: ["jobnet", "jobbank", "jobindex", "jobdanmark"], limitPerProvider: 5 });
+    expect(maximumActive).toBe(4);
+    expect(result.failures).toEqual([]);
+    expect(result.jobs.every((job) => job.title && job.canonicalUrl && "postedDate" in job && "deadline" in job)).toBe(true);
+  });
+
+  test("keeps successful results when one provider fails", async () => {
+    const dependencies = fakeDependencies();
+    dependencies.jobindex = { search: async () => { throw new Error("temporarily unavailable"); } } as unknown as JobindexClient;
+    const result = await new DanishJobsClient(dependencies).search({ query: "data", providers: ["jobnet", "jobindex"], limitPerProvider: 5 });
+    expect(result.jobs).toHaveLength(1);
+    expect(result.failures).toEqual([{ provider: "jobindex", error: "temporarily unavailable" }]);
+  });
+
+  test("rejects deterministically when every selected provider fails", async () => {
+    const dependencies = fakeDependencies();
+    dependencies.jobnet = { search: async () => { throw new Error("jobnet down"); } } as unknown as JobnetClient;
+    dependencies.jobindex = { search: async () => { throw new Error("jobindex down"); } } as unknown as JobindexClient;
+    await expect(new DanishJobsClient(dependencies).search({ query: "data", providers: ["jobnet", "jobindex"], limitPerProvider: 5 }))
+      .rejects.toThrow("All selected providers failed: jobnet: jobnet down; jobindex: jobindex down");
+  });
+
+  test("merges only exact URLs or complete title/company/location matches and sorts dated jobs first", () => {
+    const jobs = deduplicateJobs([
+      { provider: "jobnet", providerJobId: "1", title: "Dataanalytiker", company: "Acme A/S", location: "Aarhus", postedDate: "2026-09-01", deadline: null, canonicalUrl: "https://jobnet.dk/find-job/1", alsoFoundOn: [] },
+      { provider: "jobindex", providerJobId: "2", title: "Dataanalytiker", company: "ACME A/S", location: null, postedDate: "2026-09-02", deadline: "2026-09-30", canonicalUrl: "https://www.jobindex.dk/vis-job/2", alsoFoundOn: [] },
+      { provider: "jobdanmark", providerJobId: "3", title: "Controller", company: "Beta", location: null, postedDate: null, deadline: null, canonicalUrl: "https://jobdanmark.dk/job/3", alsoFoundOn: [] },
+    ]);
+    expect(jobs).toHaveLength(3);
+    expect(jobs.map((job) => job.location)).toContain(null);
+    const merged = deduplicateJobs([
+      { provider: "jobnet", providerJobId: "1", title: "Dataanalytiker", company: "Acme", location: "Aarhus", postedDate: null, deadline: null, canonicalUrl: "https://jobnet.dk/find-job/1", alsoFoundOn: [] },
+      { provider: "jobindex", providerJobId: "2", title: "dataanalytiker", company: "ACME", location: "Aarhus", postedDate: null, deadline: null, canonicalUrl: "https://www.jobindex.dk/vis-job/2", alsoFoundOn: [] },
+    ]);
+    expect(merged).toHaveLength(1);
+    expect(merged[0]?.alsoFoundOn).toEqual(["jobindex"]);
+    const sameProvider = deduplicateJobs([
+      { provider: "jobnet", providerJobId: "1", title: "Pædagog", company: "Kommune", location: "Aarhus", postedDate: null, deadline: null, canonicalUrl: "https://jobnet.dk/find-job/1", alsoFoundOn: [] },
+      { provider: "jobnet", providerJobId: "2", title: "Pædagog", company: "Kommune", location: "Aarhus", postedDate: null, deadline: null, canonicalUrl: "https://jobnet.dk/find-job/2", alsoFoundOn: [] },
+    ]);
+    expect(sameProvider).toHaveLength(2);
+  });
+
+  test("routes details and rejects mismatched provider URLs", async () => {
+    const client = new DanishJobsClient(fakeDependencies());
+    await expect(client.getDetails("jobbank", "https://jobbank.dk/job/10/test", 500)).resolves.toMatchObject({ title: "Detail" });
+    await expect(client.getDetails("jobbank", "https://jobdanmark.dk/job/test", 500)).rejects.toThrow("exact https jobbank job URL");
+  });
+});
+
+describe("Danish jobs MCP", () => {
+  test("publishes and executes its two read-only tools", async () => {
+    const server = createDanishJobsServer({ client: new DanishJobsClient(fakeDependencies()), now: () => new Date("2026-09-02T10:00:00Z") });
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const client = new Client({ name: "danish-jobs-test", version: "1" });
+    await server.connect(serverTransport);
+    await client.connect(clientTransport);
+    open.push({ client, server });
+    const tools = await client.listTools();
+    expect(tools.tools.map((tool) => tool.name).sort()).toEqual(["get_danish_job_details", "search_danish_jobs"]);
+    expect(tools.tools.every((tool) => tool.annotations?.readOnlyHint === true)).toBe(true);
+    const search = await client.callTool({ name: "search_danish_jobs", arguments: { query: "data", providers: ["jobbank"] } });
+    expect(search.isError).not.toBe(true);
+    expect(search.structuredContent).toMatchObject({ count: 1, successfulProviders: ["jobbank"] });
+    const detail = await client.callTool({ name: "get_danish_job_details", arguments: { provider: "jobbank", canonicalUrl: "https://jobbank.dk/job/10/test" } });
+    expect(detail.isError).not.toBe(true);
+  });
+
+  test("rejects invalid combined detail URLs before routing and returns all-provider failure as MCP error", async () => {
+    const dependencies = fakeDependencies();
+    dependencies.jobbank = { search: async () => { throw new Error("down"); } } as unknown as JobbankClient;
+    const server = createDanishJobsServer({ client: new DanishJobsClient(dependencies) });
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const client = new Client({ name: "danish-jobs-error-test", version: "1" });
+    await server.connect(serverTransport);
+    await client.connect(clientTransport);
+    open.push({ client, server });
+    for (const canonicalUrl of [
+      "http://jobbank.dk/job/10/test",
+      "https://www.jobbank.dk/job/10/test",
+      "https://jobbank.dk:444/job/10/acme/test",
+      "https://user:password@jobbank.dk/job/10/acme/test",
+      "https://jobbank.dk/not-a-job/10",
+    ]) expect((await client.callTool({ name: "get_danish_job_details", arguments: { provider: "jobbank", canonicalUrl } })).isError).toBe(true);
+    expect((await client.callTool({ name: "search_danish_jobs", arguments: { query: "data", providers: ["jobbank"] } })).isError).toBe(true);
+  });
+});
+
+function fakeDependencies(options: { pause?: () => Promise<void> } = {}): DanishJobsDependencies {
+  const wait = options.pause ?? (async () => {});
+  return {
+    jobnet: { search: async () => { await wait(); return { totalJobAdCount: 1, searchString: "data", searchFacets: {}, jobAds: [{ jobAdId: "jn1", title: "Data engineer", hiringOrgName: "Acme", postalCode: 8000, postalDistrictName: "Aarhus", publicationDate: "2026-09-02" }] }; }, getJob: async (id: string) => ({ id, title: "Detail" }) } as unknown as JobnetClient,
+    jobbank: { search: async () => { await wait(); return { jobs: [{ id: "jb1", title: "Analytiker", employer: "Beta", publicationDate: "Tue, 01 Sep 2026 08:00:00 GMT", applicationDeadline: "30-09-2026", canonicalUrl: "https://jobbank.dk/job/10/test" }] }; }, getDetails: async () => ({ title: "Detail" }) } as unknown as JobbankClient,
+    jobindex: { search: async () => { await wait(); return { jobs: [{ id: "ji1", title: "BI specialist", employer: "Gamma", location: "Odense", publicationDate: "2026-08-31", canonicalUrl: "https://www.jobindex.dk/vis-job/ji1" }] }; }, getDetails: async () => ({ title: "Detail" }) } as unknown as JobindexClient,
+    jobdanmark: { search: async () => { await wait(); return { jobs: [{ id: "jd1", title: "Data scientist", employer: "Delta", location: "København", publicationDate: "02-09-2026", applicationDeadline: null, canonicalUrl: "https://jobdanmark.dk/job/jd1" }] }; }, getDetails: async () => ({ title: "Detail" }) } as unknown as JobdanmarkClient,
+  };
+}

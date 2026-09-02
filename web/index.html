@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Jobagenten er bygget af Mikkel Freltoft Krogsholm og giver din AI adgang til aktuelle job fra danske jobportaler."
+    />
+    <meta name="theme-color" content="#f3efe5" />
+    <meta name="author" content="Mikkel Freltoft Krogsholm" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Jobagenten — find dit næste job i en samtale" />
+    <meta property="og:description" content="Et gratis AI-værktøj bygget af Mikkel Freltoft Krogsholm til danske jobsøgende." />
+    <meta property="og:image" content="https://job-agent.dk/assets/jobagenten-social-preview.png" />
+    <meta property="og:image:width" content="1730" />
+    <meta property="og:image:height" content="909" />
+    <meta property="og:image:alt" content="Jobagenten — find dit næste job i en samtale. Af Mikkel Freltoft Krogsholm." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jobagenten — find dit næste job i en samtale" />
+    <meta name="twitter:description" content="Et gratis AI-værktøj bygget af Mikkel Freltoft Krogsholm til danske jobsøgende." />
+    <meta name="twitter:image" content="https://job-agent.dk/assets/jobagenten-social-preview.png" />
+    <title>Jobagenten — find dit næste job i en samtale</title>
+    <script type="module" src="./main.ts"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Gå til indhold</a>
+
+    <header class="site-header" data-reveal="nav">
+      <a class="wordmark" href="#top" aria-label="Jobagenten, gå til toppen">
+        <span class="wordmark-mark" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
+        <span>Jobagenten</span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Primær navigation">
+        <a href="#saadan-virker-det">Sådan virker det</a>
+        <a href="#platforme">Kom i gang</a>
+        <a href="#eksempel">Eksempel</a>
+        <a href="#mikkel">Mikkel</a>
+      </nav>
+
+      <a class="header-cta" href="#platforme">Forbind Jobagenten</a>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow" data-reveal="copy">Din genvej til danske job</p>
+          <h1 id="hero-title">
+            <span data-reveal="line">Find dit næste</span>
+            <span data-reveal="line">job i en samtale</span>
+          </h1>
+          <p class="hero-lede" data-reveal="copy">
+            Giv ChatGPT eller Claude adgang til aktuelle stillinger fra flere danske
+            jobportaler. Beskriv det, du leder efter — så finder din AI relevante job
+            med links til de originale annoncer.
+          </p>
+
+          <div class="hero-actions" data-reveal="copy">
+            <a class="button button-primary" href="#platforme">
+              Kom i gang på 2 minutter
+              <span class="button-orb" aria-hidden="true">↗</span>
+            </a>
+            <a class="text-link" href="#eksempel">Se hvordan det virker <span>↓</span></a>
+          </div>
+
+          <p class="trust-line" data-reveal="copy">
+            <span aria-hidden="true">✓</span> Ingen CV-upload
+            <span aria-hidden="true">✓</span> Ingen ansøgninger sendes
+          </p>
+
+          <a class="founder-line" href="#mikkel" data-reveal="copy">
+            <span class="founder-monogram" aria-hidden="true">MK</span>
+            <span>
+              <small>Bygget og drevet af</small>
+              <strong>Mikkel Freltoft Krogsholm</strong>
+            </span>
+            <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+
+        <div class="hero-stage" id="eksempel" aria-label="Eksempel på jobsøgning med Jobagenten">
+          <div class="stage-halo" aria-hidden="true"></div>
+
+          <svg class="job-streams" viewBox="0 0 720 690" aria-hidden="true">
+            <path d="M100 88 C265 105 315 236 470 295" />
+            <path d="M34 247 C230 240 322 280 470 324" />
+            <path d="M125 425 C280 402 330 360 470 350" />
+            <path d="M245 566 C360 510 380 423 490 381" />
+          </svg>
+
+          <article class="job-card job-card-one" data-float-card>
+            <div class="job-logo job-logo-blue" aria-hidden="true">N</div>
+            <div>
+              <h2>Kommunikationskonsulent</h2>
+              <p>Nordisk Kultur · Aarhus</p>
+              <span>Ansøgningsfrist 14. september</span>
+            </div>
+          </article>
+
+          <article class="job-card job-card-two" data-float-card>
+            <div class="job-logo job-logo-coral" aria-hidden="true">K</div>
+            <div>
+              <h2>Digital projektleder</h2>
+              <p>Kyst &amp; Co. · København</p>
+              <span>Fuldtid · Hybrid</span>
+            </div>
+          </article>
+
+          <article class="job-card job-card-three" data-float-card>
+            <div class="job-logo job-logo-yellow" aria-hidden="true">F</div>
+            <div>
+              <h2>Content specialist</h2>
+              <p>Fremdrift · Odense</p>
+              <span>Nyopslået</span>
+            </div>
+          </article>
+
+          <article class="job-card job-card-four" data-float-card>
+            <div class="job-logo job-logo-green" aria-hidden="true">G</div>
+            <div>
+              <h2>Marketingkoordinator</h2>
+              <p>Grøn Energi · Aalborg</p>
+              <span>Deltid · 30 timer</span>
+            </div>
+          </article>
+
+          <article class="conversation-card" data-conversation-card>
+            <header>
+              <span class="agent-avatar" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </span>
+              <div>
+                <strong>Jobagenten</strong>
+                <span>Søger på tværs af danske jobportaler</span>
+              </div>
+              <span class="online-dot" aria-label="Forbundet"></span>
+            </header>
+            <div class="message message-user">
+              Find kommunikationsjob i Aarhus, gerne deltid og med fleksible timer.
+            </div>
+            <div class="message message-agent">
+              <span class="message-spark" aria-hidden="true">✦</span>
+              <div>
+                <p>Jeg fandt <strong>8 relevante stillinger</strong>.</p>
+                <p>Her er de bedste match med sted, frist og link til annoncen.</p>
+              </div>
+            </div>
+            <div class="result-row">
+              <span><i></i><i></i><i></i></span>
+              <span>8 aktuelle job fundet</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="platform-section" id="platforme" aria-labelledby="platform-title">
+        <div class="section-heading">
+          <p class="eyebrow">Én forbindelse. Din foretrukne AI.</p>
+          <h2 id="platform-title">Hvor bruger du din AI?</h2>
+          <p>Vælg det sted, du allerede arbejder. Vi viser kun de trin, du har brug for.</p>
+        </div>
+
+        <div class="platform-grid">
+          <a class="platform-card platform-claude" href="#claude-guide">
+            <span class="platform-icon" aria-hidden="true">C</span>
+            <span class="platform-copy">
+              <span class="platform-label">Nemmest at starte med</span>
+              <strong>Claude i browseren</strong>
+              <span>Forbind én gang. Søg med almindeligt dansk.</span>
+            </span>
+            <span class="platform-arrow" aria-hidden="true">↗</span>
+          </a>
+
+          <a class="platform-card platform-chatgpt" href="#chatgpt-guide">
+            <span class="platform-icon" aria-hidden="true">✦</span>
+            <span class="platform-copy">
+              <span class="platform-label">Hvis du bruger ChatGPT</span>
+              <strong>ChatGPT i browseren</strong>
+              <span>Tilføj Jobagenten som en brugerdefineret app.</span>
+            </span>
+            <span class="platform-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <p class="advanced-note">
+          Bruger du Codex eller Claude Code?
+          <a href="#avanceret">Se den tekniske opsætning</a>
+        </p>
+      </section>
+
+      <section class="steps-section" id="saadan-virker-det" aria-labelledby="steps-title">
+        <div class="section-heading centered-heading" data-scroll-reveal>
+          <p class="eyebrow">Fra spørgsmål til aktuelle stillinger</p>
+          <h2 id="steps-title">Sådan virker det</h2>
+          <p>Du forbinder Jobagenten én gang. Derefter søger du bare ved at skrive, som du plejer.</p>
+        </div>
+
+        <ol class="step-grid">
+          <li data-scroll-reveal>
+            <span class="step-number">01</span>
+            <div class="step-symbol" aria-hidden="true">＋</div>
+            <h3>Forbind Jobagenten</h3>
+            <p>Vælg din AI, og følg den korte guide her på siden.</p>
+          </li>
+          <li data-scroll-reveal>
+            <span class="step-number">02</span>
+            <div class="step-symbol" aria-hidden="true">“</div>
+            <h3>Beskriv dit job</h3>
+            <p>Skriv jobtype, område og det, der betyder noget for dig.</p>
+          </li>
+          <li data-scroll-reveal>
+            <span class="step-number">03</span>
+            <div class="step-symbol" aria-hidden="true">↗</div>
+            <h3>Åbn de bedste match</h3>
+            <p>Få aktuelle resultater med frist og link til originalannoncen.</p>
+          </li>
+        </ol>
+
+        <p class="mcp-explainer" data-scroll-reveal>
+          <span>MCP?</span>
+          Det er bare forbindelsen, der giver din AI et afgrænset sæt værktøjer til at søge og læse jobannoncer.
+        </p>
+      </section>
+
+      <section class="setup-section" aria-labelledby="setup-title">
+        <div class="setup-intro" data-scroll-reveal>
+          <p class="eyebrow">Klar på få minutter</p>
+          <h2 id="setup-title">Forbind den til din AI</h2>
+          <p>Start med Claude, hvis du er i tvivl. ChatGPT kræver i øjeblikket en understøttet arbejdspladsplan.</p>
+        </div>
+
+        <div class="endpoint-card" data-scroll-reveal>
+          <div>
+            <span>Jobagentens adresse</span>
+            <code>https://job-agent.dk/mcp</code>
+          </div>
+          <button class="copy-button" type="button" data-copy="https://job-agent.dk/mcp">
+            <span data-copy-label>Kopiér adressen</span>
+          </button>
+        </div>
+
+        <div class="guide-shell" data-scroll-reveal>
+          <div class="guide-tabs" role="tablist" aria-label="Vælg opsætningsguide">
+            <button id="tab-claude" role="tab" aria-selected="true" aria-controls="claude-guide" type="button">Claude</button>
+            <button id="tab-chatgpt" role="tab" aria-selected="false" aria-controls="chatgpt-guide" type="button">ChatGPT</button>
+          </div>
+
+          <article class="guide-panel" id="claude-guide" role="tabpanel" aria-labelledby="tab-claude">
+            <div class="guide-meta">
+              <span class="guide-badge">Nemmest</span>
+              <span>Ca. 2 minutter</span>
+              <span>Claude Free, Pro, Max, Team og Enterprise</span>
+            </div>
+            <div class="guide-layout">
+              <div>
+                <h3>Claude i browseren</h3>
+                <p>På Team og Enterprise skal en ejer først tilføje forbindelsen for organisationen.</p>
+              </div>
+              <ol class="guide-steps">
+                <li><span>1</span><p>Åbn Claude, og vælg <strong>Customize → Connectors</strong>.</p></li>
+                <li><span>2</span><p>Tryk <strong>+</strong>, og vælg <strong>Add custom connector</strong>.</p></li>
+                <li><span>3</span><p>Skriv <strong>Jobagenten</strong>, og indsæt adressen ovenfor.</p></li>
+                <li><span>4</span><p>Tryk <strong>Add</strong>. Slå derefter Jobagenten til via <strong>+ → Connectors</strong> i en ny chat.</p></li>
+              </ol>
+            </div>
+            <a class="official-link" href="https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp" target="_blank" rel="noreferrer">Se Anthropics officielle vejledning ↗</a>
+          </article>
+
+          <article class="guide-panel" id="chatgpt-guide" role="tabpanel" aria-labelledby="tab-chatgpt">
+            <div class="guide-meta">
+              <span class="guide-badge guide-badge-blue">Arbejdsplads</span>
+              <span>Ca. 3 minutter</span>
+              <span>ChatGPT Business, Enterprise og Edu på web</span>
+            </div>
+            <div class="guide-layout">
+              <div>
+                <h3>ChatGPT i browseren</h3>
+                <p>En administrator eller autoriseret udvikler skal kunne oprette apps i jeres workspace.</p>
+              </div>
+              <ol class="guide-steps">
+                <li><span>1</span><p>Åbn <strong>Settings → Apps → Advanced settings</strong>, og aktivér <strong>Developer mode</strong>.</p></li>
+                <li><span>2</span><p>Vælg <strong>Apps → Create</strong>, og skriv navnet <strong>Jobagenten</strong>.</p></li>
+                <li><span>3</span><p>Indsæt adressen ovenfor som endpoint. Vælg ingen loginmetode.</p></li>
+                <li><span>4</span><p>Tryk <strong>Scan tools</strong> og derefter <strong>Create</strong>. Vælg appen i værktøjsmenuen i en ny chat.</p></li>
+              </ol>
+            </div>
+            <a class="official-link" href="https://help.openai.com/en/articles/12584461" target="_blank" rel="noreferrer">Se OpenAIs officielle vejledning ↗</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="prompt-section" aria-labelledby="prompt-title">
+        <div class="prompt-copy" data-scroll-reveal>
+          <p class="eyebrow">Din første søgning</p>
+          <h2 id="prompt-title">Du behøver ikke kende de rigtige søgeord</h2>
+          <p>Fortæl bare, hvad du leder efter. Jobagenten kan søge bredere og samle resultaterne for dig.</p>
+        </div>
+        <div class="prompt-card" data-scroll-reveal>
+          <span class="prompt-label">Prøv denne besked</span>
+          <blockquote>
+            Brug Jobagenten til at finde 10 kommunikationsjob i nærheden af Aarhus. Vis titel, arbejdsgiver, sted, ansøgningsfrist og direkte link. Stil mig højst tre spørgsmål, hvis du mangler noget vigtigt.
+          </blockquote>
+          <button class="copy-button copy-button-dark" type="button" data-copy="Brug Jobagenten til at finde 10 kommunikationsjob i nærheden af Aarhus. Vis titel, arbejdsgiver, sted, ansøgningsfrist og direkte link. Stil mig højst tre spørgsmål, hvis du mangler noget vigtigt.">
+            <span data-copy-label>Kopiér beskeden</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="trust-section" id="tryghed" aria-labelledby="trust-title">
+        <div class="trust-copy" data-scroll-reveal>
+          <p class="eyebrow">Søgning uden autopilot</p>
+          <h2 id="trust-title">Du beholder kontrollen</h2>
+          <p>Jobagenten er read-only. Den kan lede og læse — men ikke logge ind, ændre din profil eller sende en ansøgning.</p>
+        </div>
+        <ul class="trust-list">
+          <li data-scroll-reveal><span>01</span><strong>Intet CV nødvendigt</strong><p>Beskriv dine ønsker direkte i samtalen.</p></li>
+          <li data-scroll-reveal><span>02</span><strong>Altid tilbage til kilden</strong><p>Hvert resultat linker til den oprindelige jobannonce.</p></li>
+          <li data-scroll-reveal><span>03</span><strong>Ingen ansøgninger sendes</strong><p>Du vurderer selv jobbet og trykker selv på ansøg.</p></li>
+        </ul>
+      </section>
+
+      <section class="founder-section" id="mikkel" aria-labelledby="founder-title">
+        <div class="founder-portrait" data-scroll-reveal>
+          <img
+            src="https://mikkelkrogsholm.dk/_astro/home-human-in-machine-age.mrSXtJ9e.png"
+            alt="Mikkel Krogsholm i et nordisk arkiv gennemskåret af en varm lysstråle"
+            width="1200"
+            height="630"
+            loading="lazy"
+          />
+          <span>AI · data · produkter · organisationer</span>
+        </div>
+
+        <div class="founder-copy" data-scroll-reveal>
+          <p class="eyebrow">Mennesket bag Jobagenten</p>
+          <h2 id="founder-title">Jeg hedder Mikkel. Jeg bygger AI, der virker i virkeligheden.</h2>
+          <p>
+            Jeg er Mikkel Freltoft Krogsholm — AI-specialist, dataanalytiker,
+            udvikler og forfatter til <em>Superkræfter</em>. Jeg byggede
+            Jobagenten, fordi offentlige data først får værdi, når almindelige
+            mennesker faktisk kan bruge dem.
+          </p>
+          <p>
+            Gennem Brokk og Sindre hjælper jeg virksomheder og organisationer
+            med at gå fra AI-idéer til konkrete værktøjer, arbejdsgange og bedre
+            beslutninger. Jeg holder også foredrag og workshops om AI i praksis.
+          </p>
+          <div class="founder-actions">
+            <a class="button button-founder" href="https://mikkelkrogsholm.dk/da/about/" target="_blank" rel="noreferrer">
+              Læs mere om mig <span class="button-orb" aria-hidden="true">↗</span>
+            </a>
+            <a class="text-link" href="https://superkraefter.mikkelkrogsholm.dk/" target="_blank" rel="noreferrer">Foredrag og workshops <span>↗</span></a>
+          </div>
+          <p class="founder-proof">
+            Cand.scient.pol. · Driver Brokk og Sindre ApS · Leder Data &amp; Analyse på Smukfest
+          </p>
+        </div>
+      </section>
+
+      <section class="advanced-section" id="avanceret" aria-labelledby="advanced-title">
+        <details data-scroll-reveal>
+          <summary>
+            <span><small>For tekniske brugere</small><strong id="advanced-title">Codex og Claude Code</strong></span>
+            <span class="summary-plus" aria-hidden="true">＋</span>
+          </summary>
+          <div class="advanced-content">
+            <div>
+              <h3>Codex</h3>
+              <div class="command-row"><code>codex mcp add job-agent --url https://job-agent.dk/mcp</code><button type="button" data-copy="codex mcp add job-agent --url https://job-agent.dk/mcp" aria-label="Kopiér Codex-kommando"><span data-copy-label>Kopiér</span></button></div>
+            </div>
+            <div>
+              <h3>Claude Code</h3>
+              <div class="command-row"><code>claude mcp add --transport http --scope user job-agent https://job-agent.dk/mcp</code><button type="button" data-copy="claude mcp add --transport http --scope user job-agent https://job-agent.dk/mcp" aria-label="Kopiér Claude Code-kommando"><span data-copy-label>Kopiér</span></button></div>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="faq-section" aria-labelledby="faq-title">
+        <div class="section-heading" data-scroll-reveal>
+          <p class="eyebrow">Det korte svar</p>
+          <h2 id="faq-title">Spørgsmål før du går i gang</h2>
+        </div>
+        <div class="faq-list">
+          <details data-scroll-reveal><summary>Skal jeg uploade mit CV?<span>＋</span></summary><p>Nej. Du kan beskrive dine ønsker direkte i samtalen. Jobagenten behøver ikke adgang til dit CV eller din Jobnet-profil.</p></details>
+          <details data-scroll-reveal><summary>Kan Jobagenten søge et job for mig?<span>＋</span></summary><p>Nej. Den finder og sammenligner annoncer, men sender aldrig en ansøgning eller ændrer oplysninger på dine vegne.</p></details>
+          <details data-scroll-reveal><summary>Hvor kommer stillingerne fra?<span>＋</span></summary><p>Fra offentligt tilgængelige annoncer hos Jobnet, Jobindex, Jobdanmark og Akademikernes Jobbank. Dækningen kan variere, og du bør altid kontrollere fristen i originalannoncen.</p></details>
+          <details data-scroll-reveal><summary>Hvorfor kan jeg ikke tilføje den i ChatGPT?<span>＋</span></summary><p>Brugerdefinerede MCP-apps kræver aktuelt ChatGPT Business, Enterprise eller Edu på web og kan være slået fra af din administrator. Claude er normalt den letteste vej for privatpersoner.</p></details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="wordmark footer-wordmark" href="#top"><span class="wordmark-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Jobagenten</span></a>
+      <p>Bygget af Mikkel Freltoft Krogsholm · En uafhængig, read-only søgetjeneste.</p>
+      <div><a href="#platforme">Kom i gang</a><a href="#mikkel">Om Mikkel</a><a href="https://mikkelkrogsholm.dk/da/about/">Samarbejd med mig</a><a href="/health">Driftsstatus</a></div>
+    </footer>
+  </body>
+</html>

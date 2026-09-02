@@ -1,0 +1,49 @@
+{
+  "name": "jobnet-mcp",
+  "version": "2.0.0",
+  "description": "Modular read-only MCP servers for Danish job portals",
+  "type": "module",
+  "private": true,
+  "packageManager": "bun@1.4.0",
+  "engines": {
+    "bun": ">=1.4.0 <2"
+  },
+  "bin": {
+    "jobnet-mcp": "./src/index.ts"
+  },
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch run src/index.ts",
+    "start:http": "bun run src/http.ts",
+    "start:jobnet": "bun run src/providers/jobnet/index.ts",
+    "start:jobnet:http": "bun run src/providers/jobnet/http.ts",
+    "start:jobbank": "bun run src/providers/jobbank/index.ts",
+    "start:jobbank:http": "bun run src/providers/jobbank/http.ts",
+    "start:jobindex": "bun run src/providers/jobindex/index.ts",
+    "start:jobindex:http": "bun run src/providers/jobindex/http.ts",
+    "start:jobdanmark": "bun run src/providers/jobdanmark/index.ts",
+    "start:jobdanmark:http": "bun run src/providers/jobdanmark/http.ts",
+    "start:danish": "bun run src/providers/danish/index.ts",
+    "start:danish:http": "bun run src/providers/danish/http.ts",
+    "dev:site": "bun --hot run src/providers/danish/http.ts",
+    "build:site": "bun build ./web/index.html --outdir=./dist --target=browser --minify",
+    "smoke": "bun run scripts/smoke.ts",
+    "smoke:all": "bun run scripts/smoke-providers.ts",
+    "test": "bun test",
+    "test:parallel": "bun test --parallel",
+    "typecheck": "bunx tsc --noEmit",
+    "check": "bun run typecheck && bun run test:parallel"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "5.3.0",
+    "@fontsource-variable/newsreader": "5.3.0",
+    "@modelcontextprotocol/server": "^2.0.0",
+    "gsap": "3.15.0",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "^2.0.0",
+    "@types/bun": "^1.4.0",
+    "typescript": "^7.0.2"
+  }
+}
