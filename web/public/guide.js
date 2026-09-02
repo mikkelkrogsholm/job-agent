@@ -8,6 +8,16 @@ const commonSafetyCore = `Fælles arbejdskontrakt:
 - Kontakt ingen, log ikke ind, udfyld ikke formularer, og send aldrig noget for mig.
 - Vis resultatet og vent på min udtrykkelige bekræftelse ved den menneskelige beslutningsport.`;
 
+const copyFeedback = document.createElement("p");
+copyFeedback.className = "copy-feedback";
+copyFeedback.setAttribute("aria-live", "polite");
+copyFeedback.setAttribute("aria-atomic", "true");
+document.body.append(copyFeedback);
+
+function announceCopy(message) {
+  copyFeedback.textContent = message;
+}
+
 const blocks = document.querySelectorAll("article blockquote");
 
 for (const block of blocks) {
@@ -27,13 +37,32 @@ for (const block of blocks) {
     try {
       await navigator.clipboard.writeText(assembledPrompt);
       button.textContent = "Kopieret";
+      announceCopy("Prompten er kopieret til udklipsholderen.");
     } catch {
       copySource.focus();
       copySource.select();
       button.textContent = "Markér og kopiér teksten";
+      announceCopy("Prompten er markeret. Kopiér den med din browsers kopifunktion.");
     }
     window.setTimeout(() => { button.textContent = "Kopiér hele prompten"; }, 2200);
   });
   block.insertAdjacentElement("afterend", copySource);
   copySource.insertAdjacentElement("afterend", button);
+}
+
+const revealItems = document.querySelectorAll("[data-guide-reveal], .guide-content > h2, .guide-content > blockquote, .guide-content > ol, .guide-content > details");
+const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+if (reduceMotion || !("IntersectionObserver" in window)) {
+  revealItems.forEach((item) => item.classList.add("is-visible"));
+} else {
+  document.documentElement.classList.add("guide-js");
+  const observer = new IntersectionObserver((entries, currentObserver) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.classList.add("is-visible");
+      currentObserver.unobserve(entry.target);
+    }
+  }, { threshold: 0.12 });
+  revealItems.forEach((item) => observer.observe(item));
 }

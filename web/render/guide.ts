@@ -24,6 +24,10 @@ function renderNavigation(route: string): string {
   }).join("");
 }
 
+function renderWordmark(): string {
+  return `<a class="wordmark" href="/" aria-label="Jobagenten, gå til forsiden"><span class="wordmark-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Jobagenten</span></a>`;
+}
+
 function renderJourneyNavigation(context: GuideRenderContext): string {
   if (!context.previous && !context.next) return "";
   return `<nav class="step-navigation" aria-label="Forrige og næste trin">
@@ -56,9 +60,9 @@ export function renderGuideHtml(
 <title>${escapeHtml(frontmatter.title)}</title><meta name="description" content="${escapeHtml(frontmatter.description)}">
 <link rel="canonical" href="${canonical}"><link rel="alternate" type="text/markdown" href="${context.markdownRoute}" title="Markdown-version"><link rel="describedby" type="text/markdown" href="/ai/jobsoegning.md">
 <meta property="og:title" content="${escapeHtml(frontmatter.title)}"><meta property="og:description" content="${escapeHtml(frontmatter.summary)}"><meta property="og:image" content="https://job-agent.dk/assets/jobagenten-social-preview.png"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/guide.css"></head>
-<body><a class="skip-link" href="#indhold">Gå til indhold</a><header class="guide-header"><a class="brand" href="/">Jobagenten</a><nav aria-label="Hovednavigation">${renderNavigation(context.route)}</nav></header>
+<body class="guide-page guide-page--${context.group}"><a class="skip-link" href="#indhold">Gå til indhold</a><header class="guide-header" data-guide-reveal="header">${renderWordmark()}<nav aria-label="Hovednavigation">${renderNavigation(context.route)}</nav></header>
 <main id="indhold"><nav class="breadcrumbs" aria-label="Brødkrummer"><a href="/">Forside</a><span aria-hidden="true">/</span>${context.route === group.href ? `<span>${group.label}</span>` : `<a href="${group.href}">${group.label}</a><span aria-hidden="true">/</span><span>${escapeHtml(frontmatter.title.replace(/ · Jobagenten$/, ""))}</span>`}</nav>
-<div class="guide-layout"><article><p class="guide-summary">${escapeHtml(frontmatter.summary)}</p>${markdown}${sources}${renderJourneyNavigation(context)}</article>
+<div class="guide-layout"><article class="guide-article"><div class="guide-intro" data-guide-reveal="intro"><p class="eyebrow">${group.label}</p><p class="guide-summary">${escapeHtml(frontmatter.summary)}</p></div><div class="guide-content">${markdown}</div>${sources}${renderJourneyNavigation(context)}</article>
 <div class="guide-asides"><aside class="safety" aria-label="Vigtige grænser"><h2>Du har kontrollen</h2><ul>${GUIDE_SAFETY.map((rule) => `<li>${escapeHtml(rule)}</li>`).join("")}</ul></aside>${related}</div></div></main>
 <footer><nav aria-label="Footer"><a href="/privacy/">Privatliv</a><a href="/kontakt/">Kontakt</a><a href="/ai/">Til AI-assistenter</a><a href="${context.markdownRoute}">Læs som Markdown</a></nav></footer><script src="/guide.js"></script><script type="module" src="/webmcp.js"></script></body></html>\n`;
 }
