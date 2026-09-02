@@ -3,6 +3,9 @@
 Status: Første responsive implementering findes i `web/`. Åbne produkt- og
 deploybeslutninger nedenfor er fortsat gældende.
 
+Den bredere produktretning fra jobsøgning til en ansøgning, som brugeren selv
+er klar til at sende, er samlet i [JOBSOEGERREJSEN.md](JOBSOEGERREJSEN.md).
+
 ## Formål
 
 Landingpagen på `https://job-agent.dk/` skal gøre det let for en almindelig

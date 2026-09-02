@@ -185,6 +185,12 @@ See:
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — modular design and security model
 - [docs/TESTING.md](docs/TESTING.md) — deterministic, live, and Docker verification
 - [docs/BUN-1.4-TYPESCRIPT-7.md](docs/BUN-1.4-TYPESCRIPT-7.md) — runtime/compiler audit
+- [docs/JOBSOEGERREJSEN.md](docs/JOBSOEGERREJSEN.md) — produktretningen fra jobprofil og søgning til en ansøgning, brugeren selv sender
+- [docs/JOBSOEGERREJSEN_RESEARCH.md](docs/JOBSOEGERREJSEN_RESEARCH.md) — danske kilder og redaktionelt faktagrundlag for jobsøgerrejsen
+- [docs/PLATFORM_GUIDE_RESEARCH.md](docs/PLATFORM_GUIDE_RESEARCH.md) — verificerede og uafklarede capabilities på ChatGPT-, Claude- og Codex-flader
+- [docs/GUIDED_PROMPTS.md](docs/GUIDED_PROMPTS.md) — fælles promptkontrakt og seksten guidede jobsøgningsforløb
+- [docs/AGENT_READABLE_GUIDES.md](docs/AGENT_READABLE_GUIDES.md) — capability-check, Markdown/discovery-lag og maskinlæsbare acceptkriterier
+- [docs/PUBLIC_GUIDE_SITE_PLAN.md](docs/PUBLIC_GUIDE_SITE_PLAN.md) — implementerbar plan for alle forløbs-, platform-, prompt-, trygheds- og AI-sider
 
 ## License
 
