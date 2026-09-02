@@ -928,7 +928,8 @@ details[open] .summary-plus { transform: rotate(45deg); }
 .site-footer { display: grid; grid-template-columns: 1fr 1fr auto; align-items: center; gap: 25px; padding-top: 42px; padding-bottom: 42px; color: #cbd0cc; background: var(--ink); }
 .footer-wordmark { color: white; }
 .site-footer p { margin: 0; font-size: .7rem; }
-.site-footer > div { display: flex; gap: 22px; font-size: .7rem; }
+.site-footer > * { min-width: 0; }
+.site-footer > div { display: flex; flex-wrap: wrap; gap: 14px 22px; font-size: .7rem; }
 
 .js [data-scroll-reveal] { transform: translateY(28px); opacity: 0; }
 .js [data-scroll-reveal].is-visible { transform: translateY(0); opacity: 1; transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.75,.25,1); }
