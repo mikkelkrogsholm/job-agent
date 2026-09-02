@@ -170,8 +170,12 @@ describe("public page contract", () => {
       expect(header).toContain('class="wordmark"');
       expect(header).toContain('class="wordmark-mark"');
       expect(header).toContain('class="primary-nav"');
+      expect(header).toContain('class="nav-toggle"');
+      expect(header).toContain('aria-controls="primary-navigation"');
+      expect(header).toContain('aria-expanded="false"');
       expect(header).toContain('class="header-cta" href="/forloeb/"');
       const primaryNav = elementsWithClass(header, "nav", "primary-nav")[0]!;
+      expect(primaryNav).toContain('id="primary-navigation"');
       expect(anchors(primaryNav).map(({ href, label }) => ({ href, label }))).toEqual([...PRIMARY_NAVIGATION]);
       const activeNavigation = anchors(primaryNav).filter(({ current }) => current === "page");
       const expectedActive = PRIMARY_NAVIGATION.find(({ href }) => page.route === href || page.route.startsWith(href));

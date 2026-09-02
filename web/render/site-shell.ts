@@ -11,7 +11,8 @@ export function renderSiteHeader(route: string): string {
 
   return `<header class="site-header" data-shell-reveal="header">
   <a class="wordmark" href="/" aria-label="Jobagenten, gå til forsiden"><span class="wordmark-mark" aria-hidden="true"><span></span><span></span><span></span></span><span>Jobagenten</span></a>
-  <nav class="primary-nav" aria-label="Primær navigation">${navigation}</nav>
+  <nav class="primary-nav" id="primary-navigation" aria-label="Primær navigation">${navigation}</nav>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Åbn menu"><span class="nav-toggle-label">Menu</span><span class="nav-toggle-icon" aria-hidden="true"><span></span><span></span></span></button>
   <a class="header-cta" href="/forloeb/">Start dit forløb</a>
 </header>`;
 }

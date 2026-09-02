@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join, normalize } from "node:path";
 import { chromium, type Page } from "playwright";
 import { MACHINE_RESOURCES, PUBLIC_PAGES, RESPONSIVE_VIEWPORTS } from "../web/pages.ts";
+import { PRIMARY_NAVIGATION } from "../web/site-config.ts";
 
 const projectRoot = process.cwd();
 const outputDirectory = await mkdtemp(join(tmpdir(), "jobagenten-page-contract-"));
@@ -41,6 +42,8 @@ async function checkPage(page: Page, url: string, label: string): Promise<void> 
       mainVisible: isVisible(document.querySelector("main")),
       headerCount: document.querySelectorAll(".site-header").length,
       headerVisible: isVisible(document.querySelector(".site-header")),
+      primaryNavVisible: isVisible(document.querySelector(".primary-nav")),
+      navToggleVisible: isVisible(document.querySelector(".nav-toggle")),
       footerCount: document.querySelectorAll(".site-footer").length,
       footerVisible: isVisible(document.querySelector(".site-footer")),
     };
@@ -52,6 +55,11 @@ async function checkPage(page: Page, url: string, label: string): Promise<void> 
   if (!layout.mainVisible) failures.push("main er ikke synlig");
   if (layout.headerCount !== 1) failures.push(`${layout.headerCount} site-header-elementer`);
   if (!layout.headerVisible) failures.push("site-header er ikke synlig");
+  const compactNavigation = (page.viewportSize()?.width ?? 0) <= 960;
+  if (compactNavigation && !layout.navToggleVisible) failures.push("mobilmenuens knap er ikke synlig");
+  if (compactNavigation && layout.primaryNavVisible) failures.push("mobilmenuen er åben fra start");
+  if (!compactNavigation && layout.navToggleVisible) failures.push("mobilmenuens knap er synlig på desktop");
+  if (!compactNavigation && !layout.primaryNavVisible) failures.push("desktopnavigationen er ikke synlig");
   if (layout.footerCount !== 1) failures.push(`${layout.footerCount} site-footer-elementer`);
   if (!layout.footerVisible) failures.push("site-footer er ikke synlig");
 
@@ -131,6 +139,27 @@ try {
     }
 
     await page.goto(`${origin}/`, { waitUntil: "networkidle" });
+    if (viewport.width <= 960) {
+      const toggle = page.locator(".nav-toggle");
+      await toggle.click();
+      if (await toggle.getAttribute("aria-expanded") !== "true") {
+        throw new Error(`Mobilmenuen åbner ikke ved ${viewport.name}`);
+      }
+      if (!(await page.locator(".primary-nav").isVisible())) {
+        throw new Error(`Mobilmenuens links er ikke synlige ved ${viewport.name}`);
+      }
+      if (await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1)) {
+        throw new Error(`Den åbne mobilmenu giver vandret overflow ved ${viewport.name}`);
+      }
+      const labels = await page.locator(".primary-nav a").allTextContents();
+      if (JSON.stringify(labels.map((label) => label.trim())) !== JSON.stringify(PRIMARY_NAVIGATION.map(({ label }) => label))) {
+        throw new Error(`Mobilmenuen mangler links ved ${viewport.name}`);
+      }
+      await page.keyboard.press("Escape");
+      if (await toggle.getAttribute("aria-expanded") !== "false" || !(await toggle.evaluate((element) => document.activeElement === element))) {
+        throw new Error(`Mobilmenuen lukker ikke til knappen med Escape ved ${viewport.name}`);
+      }
+    }
     await page.locator("#tab-chatgpt").click();
     if ((await page.locator("#tab-chatgpt").getAttribute("aria-selected")) !== "true") {
       throw new Error(`ChatGPT-fanen virker ikke ved ${viewport.name}`);

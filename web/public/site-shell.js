@@ -1,5 +1,35 @@
 document.documentElement.classList.add("shell-js");
 
+const navigationToggle = document.querySelector(".nav-toggle");
+const primaryNavigation = document.querySelector(".primary-nav");
+
+function setNavigationOpen(open) {
+  if (!(navigationToggle instanceof HTMLButtonElement) || !(primaryNavigation instanceof HTMLElement)) return;
+  navigationToggle.setAttribute("aria-expanded", String(open));
+  navigationToggle.setAttribute("aria-label", open ? "Luk menu" : "Åbn menu");
+  primaryNavigation.classList.toggle("is-open", open);
+}
+
+if (navigationToggle instanceof HTMLButtonElement && primaryNavigation instanceof HTMLElement) {
+  navigationToggle.addEventListener("click", () => {
+    setNavigationOpen(navigationToggle.getAttribute("aria-expanded") !== "true");
+  });
+  primaryNavigation.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest("a")) setNavigationOpen(false);
+  });
+  document.addEventListener("click", (event) => {
+    if (navigationToggle.getAttribute("aria-expanded") !== "true") return;
+    if (event.target instanceof Node && navigationToggle.closest(".site-header")?.contains(event.target)) return;
+    setNavigationOpen(false);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || navigationToggle.getAttribute("aria-expanded") !== "true") return;
+    setNavigationOpen(false);
+    navigationToggle.focus();
+  });
+  matchMedia("(min-width: 961px)").addEventListener("change", () => setNavigationOpen(false));
+}
+
 const analyticsHostname = "job-agent.dk";
 const analyticsOrigin = "https://umami.mikkelkrogsholm.dk";
 const analyticsWebsiteId = "21fd36d8-1cd9-4071-817a-d20fde71de9b";

@@ -19,6 +19,7 @@ describe("guide design contract", () => {
     const design = await Bun.file("DESIGN.md").text();
     for (const component of [
       "`SiteHeader`",
+      "`NavigationToggle`",
       "`SiteFooter`",
       "`Wordmark`",
       "`PageIntro`",
