@@ -78,7 +78,7 @@ describe("DanishJobsClient", () => {
 });
 
 describe("Danish jobs MCP", () => {
-  test("publishes and executes its two read-only tools", async () => {
+  test("publishes and executes its four read-only tools", async () => {
     const server = createDanishJobsServer({ client: new DanishJobsClient(fakeDependencies()), now: () => new Date("2026-09-02T10:00:00Z") });
     const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
     const client = new Client({ name: "danish-jobs-test", version: "1" });
@@ -86,13 +86,44 @@ describe("Danish jobs MCP", () => {
     await client.connect(clientTransport);
     open.push({ client, server });
     const tools = await client.listTools();
-    expect(tools.tools.map((tool) => tool.name).sort()).toEqual(["get_danish_job_details", "search_danish_jobs"]);
+    expect(tools.tools.map((tool) => tool.name).sort()).toEqual(["get_danish_job_details", "get_jobseeker_guide", "search_danish_jobs", "start_jobseeker_journey"]);
     expect(tools.tools.every((tool) => tool.annotations?.readOnlyHint === true)).toBe(true);
+    const start = await client.callTool({ name: "start_jobseeker_journey", arguments: { goal: "find_jobs" } });
+    expect(start.isError).not.toBe(true);
+    expect(start.structuredContent).toMatchObject({ goal: "find_jobs", nextStep: { guideId: "forloeb-find-job" } });
+    const guide = await client.callTool({ name: "get_jobseeker_guide", arguments: { guideId: "forloeb-find-job" } });
+    expect(guide.isError).not.toBe(true);
+    expect(guide.structuredContent).toMatchObject({ id: "forloeb-find-job", readOnlyBoundary: true });
+    expect((guide.structuredContent as { contentMarkdown: string }).contentMarkdown).toContain("# Find aktuelle job");
     const search = await client.callTool({ name: "search_danish_jobs", arguments: { query: "data", providers: ["jobbank"] } });
     expect(search.isError).not.toBe(true);
     expect(search.structuredContent).toMatchObject({ rawCount: 1, uniqueCount: 1, successfulProviders: ["jobbank"] });
     const detail = await client.callTool({ name: "get_danish_job_details", arguments: { provider: "jobbank", canonicalUrl: "https://jobbank.dk/job/10/test" } });
     expect(detail.isError).not.toBe(true);
+  });
+
+  test("publishes the full guide pack as resources and ten reusable prompts", async () => {
+    const server = createDanishJobsServer({ client: new DanishJobsClient(fakeDependencies()) });
+    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const client = new Client({ name: "danish-agent-pack-test", version: "1" });
+    await server.connect(serverTransport);
+    await client.connect(clientTransport);
+    open.push({ client, server });
+
+    const resources = await client.listResources();
+    expect(resources.resources).toHaveLength(24);
+    expect(resources.resources.map((resource) => resource.uri)).toContain("jobagenten://start");
+    expect(resources.resources.map((resource) => resource.uri)).toContain("jobagenten://guides/ansoegning");
+    const start = await client.readResource({ uri: "jobagenten://start" });
+    expect(start.contents[0]).toMatchObject({ mimeType: "text/markdown" });
+    expect((start.contents[0] as { text: string }).text).toContain("# Start med Jobagenten");
+
+    const prompts = await client.listPrompts();
+    expect(prompts.prompts).toHaveLength(10);
+    expect(prompts.prompts.map((prompt) => prompt.name)).toContain("find_aktuelle_job");
+    const prompt = await client.getPrompt({ name: "find_aktuelle_job" });
+    expect(prompt.messages[0]?.content).toMatchObject({ type: "text" });
+    expect((prompt.messages[0]?.content as { type: "text"; text: string }).text).toContain("aktuelle job");
   });
 
   test("rejects invalid combined detail URLs before routing and returns all-provider failure as MCP error", async () => {

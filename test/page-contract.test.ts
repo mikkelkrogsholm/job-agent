@@ -8,6 +8,7 @@ import {
   renderSitemap,
 } from "../web/pages.ts";
 import { FOOTER_NAVIGATION, PRIMARY_NAVIGATION } from "../web/site-config.ts";
+import { AGENT_GUIDES, AGENT_PROMPTS } from "../web/generated/agent-pack.ts";
 import { renderSiteFooter, renderSiteHeader } from "../web/render/site-shell.ts";
 
 type ParsedHtml = {
@@ -221,6 +222,7 @@ describe("machine-readable contract", () => {
     expect(dockerfile).toContain("COPY web/pages.ts ./web/pages.ts");
     expect(dockerfile).toContain("COPY web/content/editorial-pages.ts ./web/content/editorial-pages.ts");
     expect(dockerfile).toContain("COPY web/generated/guides.ts ./web/generated/guides.ts");
+    expect(dockerfile).toContain("COPY web/generated/agent-pack.ts ./web/generated/agent-pack.ts");
   });
 
   test("keeps shared shell motion finite and reduced-motion safe", async () => {
@@ -265,6 +267,21 @@ describe("machine-readable contract", () => {
       expect(html).toContain('rel="describedby" type="text/markdown" href="/ai/jobsoegning.md"');
       expect(html).toContain("Jobagenten kan kun søge og læse job");
       expect(html).toContain('<script type="module" src="/webmcp.js"></script>');
+    }
+  });
+
+  test("keeps the generated agent pack aligned with every canonical guide", async () => {
+    const guidePages = PUBLIC_PAGES.filter((candidate) => candidate.markdownSource);
+    expect(AGENT_GUIDES).toHaveLength(guidePages.length);
+    expect(AGENT_PROMPTS).toHaveLength(10);
+    expect(new Set(AGENT_PROMPTS.map((prompt) => prompt.id)).size).toBe(10);
+    for (const page of guidePages) {
+      const guide = AGENT_GUIDES.find((candidate) => candidate.id === page.id);
+      expect(guide).toBeDefined();
+      const authored = await Bun.file(page.authoredSource!).text();
+      const body = authored.replace(/^---\n[\s\S]*?\n---\n/, "").trim();
+      expect(String(guide?.contentMarkdown)).toBe(body);
+      expect(guide?.contentMarkdown.length).toBeLessThanOrEqual(12_000);
     }
   });
 

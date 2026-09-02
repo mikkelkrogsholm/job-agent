@@ -50,7 +50,11 @@ if (window.location.hostname === analyticsHostname) {
     const copyButton = target?.closest("[data-copy], .prompt-copy");
     if (copyButton instanceof HTMLElement) {
       const value = copyButton.dataset.copy ?? "";
-      if (value.startsWith("codex mcp add")) {
+      if (copyButton.dataset.copyKind === "agent-url") {
+        track("agent_url_copy");
+      } else if (copyButton.dataset.copyKind === "agent-handoff") {
+        track("agent_handoff_copy");
+      } else if (value.startsWith("codex mcp add")) {
         track("mcp_command_copy", { client: "codex" });
       } else if (value.startsWith("claude mcp add")) {
         track("mcp_command_copy", { client: "claude-code" });

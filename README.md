@@ -176,12 +176,18 @@ The tool descriptions and every input field contain agent-facing usage instructi
 | `MCP_MAX_REQUEST_BYTES` | `131072` |
 | `WEBMCP_ENABLED` | `false` |
 
-The combined Danish HTTP server can progressively expose four same-origin,
+The combined Danish HTTP server can progressively expose five same-origin,
 read-only WebMCP site tools when `WEBMCP_ENABLED=true`: capability discovery,
-guide lookup, bounded job search, and bounded job details. WebMCP is optional
+a guided journey start, full guide lookup, bounded job search, and bounded job details. WebMCP is optional
 and experimental; ordinary HTML, Markdown, and `/mcp` continue to work when it
 is disabled or unsupported. Browser requests use the same fair-use guard, and
 job content remains explicitly marked as untrusted third-party content.
+
+The ordinary combined MCP exposes the same journey start and full-guide tools,
+24 Markdown resources (`jobagenten://start`, `jobagenten://prompts`, and all 22
+guides), plus ten reusable MCP prompts. The package is generated from the same
+canonical guide sources as the public HTML and Markdown pages, so human and
+agent instructions cannot drift independently.
 
 ## Important limitations
 

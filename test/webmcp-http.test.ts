@@ -13,17 +13,35 @@ describe("WebMCP same-origin HTTP adapter", () => {
     expect(await response?.json()).toMatchObject({ enabled: false, readOnly: true, tools: [] });
   });
 
-  test("returns bounded guide metadata by registered id and rejects path injection", async () => {
+  test("returns a bounded full guide by registered id and rejects path injection", async () => {
     const handler = createDanishWebMcpHandler({ enabled: true });
     const response = await handler(new Request(`${base}/api/webmcp/v1/guides/forloeb-find-job`));
     expect(response?.status).toBe(200);
-    expect(await response?.json()).toMatchObject({
+    const payload = await response?.json() as { contentMarkdown: string; characterCount: number } & Record<string, unknown>;
+    expect(payload).toMatchObject({
       id: "forloeb-find-job",
       canonicalUrl: "https://job-agent.dk/forloeb/find-job/",
       readOnlyBoundary: true,
     });
+    expect(payload.contentMarkdown).toContain("# Find aktuelle job");
+    expect(payload.characterCount).toBe(payload.contentMarkdown.length);
+    expect(payload.characterCount).toBeLessThanOrEqual(12_000);
     const invalid = await handler(new Request(`${base}/api/webmcp/v1/guides/..%2Fprivacy`));
     expect(invalid?.status).toBe(404);
+  });
+
+  test("starts at the right step and advertises the complete agent pack", async () => {
+    const handler = createDanishWebMcpHandler({ enabled: true });
+    const capabilities = await handler(new Request(`${base}/api/webmcp/v1/capabilities`));
+    const capabilityPayload = await capabilities?.json() as { tools: string[]; guideIds: string[]; promptIds: string[] };
+    expect(capabilityPayload.tools).toContain("start_jobseeker_journey");
+    expect(capabilityPayload.guideIds).toHaveLength(22);
+    expect(capabilityPayload.promptIds).toHaveLength(10);
+
+    const start = await handler(post("/api/webmcp/v1/journey/start", { goal: "write_application" }));
+    expect(await start?.json()).toMatchObject({ goal: "write_application", nextStep: { guideId: "ansoegning" } });
+    const invalid = await handler(post("/api/webmcp/v1/journey/start", { goal: "send_for_me" }));
+    expect(invalid?.status).toBe(400);
   });
 
   test("validates and caps search and detail requests before the client", async () => {

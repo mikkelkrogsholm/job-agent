@@ -1,5 +1,5 @@
 import * as z from "zod/v4";
-import { PUBLIC_PAGES, canonicalUrl } from "../../../web/pages.ts";
+import { AGENT_GUIDES, AGENT_PROMPTS, createJourneyStart, guidePayload, JOBSEEKER_GOALS } from "./agent-pack.ts";
 import { DanishJobsClient } from "./client.ts";
 import { danishJobDetailsSchema, searchDanishJobsSchema } from "./schemas.ts";
 
@@ -9,6 +9,7 @@ const searchSchema = searchDanishJobsSchema.extend({
 const detailsSchema = danishJobDetailsSchema.safeExtend({
   maxBodyCharacters: z.number().int().min(500).max(1_500).default(1_500),
 });
+const journeySchema = z.object({ goal: z.enum(JOBSEEKER_GOALS).default("unsure") });
 
 type WebMcpOptions = {
   client?: DanishJobsClient;
@@ -33,8 +34,9 @@ export function createDanishWebMcpHandler(options: WebMcpOptions = {}) {
         readOnly: true,
         guideRoot: "/forloeb/",
         markdownIndex: "/llms.txt",
-        tools: enabled ? ["get_jobagenten_capabilities", "get_jobseeker_guide", "search_danish_jobs", "get_danish_job_details"] : [],
-        guideIds: PUBLIC_PAGES.filter((page) => page.markdownRoute && page.readOnlyBoundary).map((page) => page.id),
+        tools: enabled ? ["get_jobagenten_capabilities", "start_jobseeker_journey", "get_jobseeker_guide", "search_danish_jobs", "get_danish_job_details"] : [],
+        guideIds: AGENT_GUIDES.map((guide) => guide.id),
+        promptIds: AGENT_PROMPTS.map((prompt) => prompt.id),
         cannot: ["login", "save", "apply", "submit", "profile_write"],
       };
       return request.method === "HEAD" ? new Response(null, { headers: jsonHeaders }) : Response.json(payload, { headers: jsonHeaders });
@@ -42,23 +44,19 @@ export function createDanishWebMcpHandler(options: WebMcpOptions = {}) {
 
     if (!enabled) return errorResponse(404, "unavailable", "WebMCP er ikke aktiveret.");
 
+    if (url.pathname === "/api/webmcp/v1/journey/start") {
+      if (request.method !== "POST") return methodNotAllowed("POST");
+      const input = await parseJson(request, journeySchema);
+      if (input instanceof Response) return input;
+      return Response.json(createJourneyStart(input.goal), { headers: jsonHeaders });
+    }
+
     const guideMatch = url.pathname.match(/^\/api\/webmcp\/v1\/guides\/([^/]+)$/);
     if (guideMatch) {
       if (request.method !== "GET" && request.method !== "HEAD") return methodNotAllowed("GET, HEAD");
       const guideId = decodeURIComponent(guideMatch[1]!);
-      const page = PUBLIC_PAGES.find((candidate) => candidate.id === guideId && candidate.markdownRoute && candidate.readOnlyBoundary);
-      if (!page) return errorResponse(404, "not_found", "Guiden findes ikke.");
-      const payload = {
-        id: page.id,
-        title: page.title,
-        summary: page.summary,
-        stage: page.stage,
-        canonicalUrl: canonicalUrl(page.route),
-        markdownUrl: canonicalUrl(page.markdownRoute!),
-        optionalCapabilities: page.optionalCapabilities ?? [],
-        humanConfirmations: page.humanConfirmations ?? [],
-        readOnlyBoundary: true,
-      };
+      const payload = guidePayload(guideId);
+      if (!payload) return errorResponse(404, "not_found", "Guiden findes ikke.");
       return request.method === "HEAD" ? new Response(null, { headers: jsonHeaders }) : Response.json(payload, { headers: jsonHeaders });
     }
 

@@ -11,8 +11,10 @@ indeholder 26 HTML-sider i alt. Sitemap, `llms.txt`, Markdown-links, brødkrumme
 forrige/næste trin og relaterede guides genereres sammen med siderne.
 
 Promptkopiering samler en fælles sikkerhedskerne med det valgte promptmodul.
-WebMCP er implementeret som en valgfri, feature-flagstyret forbedring med fire
-read-only tools; HTML, Markdown og MCP fungerer uafhængigt af browserstøtten.
+WebMCP er implementeret som en valgfri, feature-flagstyret forbedring med fem
+read-only tools. Den almindelige MCP udgiver desuden 24 Markdown-ressourcer og
+ti genbrugelige prompts fra de samme kanoniske guidekilder. HTML, Markdown og
+MCP fungerer uafhængigt af browserstøtten.
 
 ## Formål
 
@@ -411,6 +413,7 @@ WebMCP er et sitewide capability-lag, ikke en separat erstatning for siderne.
 Første version bør kun eksponere read-only værktøjer:
 
 - `get_jobagenten_capabilities`
+- `start_jobseeker_journey`
 - `get_jobseeker_guide`
 - `search_danish_jobs`
 - `get_danish_job_details`

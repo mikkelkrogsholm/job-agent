@@ -223,9 +223,9 @@ try {
   });
   const webMcpPage = await webMcpContext.newPage();
   await webMcpPage.goto(`${origin}/forloeb/`, { waitUntil: "networkidle" });
-  await webMcpPage.waitForFunction(() => (globalThis as typeof globalThis & { __jobagentenTools?: string[] }).__jobagentenTools?.length === 4);
+  await webMcpPage.waitForFunction(() => (globalThis as typeof globalThis & { __jobagentenTools?: string[] }).__jobagentenTools?.length === 5);
   const registeredTools = await webMcpPage.evaluate(() => (globalThis as typeof globalThis & { __jobagentenTools?: string[] }).__jobagentenTools);
-  if (JSON.stringify(registeredTools?.sort()) !== JSON.stringify(["get_danish_job_details", "get_jobagenten_capabilities", "get_jobseeker_guide", "search_danish_jobs"])) {
+  if (JSON.stringify(registeredTools?.sort()) !== JSON.stringify(["get_danish_job_details", "get_jobagenten_capabilities", "get_jobseeker_guide", "search_danish_jobs", "start_jobseeker_journey"])) {
     throw new Error(`WebMCP registrerede uventede tools: ${JSON.stringify(registeredTools)}`);
   }
   const persistedKeepsTools = await webMcpPage.evaluate(() => {

@@ -24,8 +24,24 @@ async function registerJobagentenTools(context: WebMcpContext): Promise<void> {
       execute: async () => result(capabilities),
     }, options);
     await context.registerTool({
+      name: "start_jobseeker_journey",
+      description: "Start her. Vælg jobsøgerens mål, og få ét overskueligt næste skridt, en passende startbesked og hele det sikre forløb.",
+      inputSchema: {
+        type: "object",
+        properties: {
+          goal: {
+            enum: ["unsure", "create_profile", "find_jobs", "monitor_jobs", "compare_jobs", "tailor_cv", "write_application", "quality_check", "prepare_interview", "follow_up"],
+            default: "unsure",
+          },
+        },
+        additionalProperties: false,
+      },
+      annotations: { readOnlyHint: true, untrustedContentHint: false },
+      execute: async (input: unknown, execution?: { signal?: AbortSignal }) => result(await api("/api/webmcp/v1/journey/start", jsonRequest(input, execution?.signal))),
+    }, options);
+    await context.registerTool({
       name: "get_jobseeker_guide",
-      description: "Find metadata og links til en sikker Jobagenten-guide ud fra dens guide-id.",
+      description: "Hent hele den valgte Jobagenten-guide som læsbar Markdown med trin, startbesked, kontrol og næste skridt.",
       inputSchema: { type: "object", properties: { guideId: { type: "string", minLength: 1, maxLength: 80 } }, required: ["guideId"], additionalProperties: false },
       annotations: { readOnlyHint: true, untrustedContentHint: false },
       execute: async ({ guideId }: { guideId: string }, execution?: { signal?: AbortSignal }) => result(await api(`/api/webmcp/v1/guides/${encodeURIComponent(guideId)}`, { method: "GET", ...(execution?.signal ? { signal: execution.signal } : {}) })),

@@ -29,6 +29,7 @@ describe("guide design contract", () => {
       "`RelatedLinks`",
       "`StepNavigation`",
       "`PromptCard`",
+      "`AgentHandoff`",
       "`SourceMeta`",
       "`EditorialPage`",
       "`Reveal`",
