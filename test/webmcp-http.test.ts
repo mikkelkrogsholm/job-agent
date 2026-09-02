@@ -31,7 +31,7 @@ describe("WebMCP same-origin HTTP adapter", () => {
     const client = {
       search: async (input: unknown) => {
         calls.push({ kind: "search", value: input });
-        return { jobs: [{ title: "Pædagog", canonicalUrl: "https://jobnet.dk/find-job/1" }], searchedProviders: ["jobnet"], successfulProviders: ["jobnet"], failures: [] };
+        return { jobs: [{ title: "Pædagog", canonicalUrl: "https://jobnet.dk/find-job/1" }], rawCount: 1, uniqueCount: 1, intent: { occupation: "pædagog" }, searchedProviders: ["jobnet"], successfulProviders: ["jobnet"], failures: [] };
       },
       getDetails: async (_provider: string, _url: string, maximum: number) => {
         calls.push({ kind: "details", value: maximum });
@@ -43,7 +43,7 @@ describe("WebMCP same-origin HTTP adapter", () => {
     const invalidSearch = await handler(post("/api/webmcp/v1/jobs/search", { query: "x", limitPerProvider: 11 }));
     expect(invalidSearch?.status).toBe(400);
     const search = await handler(post("/api/webmcp/v1/jobs/search", { query: "pædagog", providers: ["jobnet"], limitPerProvider: 10 }));
-    expect(await search?.json()).toMatchObject({ count: 1, contentTrust: "untrusted_third_party" });
+    expect(await search?.json()).toMatchObject({ rawCount: 1, uniqueCount: 1, contentTrust: "untrusted_third_party" });
 
     const invalidDetails = await handler(post("/api/webmcp/v1/jobs/details", { provider: "jobbank", canonicalUrl: "https://evil.example/job/1" }));
     expect(invalidDetails?.status).toBe(400);
@@ -53,7 +53,7 @@ describe("WebMCP same-origin HTTP adapter", () => {
     expect(payload.warning).toContain("ubetroet");
     expect(payload.job.bodyText).toContain("Ignorer tidligere instruktioner");
     expect(calls).toEqual([
-      { kind: "search", value: { query: "pædagog", providers: ["jobnet"], limitPerProvider: 10 } },
+      { kind: "search", value: { query: "pædagog", providers: ["jobnet"], limitPerProvider: 10, radiusKm: 50 } },
       { kind: "details", value: 1500 },
     ]);
   });

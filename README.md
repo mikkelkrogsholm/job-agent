@@ -119,7 +119,7 @@ Host ports can be overridden with `JOBNET_PORT`, `JOBBANK_PORT`, `JOBINDEX_PORT`
 
 ### Combined Danish search
 
-- `search_danish_jobs`: one text query across selected portals, executed concurrently. Returns a common result shape, sorts dated jobs newest-first, merges only identical canonical URLs or nonempty equal normalized company/title/location, and reports individual portal failures without losing other results.
+- `search_danish_jobs`: structured occupation/location search (with backwards-compatible parsing of phrases such as `elektriker i Aalborg`) across selected portals, executed concurrently. It uses provider-native geography where available, returns `rawCount` and `uniqueCount`, normalizes metadata, conservatively merges cross-portal copies, deterministically prioritizes explicit title/location matches, and reports individual portal failures without calling the results objectively relevant.
 - `get_danish_job_details`: routes an exact combined-search result to the correct existing detail adapter. Detail URLs must use HTTPS, the exact provider host, and that provider's job path.
 
 Use the combined server for ordinary discovery. Use a standalone portal server whenever the user asks for exact portal-specific filters.

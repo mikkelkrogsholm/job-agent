@@ -5,6 +5,7 @@ import { JobindexClient } from "../jobindex/client.ts";
 import { JobdanmarkClient } from "../jobdanmark/client.ts";
 import { assertProviderDetailUrl } from "../../shared/provider-urls.ts";
 import type { DanishProvider, SearchDanishJobsInput } from "./schemas.ts";
+import { decodeHtmlEntities } from "../../shared/content.ts";
 
 export interface DanishJob {
   provider: DanishProvider;
@@ -50,10 +51,11 @@ export class DanishJobsClient {
   }
 
   async search(input: SearchDanishJobsInput, signal?: AbortSignal) {
+    const intent = resolveSearchIntent(input);
     const settled = await Promise.allSettled(
       input.providers.map(async (provider) => ({
         provider,
-        jobs: await this.searchProvider(provider, input.query, input.limitPerProvider, signal),
+        jobs: await this.searchProvider(provider, intent, input.limitPerProvider, signal),
       })),
     );
     const jobs: DanishJob[] = [];
@@ -69,8 +71,13 @@ export class DanishJobsClient {
       throw new Error(`All selected providers failed: ${failures.map(({ provider, error }) => `${provider}: ${error}`).join("; ")}`);
     }
 
+    const uniqueJobs = rankJobs(deduplicateJobs(jobs), intent);
     return {
-      jobs: deduplicateJobs(jobs),
+      jobs: uniqueJobs,
+      intent,
+      providerStrategies: Object.fromEntries(input.providers.map((provider) => [provider, providerStrategy(provider, intent)])),
+      rawCount: jobs.length,
+      uniqueCount: uniqueJobs.length,
       searchedProviders: input.providers,
       successfulProviders: input.providers.filter((provider) => !failures.some((failure) => failure.provider === provider)),
       failures,
@@ -95,31 +102,32 @@ export class DanishJobsClient {
     }
   }
 
-  private async searchProvider(provider: DanishProvider, query: string, limit: number, signal?: AbortSignal): Promise<DanishJob[]> {
+  private async searchProvider(provider: DanishProvider, intent: SearchIntent, limit: number, signal?: AbortSignal): Promise<DanishJob[]> {
+    const query = intent.occupation;
     if (provider === "jobnet") {
-      const response = await this.providers.jobnet.search({ searchString: query, resultsPerPage: limit, pageNumber: 1, orderType: "PublicationDate", kmRadius: 50 }, signal);
+      const response = await this.providers.jobnet.search({ searchString: query, resultsPerPage: limit, pageNumber: 1, orderType: "BestMatch", ...(intent.postalCode ? { postalCode: intent.postalCode } : {}), kmRadius: intent.radiusKm }, signal);
       return response.jobAds.map((job) => ({
-        provider, providerJobId: job.jobAdId, title: job.title, company: job.hiringOrgName ?? null,
-        location: [job.postalCode, job.postalDistrictName].filter(Boolean).join(" ") || job.municipality || null,
+        provider, providerJobId: job.jobAdId, title: cleanValue(job.title)!, company: cleanValue(job.hiringOrgName),
+        location: cleanValue([job.postalCode, job.postalDistrictName].filter(Boolean).join(" ") || job.municipality),
         postedDate: normalizeDate(job.publicationDate), deadline: normalizeDate(job.applicationDeadline),
         canonicalUrl: `https://jobnet.dk/find-job/${job.jobAdId}`, alsoFoundOn: [],
       }));
     }
     if (provider === "jobbank") {
-      const response = await this.providers.jobbank.search({ keywords: query, page: 1, limit }, signal);
-      return response.jobs.map((job) => ({ provider, providerJobId: job.id, title: job.title, company: job.employer,
+      const response = await this.providers.jobbank.search({ keywords: query, ...(jobbankLocationId(intent.location) ? { locationIds: [jobbankLocationId(intent.location)!] } : {}), page: 1, limit }, signal);
+      return response.jobs.map((job) => ({ provider, providerJobId: job.id, title: cleanValue(job.title)!, company: cleanValue(job.employer),
         location: null, postedDate: normalizeDate(job.publicationDate), deadline: normalizeDate(job.applicationDeadline),
         canonicalUrl: job.canonicalUrl, alsoFoundOn: [] }));
     }
     if (provider === "jobindex") {
-      const response = await this.providers.jobindex.search({ query, exactPhrase: false, page: 1, limit }, signal);
-      return response.jobs.map((job) => ({ provider, providerJobId: job.id, title: job.title, company: job.employer,
-        location: job.location, postedDate: normalizeDate(job.publicationDate), deadline: null,
+      const response = await this.providers.jobindex.search({ query, exactPhrase: false, ...(jobindexArea(intent.location) ? { area: jobindexArea(intent.location)! } : {}), page: 1, limit }, signal);
+      return response.jobs.map((job) => ({ provider, providerJobId: job.id, title: cleanValue(job.title)!, company: cleanValue(job.employer),
+        location: cleanValue(job.location), postedDate: normalizeDate(job.publicationDate), deadline: null,
         canonicalUrl: job.canonicalUrl, alsoFoundOn: [] }));
     }
-    const response = await this.providers.jobdanmark.search({ query, page: 1, limit }, signal);
-    return response.jobs.map((job) => ({ provider, providerJobId: job.id, title: job.title, company: job.employer,
-      location: job.location, postedDate: normalizeDate(job.publicationDate), deadline: normalizeDate(job.applicationDeadline),
+    const response = await this.providers.jobdanmark.search({ query, ...(intent.location ? { locations: [{ query: intent.location }] } : {}), page: 1, limit }, signal);
+    return response.jobs.map((job) => ({ provider, providerJobId: job.id, title: cleanValue(job.title)!, company: cleanValue(job.employer),
+      location: cleanValue(job.location), postedDate: normalizeDate(job.publicationDate), deadline: normalizeDate(job.applicationDeadline),
       canonicalUrl: job.canonicalUrl, alsoFoundOn: [] }));
   }
 }
@@ -149,14 +157,77 @@ function sameJob(left: DanishJob, right: DanishJob): boolean {
   const rightCompany = normalizeKeyPart(right.company);
   const leftLocation = normalizeKeyPart(left.location);
   const rightLocation = normalizeKeyPart(right.location);
-  return Boolean(leftTitle && rightTitle && leftCompany && rightCompany && leftLocation && rightLocation)
+  const sameCore = Boolean(leftTitle && rightTitle && leftCompany && rightCompany)
     && leftTitle === rightTitle
-    && leftCompany === rightCompany
-    && leftLocation === rightLocation;
+    && leftCompany === rightCompany;
+  if (!sameCore) return false;
+  if (leftLocation && rightLocation && locationsCompatible(leftLocation, rightLocation)) return true;
+  return Boolean(left.deadline && right.deadline && left.deadline === right.deadline);
 }
 
 function normalizeKeyPart(value: string | null): string {
-  return (value ?? "").toLocaleLowerCase("da-DK").normalize("NFKD").replace(/\p{Diacritic}/gu, "").replace(/[^a-z0-9]+/g, " ").trim();
+  return decodeHtmlEntities(value ?? "").toLocaleLowerCase("da-DK")
+    .replaceAll("æ", "ae").replaceAll("ø", "o").replaceAll("å", "a")
+    .normalize("NFKD").replace(/\p{Diacritic}/gu, "").replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+type SearchIntent = { occupation: string; location: string | null; postalCode: number | null; radiusKm: number; interpretation: "structured" | "parsed_query" | "query_only" };
+
+export function resolveSearchIntent(input: SearchDanishJobsInput): SearchIntent {
+  if (input.occupation || input.location || input.postalCode) return {
+    occupation: input.occupation ?? input.query,
+    location: input.location ?? null,
+    postalCode: input.postalCode ?? postalCodeFor(input.location),
+    radiusKm: input.radiusKm,
+    interpretation: "structured",
+  };
+  const match = input.query.match(/^(.+?)\s+i\s+([^,]+)$/iu);
+  if (!match) return { occupation: input.query, location: null, postalCode: null, radiusKm: input.radiusKm, interpretation: "query_only" };
+  const location = match[2]!.trim();
+  return { occupation: match[1]!.trim(), location, postalCode: postalCodeFor(location), radiusKm: input.radiusKm, interpretation: "parsed_query" };
+}
+
+function locationsCompatible(left: string, right: string): boolean {
+  const a = normalizeKeyPart(left).replace(/^\d{4}\s+/, "");
+  const b = normalizeKeyPart(right).replace(/^\d{4}\s+/, "");
+  return Boolean(a && b) && (a === b || a.includes(b) || b.includes(a));
+}
+
+function rankJobs(jobs: DanishJob[], intent: SearchIntent): DanishJob[] {
+  const occupationTokens = normalizeKeyPart(intent.occupation).split(" ").filter((token) => token.length >= 3);
+  const location = normalizeKeyPart(intent.location);
+  const score = (job: DanishJob) => {
+    const title = normalizeKeyPart(job.title);
+    const place = normalizeKeyPart(job.location);
+    const occupationMatch = occupationTokens.some((token) => title.includes(token)) ? 4 : 0;
+    const locationMatch = location && place && (place.includes(location) || location.includes(place)) ? 2 : 0;
+    return occupationMatch + locationMatch;
+  };
+  return jobs.sort((left, right) => score(right) - score(left) || (right.postedDate ?? "").localeCompare(left.postedDate ?? ""));
+}
+
+function cleanValue(value: string | null | undefined): string | null {
+  const cleaned = decodeHtmlEntities(value ?? "").replace(/\s+/g, " ").trim();
+  return cleaned || null;
+}
+
+const locationKey = (value: string | null | undefined) => normalizeKeyPart(value ?? "");
+function postalCodeFor(location: string | null | undefined): number | null {
+  return ({ aarhus: 8000, odense: 5000, aalborg: 9000, kobenhavn: 1050 } as Record<string, number>)[locationKey(location)] ?? null;
+}
+function jobindexArea(location: string | null): "storkoebenhavn" | "fyn" | "nordjylland" | "midtjylland" | undefined {
+  return ({ aarhus: "midtjylland", odense: "fyn", aalborg: "nordjylland", kobenhavn: "storkoebenhavn" } as const)[locationKey(location) as "aarhus" | "odense" | "aalborg" | "kobenhavn"];
+}
+function jobbankLocationId(location: string | null): number | undefined {
+  return ({ aarhus: 8, odense: 13, aalborg: 6, kobenhavn: 2 } as Record<string, number>)[locationKey(location)];
+}
+
+function providerStrategy(provider: DanishProvider, intent: SearchIntent) {
+  if (!intent.location && !intent.postalCode) return { occupation: "provider_native", location: "not_requested" } as const;
+  if (provider === "jobdanmark") return { occupation: "provider_native", location: "provider_native_exact_resolution" } as const;
+  if (provider === "jobnet") return { occupation: "provider_native", location: intent.postalCode ? "provider_native_postal_radius" : "not_applied_requires_postal_code" } as const;
+  if (provider === "jobindex") return { occupation: "provider_native_plus_fail_closed_term_check", location: jobindexArea(intent.location) ? "provider_native_area" : "not_applied_unsupported_area" } as const;
+  return { occupation: "provider_native", location: jobbankLocationId(intent.location) ? "provider_native_area" : "not_applied_unsupported_area" } as const;
 }
 
 function normalizeDate(value: string | null | undefined): string | null {

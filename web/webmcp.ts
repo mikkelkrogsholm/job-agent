@@ -37,6 +37,10 @@ async function registerJobagentenTools(context: WebMcpContext): Promise<void> {
         type: "object",
         properties: {
           query: { type: "string", minLength: 2, maxLength: 200 },
+          occupation: { type: "string", minLength: 2, maxLength: 120 },
+          location: { type: "string", minLength: 2, maxLength: 100 },
+          postalCode: { type: "integer", minimum: 1000, maximum: 9999 },
+          radiusKm: { type: "integer", minimum: 1, maximum: 200, default: 50 },
           providers: { type: "array", items: { enum: ["jobnet", "jobbank", "jobindex", "jobdanmark"] }, minItems: 1, maxItems: 4 },
           limitPerProvider: { type: "integer", minimum: 1, maximum: 10, default: 10 },
         },

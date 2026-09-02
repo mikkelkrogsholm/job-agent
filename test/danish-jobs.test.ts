@@ -5,7 +5,7 @@ import type { JobnetClient } from "../src/jobnet-client.ts";
 import type { JobbankClient } from "../src/providers/jobbank/client.ts";
 import type { JobindexClient } from "../src/providers/jobindex/client.ts";
 import type { JobdanmarkClient } from "../src/providers/jobdanmark/client.ts";
-import { DanishJobsClient, deduplicateJobs, type DanishJobsDependencies } from "../src/providers/danish/client.ts";
+import { DanishJobsClient, deduplicateJobs, resolveSearchIntent, type DanishJobsDependencies } from "../src/providers/danish/client.ts";
 import { createDanishJobsServer } from "../src/providers/danish/server.ts";
 
 const open: Array<{ client: Client; server: McpServer }> = [];
@@ -17,16 +17,26 @@ describe("DanishJobsClient", () => {
     let maximumActive = 0;
     const pause = async () => { active++; maximumActive = Math.max(maximumActive, active); await Bun.sleep(5); active--; };
     const client = new DanishJobsClient(fakeDependencies({ pause }));
-    const result = await client.search({ query: "data", providers: ["jobnet", "jobbank", "jobindex", "jobdanmark"], limitPerProvider: 5 });
+    const result = await client.search({ query: "data", providers: ["jobnet", "jobbank", "jobindex", "jobdanmark"], limitPerProvider: 5, radiusKm: 50 });
     expect(maximumActive).toBe(4);
     expect(result.failures).toEqual([]);
+    expect(result).toMatchObject({ rawCount: 4, uniqueCount: 4 });
     expect(result.jobs.every((job) => job.title && job.canonicalUrl && "postedDate" in job && "deadline" in job)).toBe(true);
+  });
+
+  test("splits ordinary Danish occupation and location requests before provider search", () => {
+    expect(resolveSearchIntent({ query: "Elektriker i Aalborg", providers: ["jobnet"], limitPerProvider: 10, radiusKm: 25 })).toEqual({
+      occupation: "Elektriker", location: "Aalborg", postalCode: 9000, radiusKm: 25, interpretation: "parsed_query",
+    });
+    expect(resolveSearchIntent({ query: "find arbejde", occupation: "Controller", location: "København", providers: ["jobnet"], limitPerProvider: 10, radiusKm: 50 })).toMatchObject({
+      occupation: "Controller", location: "København", postalCode: 1050, interpretation: "structured",
+    });
   });
 
   test("keeps successful results when one provider fails", async () => {
     const dependencies = fakeDependencies();
     dependencies.jobindex = { search: async () => { throw new Error("temporarily unavailable"); } } as unknown as JobindexClient;
-    const result = await new DanishJobsClient(dependencies).search({ query: "data", providers: ["jobnet", "jobindex"], limitPerProvider: 5 });
+    const result = await new DanishJobsClient(dependencies).search({ query: "data", providers: ["jobnet", "jobindex"], limitPerProvider: 5, radiusKm: 50 });
     expect(result.jobs).toHaveLength(1);
     expect(result.failures).toEqual([{ provider: "jobindex", error: "temporarily unavailable" }]);
   });
@@ -35,7 +45,7 @@ describe("DanishJobsClient", () => {
     const dependencies = fakeDependencies();
     dependencies.jobnet = { search: async () => { throw new Error("jobnet down"); } } as unknown as JobnetClient;
     dependencies.jobindex = { search: async () => { throw new Error("jobindex down"); } } as unknown as JobindexClient;
-    await expect(new DanishJobsClient(dependencies).search({ query: "data", providers: ["jobnet", "jobindex"], limitPerProvider: 5 }))
+    await expect(new DanishJobsClient(dependencies).search({ query: "data", providers: ["jobnet", "jobindex"], limitPerProvider: 5, radiusKm: 50 }))
       .rejects.toThrow("All selected providers failed: jobnet: jobnet down; jobindex: jobindex down");
   });
 
@@ -80,7 +90,7 @@ describe("Danish jobs MCP", () => {
     expect(tools.tools.every((tool) => tool.annotations?.readOnlyHint === true)).toBe(true);
     const search = await client.callTool({ name: "search_danish_jobs", arguments: { query: "data", providers: ["jobbank"] } });
     expect(search.isError).not.toBe(true);
-    expect(search.structuredContent).toMatchObject({ count: 1, successfulProviders: ["jobbank"] });
+    expect(search.structuredContent).toMatchObject({ rawCount: 1, uniqueCount: 1, successfulProviders: ["jobbank"] });
     const detail = await client.callTool({ name: "get_danish_job_details", arguments: { provider: "jobbank", canonicalUrl: "https://jobbank.dk/job/10/test" } });
     expect(detail.isError).not.toBe(true);
   });

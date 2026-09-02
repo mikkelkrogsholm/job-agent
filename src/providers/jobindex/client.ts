@@ -37,7 +37,9 @@ export class JobindexClient {
       title: channel.title,
       searchUrl: new URL(searchPath, this.http.baseUrl).toString(),
       resultsUrl: rssUrl,
-      jobs: channel.items.slice(0, input.limit).map((item) => normalizeItem(item)),
+      jobs: channel.items.map((item) => normalizeItem(item))
+        .filter((job) => matchesQuery(job, input.query))
+        .slice(0, input.limit),
     };
   }
 
@@ -64,6 +66,16 @@ export class JobindexClient {
       sourceAttribution: "Jobindex",
     };
   }
+}
+
+function matchesQuery(job: ReturnType<typeof normalizeItem>, query: string | undefined): boolean {
+  if (!query) return true;
+  const tokens = query.toLocaleLowerCase("da-DK").normalize("NFKD")
+    .replace(/\p{Diacritic}/gu, "").split(/[^a-z0-9]+/).filter((token) => token.length >= 3);
+  if (tokens.length === 0) return true;
+  const haystack = [job.title, job.employer, job.location, job.descriptionSnippet].filter(Boolean).join(" ")
+    .toLocaleLowerCase("da-DK").normalize("NFKD").replace(/\p{Diacritic}/gu, "");
+  return tokens.some((token) => haystack.includes(token));
 }
 
 export function buildJobindexSearchPath(input: SearchJobindexInput): string {

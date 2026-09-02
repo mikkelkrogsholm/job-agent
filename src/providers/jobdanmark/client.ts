@@ -106,8 +106,8 @@ export class JobdanmarkClient {
       /<script[^>]*type="application\/ld(?:&#x2B;|\+)json"[^>]*>([\s\S]*?)<\/script>/i,
     );
     if (!encodedJson) throw new Error("Jobdanmark page contained no JobPosting structured data");
-    const posting = JSON.parse(decodeHtmlEntities(encodedJson)) as Record<string, unknown>;
-    const body = truncateText(htmlToPlainText(String(posting.description ?? "")), maximum);
+    const posting = JSON.parse(escapeJsonStringNewlines(encodedJson)) as Record<string, unknown>;
+    const body = truncateText(htmlToPlainText(decodeHtmlEntities(String(posting.description ?? ""))), maximum);
     return {
       provider: "jobdanmark",
       id: new URL(url).pathname.replace(/^\/job\//, ""),
@@ -123,6 +123,24 @@ export class JobdanmarkClient {
       sourceAttribution: "Jobdanmark",
     };
   }
+}
+
+function escapeJsonStringNewlines(value: string): string {
+  let result = "";
+  let inString = false;
+  let escaped = false;
+  for (const character of value) {
+    if (inString && (character === "\n" || character === "\r" || character === "\t")) {
+      result += character === "\t" ? "\\t" : "\\n";
+      escaped = false;
+      continue;
+    }
+    result += character;
+    if (escaped) escaped = false;
+    else if (character === "\\" && inString) escaped = true;
+    else if (character === '"') inString = !inString;
+  }
+  return result;
 }
 
 function nestedString(record: Record<string, unknown>, key: string, nestedKey: string): string | null {

@@ -53,6 +53,15 @@ describe("JobindexClient", () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
+  test("drops generic RSS items that do not contain any meaningful query term", async () => {
+    const genericRss = rss.replace("https://jobbank.dk/job/123/acme/data", "https://www.jobindex.dk/vis-job/abc")
+      .replaceAll("Dataanalytiker", "Salgsassistent");
+    const client = new JobindexClient({ fetch: (async (url: URL | RequestInfo) => String(url).includes(".rss")
+      ? new Response(genericRss)
+      : new Response('<link href="/jobsoegning.rss?q=elektriker" type="application/rss+xml">')) as unknown as typeof fetch });
+    await expect(client.search({ query: "elektriker", exactPhrase: false, page: 1, limit: 5 })).resolves.toMatchObject({ jobs: [] });
+  });
+
   test("labels malformed RSS, invalid result URLs, and blank details as provider errors", async () => {
     const empty = new JobindexClient({ fetch: (async (url: URL | RequestInfo) => String(url).includes(".rss") ? new Response("<rss><channel><title>Ingen resultater</title></channel></rss>") : new Response("<link href=\"/results.rss\" type=\"application/rss+xml\">")) as unknown as typeof fetch });
     await expect(empty.search({ exactPhrase: false, page: 1, limit: 5 })).resolves.toMatchObject({ jobs: [] });
@@ -88,5 +97,14 @@ describe("JobdanmarkClient", () => {
     const detail = await client.getDetails("https://jobdanmark.dk/job/abc", 500);
     expect(detail).toMatchObject({ title: "Data & AI", employer: "Acme", body: "Analyse" });
     await expect(client.search({ categoryIds: [999], page: 1, limit: 30 })).rejects.toThrow("Unknown Jobdanmark category ID");
+  });
+
+  test("parses current Jobdanmark JSON-LD with literal newlines inside description strings", async () => {
+    const html = `<script type="application/ld&#x2B;json">{"@type":"JobPosting","title":"P&#xE6;dagog","description":"Første linje
+Anden linje","hiringOrganization":{"name":"Kommune"}}</script>`;
+    const client = new JobdanmarkClient({ fetch: (async () => new Response(html)) as unknown as typeof fetch });
+    await expect(client.getDetails("https://jobdanmark.dk/job/test", 500)).resolves.toMatchObject({
+      title: "Pædagog", employer: "Kommune", body: "Første linje\nAnden linje",
+    });
   });
 });

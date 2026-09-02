@@ -72,7 +72,10 @@ export function createDanishWebMcpHandler(options: WebMcpOptions = {}) {
         return Response.json({
           source: "Jobagenten",
           query: input.query,
-          count: jobs.length,
+          rawCount: result.rawCount,
+          uniqueCount: jobs.length,
+          intent: result.intent,
+          providerStrategies: result.providerStrategies,
           jobs,
           searchedProviders: result.searchedProviders,
           successfulProviders: result.successfulProviders,
