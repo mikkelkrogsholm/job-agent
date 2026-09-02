@@ -1,4 +1,5 @@
 import { createMcpHandler, type McpServer } from "@modelcontextprotocol/server";
+import { FairUseGuard } from "./fair-use.ts";
 
 export function serveHttp(
   createServer: () => McpServer,
@@ -13,6 +14,7 @@ export function serveHttp(
       ? configured
       : defaultPort;
   const handler = createMcpHandler(createServer);
+  const fairUse = new FairUseGuard();
   const server = Bun.serve({
     hostname: host,
     port,
@@ -27,7 +29,16 @@ export function serveHttp(
       if (request.method === "GET" && url.pathname === "/health") {
         return Response.json({ status: "ok", service });
       }
-      if (url.pathname === "/mcp") return handler.fetch(request);
+      if (url.pathname === "/mcp") {
+        const remoteAddress = server.requestIP(request)?.address ?? null;
+        const permit = await fairUse.permit(request, remoteAddress);
+        if (permit.response) return permit.response;
+        try {
+          return await handler.fetch(request);
+        } finally {
+          permit.release();
+        }
+      }
       return new Response("Not found", { status: 404 });
     },
   });

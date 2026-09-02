@@ -27,4 +27,14 @@ Jobnet predates the provider layout, so its provider entry points delegate to th
 
 ## Security and deployment
 
-The server has no credentials and exposes no write operations. Docker runs without root, with a read-only root filesystem and no-new-privileges. HTTP binds to loopback outside Docker by default. The application does not implement tenant authentication or Internet-facing abuse controls; those are deployment responsibilities.
+The server has no credentials and exposes no write operations. HTTP binds to
+loopback outside Docker by default. The reviewed public deployment intentionally
+has no login: a weighted, in-memory fair-use guard limits sessions, fallback IP
+pools, total work, concurrent POST requests, and body size without retaining
+queries or request bodies.
+
+Production separates the surfaces. Caddy serves the static landing page and is
+the only container with published ports. The Bun 1.4 MCP container is reachable
+only on the private Compose network. Both containers use read-only root filesystems,
+no-new-privileges, dropped capabilities, bounded logs, and persistent storage
+only for Caddy's TLS state. See [DEPLOYMENT.md](DEPLOYMENT.md).

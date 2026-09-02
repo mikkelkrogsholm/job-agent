@@ -91,6 +91,11 @@ a complete `prefers-reduced-motion` fallback. Build its production assets with:
 bun run build:site
 ```
 
+Production uses separate containers: Caddy serves the static build and proxies
+only `/mcp` to a private Bun 1.4 container. See
+[docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the topology, anonymous fair-use
+policy, deployment, and rollback procedure.
+
 ## Run all four in Docker
 
 ```bash
@@ -162,6 +167,13 @@ The tool descriptions and every input field contain agent-facing usage instructi
 | `JOBINDEX_BASE_URL` | `https://www.jobindex.dk` |
 | `JOBDANMARK_BASE_URL` | `https://jobdanmark.dk` |
 | `<PROVIDER>_TIMEOUT_MS` | `15000` |
+| `MCP_TRUST_PROXY` | `false` |
+| `MCP_FAIR_USE_ENABLED` | `true` |
+| `MCP_CLIENT_UNITS_PER_5_MIN` / `MCP_CLIENT_BURST_UNITS` | `30` / `12` |
+| `MCP_IP_UNITS_PER_5_MIN` / `MCP_IP_BURST_UNITS` | `300` / `120` |
+| `MCP_GLOBAL_UNITS_PER_5_MIN` / `MCP_GLOBAL_BURST_UNITS` | `1500` / `300` |
+| `MCP_MAX_CONCURRENT_REQUESTS` | `8` |
+| `MCP_MAX_REQUEST_BYTES` | `131072` |
 
 ## Important limitations
 

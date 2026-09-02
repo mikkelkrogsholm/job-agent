@@ -25,6 +25,7 @@
     "start:jobdanmark:http": "bun run src/providers/jobdanmark/http.ts",
     "start:danish": "bun run src/providers/danish/index.ts",
     "start:danish:http": "bun run src/providers/danish/http.ts",
+    "start:danish:mcp-http": "bun run src/providers/danish/mcp-http.ts",
     "dev:site": "bun --hot run src/providers/danish/http.ts",
     "build:site": "bun build ./web/index.html --outdir=./dist --target=browser --minify",
     "smoke": "bun run scripts/smoke.ts",
