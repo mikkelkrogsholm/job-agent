@@ -4,11 +4,16 @@
 }
 
 www.job-agent.dk {
+	header -Server
 	redir https://job-agent.dk{uri} permanent
 }
 
 job-agent.dk {
 	encode zstd gzip
+	redir /about /om/ permanent
+	redir /about/ /om/ permanent
+	redir /privacy /privatliv/ permanent
+	redir /privacy/ /privatliv/ permanent
 
 	header {
 		-Server
@@ -53,7 +58,7 @@ job-agent.dk {
 
 	handle {
 		root * /srv
-		try_files {path} /index.html
+		try_files {path} {path}/index.html /index.html
 		file_server
 	}
 }
