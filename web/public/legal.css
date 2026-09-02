@@ -3,6 +3,8 @@ body { margin: 0; }
 main { width: min(760px, calc(100% - 40px)); margin: 0 auto; padding: 72px 0 96px; }
 a { color: #2855e8; }
 .back { display: inline-block; margin-bottom: 48px; font-weight: 700; text-decoration: none; }
+.page-nav { display: flex; flex-wrap: wrap; gap: 12px 20px; margin-top: 56px; padding-top: 24px; border-top: 1px solid rgba(23,33,28,.18); }
+.page-nav a { font-weight: 650; }
 h1 { margin: 0 0 24px; font: 600 clamp(2.8rem, 8vw, 5rem)/.95 Georgia, serif; letter-spacing: -.04em; }
 h2 { margin-top: 40px; font-size: 1.25rem; }
 p, li { font-size: 1.05rem; line-height: 1.7; }

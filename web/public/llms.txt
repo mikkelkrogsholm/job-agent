@@ -14,7 +14,7 @@ Jobagenten søger aktuelle stillinger på Jobnet, Jobindex, Jobdanmark og Akadem
 ## Pages
 
 - [Landing page and setup guides](https://job-agent.dk/)
-- [About Mikkel](https://job-agent.dk/om/)
-- [Privacy](https://job-agent.dk/privatliv/)
+- [About Mikkel](https://job-agent.dk/about/)
+- [Privacy](https://job-agent.dk/privacy/)
 - [Contact](https://job-agent.dk/kontakt/)
 - [Source code](https://github.com/mikkelkrogsholm/job-agent)

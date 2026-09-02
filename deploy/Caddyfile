@@ -10,10 +10,6 @@ www.job-agent.dk {
 
 job-agent.dk {
 	encode zstd gzip
-	redir /about /om/ permanent
-	redir /about/ /om/ permanent
-	redir /privacy /privatliv/ permanent
-	redir /privacy/ /privatliv/ permanent
 
 	header {
 		-Server
@@ -45,7 +41,7 @@ job-agent.dk {
 	header @fingerprints Cache-Control "public, max-age=31536000, immutable"
 	@assets path /assets/*
 	header @assets Cache-Control "public, max-age=86400"
-	@pages path / /om/* /privatliv/* /kontakt/*
+	@pages path / /about/* /privacy/* /kontakt/*
 	header @pages Cache-Control "public, max-age=300"
 
 	@machine path *.xml *.txt *.json /.well-known/*
