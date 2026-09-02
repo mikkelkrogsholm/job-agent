@@ -1,0 +1,9 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; background: #f3efe5; color: #17211c; }
+body { margin: 0; }
+main { width: min(760px, calc(100% - 40px)); margin: 0 auto; padding: 72px 0 96px; }
+a { color: #2855e8; }
+.back { display: inline-block; margin-bottom: 48px; font-weight: 700; text-decoration: none; }
+h1 { margin: 0 0 24px; font: 600 clamp(2.8rem, 8vw, 5rem)/.95 Georgia, serif; letter-spacing: -.04em; }
+h2 { margin-top: 40px; font-size: 1.25rem; }
+p, li { font-size: 1.05rem; line-height: 1.7; }
+.meta { color: #69716b; }

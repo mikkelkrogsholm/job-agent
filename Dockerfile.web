@@ -10,3 +10,4 @@ FROM caddy:2-alpine
 COPY deploy/Caddyfile /etc/caddy/Caddyfile
 COPY --from=build /app/dist /srv
 COPY web/assets /srv/assets
+COPY web/public /srv

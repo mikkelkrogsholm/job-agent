@@ -1,0 +1,21 @@
+{
+  "name": "Jobagenten",
+  "description": "Free, read-only search across Danish job portals for jobseekers.",
+  "version": "2.1.0",
+  "transport": {
+    "type": "streamable-http",
+    "url": "https://job-agent.dk/mcp"
+  },
+  "authentication": {
+    "type": "none"
+  },
+  "tools": [
+    "search_danish_jobs",
+    "get_danish_job_details"
+  ],
+  "maintainer": {
+    "name": "Mikkel Freltoft Krogsholm",
+    "url": "https://job-agent.dk/om/"
+  },
+  "source": "https://github.com/mikkelkrogsholm/job-agent"
+}

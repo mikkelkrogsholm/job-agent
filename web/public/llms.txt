@@ -1,0 +1,20 @@
+# Jobagenten
+
+> Et gratis, offentligt og read-only MCP-værktøj til danske jobsøgende, bygget af Mikkel Freltoft Krogsholm.
+
+Jobagenten søger aktuelle stillinger på Jobnet, Jobindex, Jobdanmark og Akademikernes Jobbank. Tjenesten logger ikke ind, gemmer ikke job og sender aldrig ansøgninger.
+
+## MCP
+
+- Endpoint: https://job-agent.dk/mcp
+- Transport: Streamable HTTP
+- Authentication: None
+- Server card: https://job-agent.dk/.well-known/mcp/server-card.json
+
+## Pages
+
+- Landing page and setup guides: https://job-agent.dk/
+- About Mikkel: https://job-agent.dk/om/
+- Privacy: https://job-agent.dk/privatliv/
+- Contact: https://job-agent.dk/kontakt/
+- Source code: https://github.com/mikkelkrogsholm/job-agent

@@ -18,6 +18,7 @@ job-agent.dk {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains"
 		X-Content-Type-Options "nosniff"
 		X-Frame-Options "DENY"
+		Link "</.well-known/mcp/server-card.json>; rel=\"service-desc\"; type=\"application/json\", </llms.txt>; rel=\"alternate\"; type=\"text/plain\""
 	}
 
 	@mcp path /mcp /mcp/*
@@ -35,8 +36,20 @@ job-agent.dk {
 		reverse_proxy mcp:3004
 	}
 
+	@fingerprints path_regexp fingerprints ^/index-[a-z0-9]+\.(css|js)$
+	header @fingerprints Cache-Control "public, max-age=31536000, immutable"
 	@assets path /assets/*
-	header @assets Cache-Control "public, max-age=31536000, immutable"
+	header @assets Cache-Control "public, max-age=86400"
+	@pages path / /om/* /privatliv/* /kontakt/*
+	header @pages Cache-Control "public, max-age=300"
+
+	@machine path *.xml *.txt *.json /.well-known/*
+	@apiCatalog path /.well-known/api-catalog
+	header @apiCatalog Content-Type "application/json; charset=utf-8"
+	handle @machine {
+		root * /srv
+		file_server
+	}
 
 	handle {
 		root * /srv

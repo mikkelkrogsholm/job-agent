@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /mcp
+Disallow: /health
+
+User-agent: GPTBot
+Allow: /
+Disallow: /mcp
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /mcp
+
+Sitemap: https://job-agent.dk/sitemap.xml

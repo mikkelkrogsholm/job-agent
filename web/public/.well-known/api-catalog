@@ -1,0 +1,12 @@
+{
+  "name": "Jobagenten",
+  "services": [
+    {
+      "type": "mcp",
+      "transport": "streamable-http",
+      "endpoint": "https://job-agent.dk/mcp",
+      "authentication": "none",
+      "description": "Read-only search and job-detail tools for Danish job portals."
+    }
+  ]
+}
