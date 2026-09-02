@@ -1,12 +1,24 @@
 {
-  "name": "Jobagenten",
-  "services": [
+  "linkset": [
     {
-      "type": "mcp",
-      "transport": "streamable-http",
-      "endpoint": "https://job-agent.dk/mcp",
-      "authentication": "none",
-      "description": "Read-only search and job-detail tools for Danish job portals."
+      "anchor": "https://job-agent.dk/",
+      "link": [
+        {
+          "href": "https://job-agent.dk/.well-known/mcp/server-card.json",
+          "rel": "service-desc",
+          "type": "application/json"
+        },
+        {
+          "href": "https://job-agent.dk/mcp",
+          "rel": "service",
+          "type": "application/mcp"
+        },
+        {
+          "href": "https://job-agent.dk/llms.txt",
+          "rel": "alternate",
+          "type": "text/plain"
+        }
+      ]
     }
   ]
 }

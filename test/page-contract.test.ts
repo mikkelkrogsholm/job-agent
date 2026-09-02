@@ -135,8 +135,12 @@ describe("public page contract", () => {
           .map((link) => link.href)
           .filter((href) => href.startsWith("/") && !href.startsWith("//")),
       );
-      for (const required of PUBLIC_PAGES.filter((candidate) => candidate.route !== page.route)) {
-        expect(internalRoutes.has(required.route)).toBe(true);
+      if (page.markdownRoute) {
+        expect(internalRoutes.has("/")).toBe(true);
+        expect(internalRoutes.has("/forloeb/")).toBe(true);
+        expect(internalRoutes.has("/about/")).toBe(true);
+        expect(internalRoutes.has("/kontakt/")).toBe(true);
+        expect(parsed.links.some((link) => link.href === page.markdownRoute)).toBe(true);
       }
 
       for (const link of parsed.links) {
@@ -145,7 +149,9 @@ describe("public page contract", () => {
         if (link.href.startsWith("/") && !link.href.startsWith("//")) {
           const route = new URL(link.href, canonicalUrl(page.route)).pathname;
           const knownRoute = PUBLIC_PAGES.some((candidate) => candidate.route === route);
-          expect(knownRoute || route === "/health").toBe(true);
+          const machineRoute = MACHINE_RESOURCES.some((resource) => resource.route === route);
+          const markdownRoute = PUBLIC_PAGES.some((candidate) => candidate.markdownRoute === route);
+          expect(knownRoute || machineRoute || markdownRoute || route === "/health").toBe(true);
         }
       }
     });
@@ -163,6 +169,21 @@ describe("machine-readable contract", () => {
     expect(await Bun.file("web/public/sitemap.xml").text()).toBe(renderSitemap());
   });
 
+  test("keeps generated guide Markdown and HTML in sync with their authored sources", async () => {
+    for (const page of PUBLIC_PAGES.filter((candidate) => candidate.markdownSource)) {
+      const authored = Bun.file(`web/content/guides/${page.route.slice(1)}index.md`);
+      expect(await authored.exists()).toBe(true);
+      expect(await Bun.file(page.markdownSource!).text()).toBe(await authored.text());
+      const source = await authored.text();
+      const body = source.replace(/^---\n[\s\S]*?\n---\n/, "");
+      const html = await Bun.file(page.source).text();
+      expect(html).toContain(Bun.markdown.html(body));
+      expect(html).toContain(`rel="alternate" type="text/markdown" href="${page.markdownRoute}"`);
+      expect(html).toContain('rel="describedby" type="text/markdown" href="/ai/jobsoegning.md"');
+      expect(html).toContain("Jobagenten er read-only");
+    }
+  });
+
   test("protects service endpoints in robots.txt", async () => {
     const robots = await Bun.file("web/public/robots.txt").text();
     expect(robots).toContain("Disallow: /mcp");
@@ -178,5 +199,12 @@ describe("machine-readable contract", () => {
       const contents = await Bun.file(resource.source).text();
       expect(() => JSON.parse(contents)).not.toThrow();
     }
+  });
+
+  test("uses the RFC 9727 Linkset shape at the reserved API-catalog URI", async () => {
+    const catalog = JSON.parse(await Bun.file("web/public/.well-known/api-catalog").text()) as { linkset?: unknown[] };
+    expect(Array.isArray(catalog.linkset)).toBe(true);
+    expect(catalog.linkset?.[0]).toHaveProperty("anchor", canonicalUrl("/"));
+    expect(catalog.linkset?.[0]).toHaveProperty("link");
   });
 });

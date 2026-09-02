@@ -1,5 +1,33 @@
 import { createMcpHandler, type McpServer } from "@modelcontextprotocol/server";
+import { join, normalize, relative } from "node:path";
 import { FairUseGuard } from "./fair-use.ts";
+
+const publicRoot = join(process.cwd(), "web/public");
+function contentType(path: string): string {
+  if (path.endsWith(".html")) return "text/html; charset=utf-8";
+  if (path.endsWith(".md")) return "text/markdown; charset=utf-8";
+  if (path.endsWith(".css")) return "text/css; charset=utf-8";
+  if (path.endsWith(".js")) return "text/javascript; charset=utf-8";
+  if (path.endsWith(".xml")) return "application/xml; charset=utf-8";
+  if (path.endsWith(".txt")) return "text/plain; charset=utf-8";
+  if (path.endsWith("api-catalog")) return "application/linkset+json; charset=utf-8";
+  if (path.endsWith(".json")) return "application/json; charset=utf-8";
+  return "application/octet-stream";
+}
+async function servePublic(pathname: string, method: string): Promise<Response | undefined> {
+  if (method !== "GET" && method !== "HEAD") return undefined;
+  const decoded = decodeURIComponent(pathname);
+  if (decoded.includes("\0")) return undefined;
+  const relativePath = decoded === "/" ? "" : decoded.replace(/^\/+/, "");
+  const candidate = normalize(join(publicRoot, relativePath || "index.html"));
+  const path = relative(publicRoot, candidate);
+  if (path.startsWith("..") || path === "") return undefined;
+  const direct = Bun.file(candidate);
+  const file = (await direct.exists()) ? direct : pathname.endsWith("/") ? Bun.file(join(candidate, "index.html")) : undefined;
+  if (!file || !(await file.exists())) return undefined;
+  const headers = { "content-type": contentType(pathname.endsWith("/") ? `${pathname}index.html` : pathname) };
+  return method === "HEAD" ? new Response(null, { headers }) : new Response(file, { headers });
+}
 
 export function serveHttp(
   createServer: () => McpServer,
@@ -39,6 +67,8 @@ export function serveHttp(
           permit.release();
         }
       }
+      const publicFile = await servePublic(url.pathname, request.method);
+      if (publicFile) return publicFile;
       return new Response("Not found", { status: 404 });
     },
   });

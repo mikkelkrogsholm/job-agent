@@ -29,13 +29,14 @@
     "dev:site": "bun --hot run src/providers/danish/http.ts",
     "build:site": "bun build ./web/index.html --outdir=./dist --target=browser --minify",
     "pages:sync": "bun run scripts/sync-pages.ts",
+    "pages:check": "bun run scripts/check-pages.ts",
     "check:responsive": "bun run scripts/check-responsive.ts",
     "smoke": "bun run scripts/smoke.ts",
     "smoke:all": "bun run scripts/smoke-providers.ts",
     "test": "bun test",
     "test:parallel": "bun test --parallel",
     "typecheck": "bunx tsc --noEmit",
-    "check": "bun run typecheck && bun run test:parallel && bun run check:responsive"
+    "check": "bun run pages:check && bun run typecheck && bun run test:parallel && bun run check:responsive"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "5.3.0",

@@ -82,6 +82,13 @@ try {
       if (url.pathname === "/legal.css") {
         return responseFor(Bun.file(join(projectRoot, "web/public/legal.css")), "text/css");
       }
+      if (url.pathname.startsWith("/guide.") || url.pathname.endsWith(".md")) {
+        const publicPath = normalize(join(projectRoot, "web/public", decodeURIComponent(url.pathname)));
+        if (publicPath.startsWith(join(projectRoot, "web/public"))) {
+          const publicFile = await serveFile(publicPath);
+          if (publicFile) return publicFile;
+        }
+      }
       if (url.pathname.startsWith("/assets/")) {
         const asset = await serveFile(join(projectRoot, "web", url.pathname));
         if (asset) return asset;
