@@ -54,18 +54,19 @@ bun run start:jobdanmark
 bun run start:danish
 ```
 
-Example client configuration:
+Example client configuration (replace `/absolute/path/to/job-mcp` with the
+folder where you cloned this repository):
 
 ```json
 {
   "mcpServers": {
     "jobnet": {
       "command": "bun",
-      "args": ["run", "/Users/mikkelfreltoftkrogsholm/Projekter/job-mcp/src/providers/jobnet/index.ts"]
+      "args": ["run", "/absolute/path/to/job-mcp/src/providers/jobnet/index.ts"]
     },
     "jobdanmark": {
       "command": "bun",
-      "args": ["run", "/Users/mikkelfreltoftkrogsholm/Projekter/job-mcp/src/providers/jobdanmark/index.ts"]
+      "args": ["run", "/absolute/path/to/job-mcp/src/providers/jobdanmark/index.ts"]
     }
   }
 }

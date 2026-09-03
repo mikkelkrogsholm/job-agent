@@ -322,6 +322,44 @@ h1 span {
   font-weight: 900;
 }
 
+.open-source-link {
+  display: inline-grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 11px;
+  margin-top: 18px;
+  padding: 9px 14px 9px 9px;
+  border: 1px solid rgba(40, 85, 232, .26);
+  border-radius: 999px;
+  color: var(--blue);
+  background: rgba(219, 228, 255, .56);
+  transition: border-color 180ms ease, transform 180ms ease, background-color 180ms ease;
+}
+
+.open-source-link:hover {
+  border-color: var(--blue);
+  background: var(--blue-pale);
+  transform: translateY(-2px);
+}
+
+.github-mark {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  color: white;
+  background: var(--blue);
+  font-size: .65rem;
+  font-weight: 850;
+}
+
+.open-source-link small,
+.open-source-link strong { display: block; }
+.open-source-link small { margin-bottom: 2px; font-size: .52rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.open-source-link strong { color: var(--ink); font-size: .7rem; }
+.open-source-link > span:last-child { font-size: .75rem; }
+
 .founder-line {
   display: inline-grid;
   grid-template-columns: auto 1fr auto;

@@ -133,6 +133,12 @@ describe("public page registry", () => {
       PUBLIC_PAGES.length,
     );
   });
+
+  test("links prominently from the homepage to the public source repository", async () => {
+    const home = await Bun.file("web/index.html").text();
+    expect(home).toContain('class="open-source-link" href="https://github.com/mikkelkrogsholm/job-agent"');
+    expect(home).toContain("Se koden på GitHub");
+  });
 });
 
 describe("public page contract", () => {
@@ -217,6 +223,12 @@ describe("public page contract", () => {
 });
 
 describe("machine-readable contract", () => {
+  test("keeps local README configuration portable", async () => {
+    const readme = await Bun.file("README.md").text();
+    expect(readme).not.toContain("/Users/mikkelfreltoftkrogsholm/");
+    expect(readme).toContain("/absolute/path/to/job-mcp/");
+  });
+
   test("packages every page-registry dependency in the MCP image", async () => {
     const dockerfile = await Bun.file("Dockerfile.mcp").text();
     expect(dockerfile).toContain("COPY web/pages.ts ./web/pages.ts");

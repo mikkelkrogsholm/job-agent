@@ -16,6 +16,7 @@ export const FOOTER_NAVIGATION = [
   { href: "/about/", label: "Om Mikkel" },
   { href: "/privacy/", label: "Privatlivspolitik" },
   { href: "/kontakt/", label: "Kontakt" },
+  { href: "https://github.com/mikkelkrogsholm/job-agent", label: "GitHub" },
   { href: "https://mikkelkrogsholm.dk/da/about/", label: "Samarbejd med mig" },
   { href: "/health", label: "Driftsstatus" },
 ] as const;
